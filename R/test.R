@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-#' test_fun(1, 2)
+#' test_fun(1, 3)
 test_fun <- function(a, b){
 
   a + b
