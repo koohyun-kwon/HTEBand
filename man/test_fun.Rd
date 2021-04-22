@@ -18,5 +18,5 @@ the sum of two numbers
 Calculate the sum of two numbers
 }
 \examples{
-test_fun(1, 2)
+test_fun(1, 3)
 }
