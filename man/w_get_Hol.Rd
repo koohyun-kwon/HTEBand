@@ -28,13 +28,13 @@ w_get_Hol(
 \item{level}{confidence level}
 
 \item{kern}{specifies kernel function used in the local regression; default = \code{"triangular"}.
-See \code{\link[RDHonest]{NPROptBW.fit}} for a list of kernels available.}
+See \code{\link[RDHonest]{NPROptBW.fit}} in \code{RDHonest} package for a list of kernels available.}
 
 \item{se.initial}{method for estimating initial variance for computing optimal bandwidt; default = \code{"EHW"}.
-See \code{\link[RDHonest]{NPROptBW.fit}} for a list of method available.}
+See \code{\link[RDHonest]{NPROptBW.fit}} in \code{RDHonest} package for a list of method available.}
 
 \item{se.method}{methods for estimating standard error of estimate; default = \code{"nn"}.
-See \code{\link[RDHonest]{NPRreg.fit}} for a list of method available.}
+See \code{\link[RDHonest]{NPRreg.fit}} in \code{RDHonest} package for a list of method available.}
 
 \item{J}{number of nearest neighbors, if "nn" is specified in se.method.}
 }
