@@ -29,26 +29,15 @@ stud_err <- function(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad){
     resid.1 <- v_to_m(resid.1)
     resid.0 <- v_to_m(resid.0)
 
-    if(length(dim(omega.1)) != 3){
+    omega.1 <- v_to_3d(omega.1, "omega.1")$res.arr
+    omega.0 <- v_to_3d(omega.0, "omega.0")$res.arr
 
-      if(length(dim(omega.1)) == 0){
-
-        omega.1 <- array(omega.1, dim = c(length(omega.1), k, k))
-      }else{
-
-        stop("omega.1 should be either a 3-dim array or a vector.")
-      }
+    if(v_to_3d(omega.1, "omega.1")$err.stat == 1){
+      stop(v_to_3d(omega.1, "omega.1")$err.msg)
     }
 
-    if(length(dim(omega.0)) != 3){
-
-      if(length(dim(omega.0)) == 0){
-
-        omega.0 <- array(omega.0, dim = c(length(omega.0), k, k))
-      }else{
-
-        stop("omega.0 should be either a 3-dim array or a vector.")
-      }
+    if(v_to_3d(omega.0, "omega.0")$err.stat == 1){
+      stop(v_to_3d(omega.0, "omega.0")$err.msg)
     }
   }
 
