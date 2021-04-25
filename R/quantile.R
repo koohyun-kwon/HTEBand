@@ -24,25 +24,10 @@ stud_err <- function(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad){
 
   if(k == 1){
 
-    if(!is.matrix(w.1)){
-
-      w.1 <- matrix(w.1, length(w.1), 1)
-    }
-
-    if(!is.matrix(w.0)){
-
-      w.0 <- matrix(w.0, length(w.0), 1)
-    }
-
-    if(!is.matrix(resid.1)){
-
-      resid.1 <- matrix(resid.1, length(resid.1), 1)
-    }
-
-    if(!is.matrix(resid.0)){
-
-      resid.0 <- matrix(resid.0, length(resid.0), 1)
-    }
+    w.1 <- v_to_m(w.1)
+    w.0 <- v_to_m(w.0)
+    resid.1 <- v_to_m(resid.1)
+    resid.0 <- v_to_m(resid.0)
 
     if(length(dim(omega.1)) != 3){
 
