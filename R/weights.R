@@ -41,12 +41,12 @@ w_get_Hol <- function(y, x, eval, M, level, kern = "triangular", se.initial = "E
 
     d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = eval[i])
 
-    bw.vec.i <- RDHonest::NPROptBW.fit(d, M = M, kern = kern, opt.criterion = "OCI", alpha = 1 - level,
+    bw.res.i <- RDHonest::NPROptBW.fit(d, M = M, kern = kern, opt.criterion = "OCI", alpha = 1 - level,
                                       beta = 0.5, se.initial = se.initial)
-    bw.vec[i] <- bw.vec.i$h[1]
+    bw.vec[i] <- bw.res.i$h[1]
 
-    w.mat.i <- RDHonest::NPRreg.fit(d, bw.vec[i], kern = kern, se.method = se.method, J = J)
-    w.mat[, i] <- w.mat.i$w
+    w.res.i <- RDHonest::NPRreg.fit(d, bw.vec[i], kern = kern, se.method = se.method, J = J)
+    w.mat[, i] <- w.res.i$w
   }
 
   res <- list(w.mat = w.mat, bw.vec = bw.vec)
