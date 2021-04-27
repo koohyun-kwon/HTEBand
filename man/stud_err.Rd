@@ -30,4 +30,9 @@ Calculates the studentized error term given weights, residuals, and conditional 
 \examples{
 stud_err(rep(1/50, 50), rep(1/50, 50), stats::rnorm(50),
 stats::rnorm(50), rep(1, 50), rep(1, 50), 1)
+w.1 <- w.0 <- matrix(rep(1/50, 100), ncol = 2)
+resid.1 <- resid.0 <- matrix(stats::rnorm(100), ncol = 2)
+omega.1 <- omega.0 <- array(rep(c(1,0,0,1), each = 50), dim = c(50, 2, 2))
+T.grad <- c(1, 1)
+stud_err(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad)
 }

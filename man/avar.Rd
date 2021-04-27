@@ -25,4 +25,8 @@ Calculates the asymptotic variance expression given weights and conditional vari
 }
 \examples{
 avar(rep(1/50, 50), rep(1/50, 50), rep(1, 50), rep(1, 50), 1)
+w.1 <- w.0 <- matrix(rep(1/50, 100), ncol = 2)
+omega.1 <- omega.0 <- array(rep(c(1,0,0,1), each = 50), dim = c(50, 2, 2))
+T.grad <- c(1, 1)
+avar(w.1, w.0, omega.1, omega.0, T.grad)
 }
