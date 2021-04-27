@@ -69,3 +69,36 @@ v_to_3d <- function(v, obj.name){
 
   return(res)
 }
+
+#' Columnwise matrix self-multiplication
+#'
+#' Given a \code{n} by \code{k} matrix \code{mat}, computes a  \code{n} by \code{k} by \code{k} array
+#' whose \code{(i, j1, j2)}th component is given by \code{mat[i, j1] * mat[i, j2]}.
+#'
+#' @param mat A matrix or a vector
+#' @param arr.ret If \code{FALSE}, returns \code{n} by \code{k^2} matrix instead.
+#'
+#' @return A \code{n} by \code{k} by \code{k} array or a \code{n} by \code{k^2} matrix.
+#' @export
+#'
+#' @examples
+#' mat <- matrix(1:12, ncol = 3)
+#' mat.sq(mat, TRUE)
+#' mat.sq(1:10, FALSE)
+mat.sq <- function(mat, arr.ret){
+
+  mat <- v_to_m(mat)
+  k <- ncol(mat)
+  n <- nrow(mat)
+
+  mat.1 <- matrix(rep(mat, each = k), ncol = k^2)
+  mat.2 <- matrix(rep(mat, k), ncol = k^2)
+
+  if(arr.ret){
+    res <- array(mat.1 * mat.2, dim = c(n, k, k))
+  }else{
+    res <- mat.1 * mat.2
+  }
+
+  return(res)
+}
