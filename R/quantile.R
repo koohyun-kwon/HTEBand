@@ -20,6 +20,8 @@
 avar <- function(w.1, w.0, omega.1, omega.0, T.grad){
 
   k <- length(T.grad)
+  n.1 <- length(w.1) / k
+  n.0 <- length(w.0) / k
 
   # handling vector inputs when k = 1
 
@@ -40,28 +42,17 @@ avar <- function(w.1, w.0, omega.1, omega.0, T.grad){
     }
   }
 
-  dmat.1 <- matrix(0, k, k)
-  dmat.0 <- dmat.1
+  T.grad.rep.1 <- matrix(rep(T.grad, each = n.1), n.1, k)
+  T.grad.rep.0 <- matrix(rep(T.grad, each = n.0), n.0, k)
+  T.grad.arr.1 <- mat.sq(T.grad.rep.1)
+  T.grad.arr.0 <- mat.sq(T.grad.rep.0)
 
-  for(j1 in 1:k){
-    for(j2 in j1:k){
+  w.arr.1 <- mat.sq(w.1)
+  w.arr.0 <- mat.sq(w.0)
 
-      dmat.1[j1, j2] <- T.grad[j1] * T.grad[j2] * sum(w.1[, j1] * w.1[, j2] * omega.1[, j1, j2])
-      dmat.0[j1, j2] <- T.grad[j1] * T.grad[j2] * sum(w.0[, j1] * w.0[, j2] * omega.0[, j1, j2])
+  res <- sum(T.grad.arr.1 * w.arr.1 * omega.1) + sum(T.grad.arr.0 * w.arr.0 * omega.0)
 
-      if(j1 != j2){
-
-        dmat.1[j2, j1] <- dmat.1[j1, j2]
-        dmat.0[j2, j1] <- dmat.0[j1, j2]
-      }
-    }
-
-  }
-
-  avar <- sum(dmat.1) + sum(dmat.0)
-  dnmnt <- sqrt(avar)
-
-  return(dnmnt)
+  return(sqrt(res))
 }
 
 #' Studentized error variable
@@ -127,8 +118,42 @@ stud_err <- function(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad){
   return(res)
 }
 
-# stud_err_sim <- function(w.1, w.0, y.1, y.0, x.1, x.0, T.grad, deg, kern, loo){
+# stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, M, seed = 1){
+#
+#   k <- length(T.grad)
+#   n.1 <- length(y.1) / k
+#   n.0 <- length(y.0) / k
+#
+#   set.seed(seed)
+#   z.1 <- matrix(stats::rnorm(n.1 * K * M), n.1, k * M)
+#   z.0 <- matrix(stats::rnorm(n.0 * K * M), n.0, k * M)
+#
+#   w.1.rep <- matrix(rep(w.1, M), n.1, k * M)
+#   w.0.rep <- matrix(rep(w.0, M), n.0, k * M)
+#   T.grad.1.rep <- matrix(rep(matrix(rep(T.grad, each = n.1), ncol = k), M), n.1, k * M)
+#   T.grad.0.rep <- matrix(rep(matrix(rep(T.grad, each = n.0), ncol = k), M), n.0, k * M)
+#
+#   resid.1 <- matrix(0, nrow = n.1, ncol = k)
+#   resid.0 <- matrix(0, nrow = n.0, ncol = k)
+#   y.1 <- v_to_m(y.1)
+#   y.0 <- v_to_m(y.0)
+#
+#   for(j in 1:k){
+#
+#     resid.1[, j] <- eps_hat(y.1[, j], x, deg, kern, loo)
+#     resid.0[, j] <- eps_hat(y.0[, j], x, deg, kern, loo)
+#   }
+#
+#   resid.1.rep <- matrix(rep(resid.1, M), n.1, k * M)
+#   resid.0.rep <- matrix(rep(resid.0, M), n.0, k * M)
+#
+#   nmrt.pre.1 <- T.grad.1.rep * w.1.rep * resid.1.rep
+#   nmrt.pre.0 <- T.grad.0.rep * w.0.rep * resid.0.rep
+#
+#   nmrt.1 <- colSums(matrix(colSums(nmrt.pre.1), k, M))
+#   nmrt.0 <- colSums(matrix(colSums(nmrt.pre.0), k, M))
+#   nmrt <- nmrt.1 - nmrt.0
 #
 #
 # }
-
+#
