@@ -44,11 +44,11 @@ avar <- function(w.1, w.0, omega.1, omega.0, T.grad){
 
   T.grad.rep.1 <- matrix(rep(T.grad, each = n.1), n.1, k)
   T.grad.rep.0 <- matrix(rep(T.grad, each = n.0), n.0, k)
-  T.grad.arr.1 <- mat.sq(T.grad.rep.1)
-  T.grad.arr.0 <- mat.sq(T.grad.rep.0)
+  T.grad.arr.1 <- mat_sq(T.grad.rep.1)
+  T.grad.arr.0 <- mat_sq(T.grad.rep.0)
 
-  w.arr.1 <- mat.sq(w.1)
-  w.arr.0 <- mat.sq(w.0)
+  w.arr.1 <- mat_sq(w.1)
+  w.arr.0 <- mat_sq(w.0)
 
   res <- sum(T.grad.arr.1 * w.arr.1 * omega.1) + sum(T.grad.arr.0 * w.arr.0 * omega.0)
 
@@ -153,6 +153,8 @@ stud_err <- function(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad){
 #   nmrt.1 <- colSums(matrix(colSums(nmrt.pre.1), k, M))
 #   nmrt.0 <- colSums(matrix(colSums(nmrt.pre.0), k, M))
 #   nmrt <- nmrt.1 - nmrt.0
+#
+#   omega.hat.1 <- mat
 #
 #
 # }

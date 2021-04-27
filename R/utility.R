@@ -83,9 +83,9 @@ v_to_3d <- function(v, obj.name){
 #'
 #' @examples
 #' mat <- matrix(1:12, ncol = 3)
-#' mat.sq(mat, TRUE)
-#' mat.sq(1:10, FALSE)
-mat.sq <- function(mat, arr.ret = TRUE){
+#' mat_sq(mat, TRUE)
+#' mat_sq(1:10, FALSE)
+mat_sq <- function(mat, arr.ret = TRUE){
 
   mat <- v_to_m(mat)
   k <- ncol(mat)
