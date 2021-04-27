@@ -4,12 +4,12 @@
 \alias{mat.sq}
 \title{Columnwise matrix self-multiplication}
 \usage{
-mat.sq(mat, arr.ret)
+mat.sq(mat, arr.ret = TRUE)
 }
 \arguments{
 \item{mat}{A matrix or a vector}
 
-\item{arr.ret}{If \code{FALSE}, returns \code{n} by \code{k^2} matrix instead.}
+\item{arr.ret}{If \code{FALSE}, returns \code{n} by \code{k^2} matrix instead. Default is \code{TRUE}.}
 }
 \value{
 A \code{n} by \code{k} by \code{k} array or a \code{n} by \code{k^2} matrix.

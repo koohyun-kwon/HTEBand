@@ -76,7 +76,7 @@ v_to_3d <- function(v, obj.name){
 #' whose \code{(i, j1, j2)}th component is given by \code{mat[i, j1] * mat[i, j2]}.
 #'
 #' @param mat A matrix or a vector
-#' @param arr.ret If \code{FALSE}, returns \code{n} by \code{k^2} matrix instead.
+#' @param arr.ret If \code{FALSE}, returns \code{n} by \code{k^2} matrix instead. Default is \code{TRUE}.
 #'
 #' @return A \code{n} by \code{k} by \code{k} array or a \code{n} by \code{k^2} matrix.
 #' @export
@@ -85,7 +85,7 @@ v_to_3d <- function(v, obj.name){
 #' mat <- matrix(1:12, ncol = 3)
 #' mat.sq(mat, TRUE)
 #' mat.sq(1:10, FALSE)
-mat.sq <- function(mat, arr.ret){
+mat.sq <- function(mat, arr.ret = TRUE){
 
   mat <- v_to_m(mat)
   k <- ncol(mat)
