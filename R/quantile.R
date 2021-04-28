@@ -198,48 +198,54 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z
   return(list(err.sim = nmrt / dnmnt, nmrt = nmrt, dnmnt = dnmnt))
 }
 
-#' #' Title
-#' #'
-#' #' @inheritParams stud_err_sim
-#' #' @param w.1.arr A \code{n_1} by \code{k} by \code{n.T} dimensional array of weight values corresponding to treated observations
-#' #' @param w.0.arr A \code{n_0} by \code{k} by \code{n.T} dimensional array of weight values corresponding to treated observations
-#' #' @param T.grad.mat A \code{n.T} by \code{k} dimensional gradient matrix of \code{T_t f} for \code{t} = 1,..., \code{n.T}.
-#' #' @param level level of quantile
-#' #' @param useloop If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T}.
-#' #'
-#' #' @return a scalar quantile value
-#' #' @export
-#' #'
-#' #' @examples
-#' #' n <- 500
-#' #' x <- stats::runif(n, min = -1, max = 1)
-#' #' y <- x + rnorm(n, 0, 1/4)
-#' #' n.T <- 10
-#' #' eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
-#' #' w <- w_get_Hol(y, x, eval, 1, 0.95)
-#' sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, level,
-#'                         deg, kern, loo, z.1, z.0, useloop = TRUE){
+#' Quantile of supremum of a studentized process
 #'
-#'   T.grad.mat <- v_to_m(T.grad.mat)
-#'   n.T <- nrow(T.grad.mat)
-#'   k <- ncol(T.grad.mat)
-#'   n.1 <- length(y.1) / k
-#'   n.0 <- length(y.0) / k
-#'   M <- length(z.1) / (k * n.1)
+#' Calculates the quantile of supremum of the absolute value of a studentized process
+#' indexed by a index set.
 #'
-#'   if(useloop){
+#' @inheritParams stud_err_sim
+#' @param w.1.arr A \code{n_1} by \code{k} by \code{n.T} dimensional array of weight values corresponding to treated observations
+#' @param w.0.arr A \code{n_0} by \code{k} by \code{n.T} dimensional array of weight values corresponding to treated observations
+#' @param T.grad.mat A \code{n.T} by \code{k} dimensional gradient matrix of \code{T_t f} for \code{t} = 1,..., \code{n.T}.
+#' @param level level of quantile
+#' @param useloop If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T}.
 #'
-#'     max.val <- rep(0, M)
-#'     for(t in 1:n.T){
+#' @return a scalar quantile value
+#' @export
 #'
-#'       T.grad <- T.grad.mat[t, ]
-#'       w.1 <- w.1.arr[, , t]
-#'       w.0 <- w.0.arr[, , t]
-#'       val.new <- abs(stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z.1, z.0))
-#'       max.val <- pmax(max.val, val.new)
-#'     }
-#'   }
-#'
-#'   return(stats::quantile(max,val, level))
-#' }
-#'
+#' @examples
+#' n <- 500
+#' x <- stats::runif(n, min = -1, max = 1)
+#' y <- x + rnorm(n, 0, 1/4)
+#' n.T <- 10
+#' eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
+#' w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
+#' z <- rnorm(n * 100)
+#' sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
+#' rep(1, n.T), 0.95, 1, "triangle", FALSE, z, rnorm(100), useloop = TRUE)
+sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, level,
+                        deg, kern, loo, z.1, z.0, useloop = TRUE){
+
+  T.grad.mat <- v_to_m(T.grad.mat)
+  n.T <- nrow(T.grad.mat)
+  k <- ncol(T.grad.mat)
+  n.1 <- length(y.1) / k
+  n.0 <- length(y.0) / k
+  M <- length(z.1) / (k * n.1)
+
+  if(useloop){
+
+    max.val <- rep(0, M)
+    for(t in 1:n.T){
+
+      T.grad <- T.grad.mat[t, ]
+      w.1 <- w.1.arr[, , t]
+      w.0 <- w.0.arr[, , t]
+      val.new <- abs(stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z.1, z.0)$err.sim)
+      max.val <- pmax(max.val, val.new)
+    }
+  }
+
+  return(stats::quantile(max.val, level))
+}
+
