@@ -143,8 +143,8 @@ test_that("Valid true and simulated quantile value", {
   expect_equal(as.numeric(res) > stats::qnorm(level), TRUE)
   expect_equal(as.numeric(res.est) > stats::qnorm(level), TRUE)
 
-  # # Optional test to investigate whether two values are close
-  #
+  # Optional test to investigate whether two values are close
+
   # test.val <- 0
   # for(i in 1:50){
   #
@@ -159,7 +159,7 @@ test_that("Valid true and simulated quantile value", {
   #   res.est <- sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
   #                            rep(1, n.T), level, 1, "triangle", FALSE, 1000)
   #
-  #   test.val = test.val + (res - res.est)
+  #   test.val = test.val + (res - res.est)/res
   # }
   #
   # test.val / 50
