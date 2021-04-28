@@ -126,10 +126,9 @@ test_that("Valid quantile value", {
   n.T <- 10
   eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
   w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
-  z <- rnorm(n * 100)
   level <- 0.95
   res <- sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
-                       rep(1, n.T), level, 1, "triangle", FALSE, z, rnorm(100), useloop = TRUE)
+                       rep(1, n.T), level, 1, "triangle", FALSE, 100, seed = 1)
   expect_equal(as.numeric(res) > stats::qnorm(level), TRUE)
 })
 

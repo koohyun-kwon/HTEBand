@@ -16,8 +16,8 @@ sup_quant_sim(
   deg,
   kern,
   loo,
-  z.1,
-  z.0,
+  M,
+  seed = NULL,
   useloop = TRUE
 )
 }
@@ -44,11 +44,12 @@ sup_quant_sim(
 
 \item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
 
-\item{z.1}{a vector of simulated standard normal random variables of length \code{length(y.1) * M} for some \code{M}}
+\item{M}{number of bootstrap simulations}
 
-\item{z.0}{a vector of simulated standard normal random variables of length \code{length(y.0) * M} for some \code{M}}
+\item{seed}{seed for the random number generation; default is \code{seed = NULL}.}
 
-\item{useloop}{If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T}.}
+\item{useloop}{If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T};
+cureently only \code{useloop = TRUE} is implemented.}
 }
 \value{
 a scalar quantile value
@@ -64,7 +65,6 @@ y <- x + rnorm(n, 0, 1/4)
 n.T <- 10
 eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
 w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
-z <- rnorm(n * 100)
 sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
-rep(1, n.T), 0.95, 1, "triangle", FALSE, z, rnorm(100), useloop = TRUE)
+rep(1, n.T), 0.95, 1, "triangle", FALSE, 100)
 }
