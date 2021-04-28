@@ -16,10 +16,12 @@ test_that("positive estimated variance (k = 1)",{
   y.1 <- x.1^2 + stats::rnorm(500, 0, 0.1)
   y.0 <- x.0^2 + stats::rnorm(500, 0, 0.1)
   w.1 <- w.0 <- rep(1/500, 500)
-  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, 50)$dnmnt
-  # omega.1 <- omega.0 <- rep(0.1^2, 500)
-  # res.true <- avar(w.1, w.0, omega.1, omega.0, 1)
-  # c(res, sqrt(res.true))
+  z.1 <- rnorm(500 * 500)
+  z.0 <- rnorm(500 * 500)
+  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, z.1, z.0)$dnmnt
+  omega.1 <- omega.0 <- rep(0.1^2, 500)
+  res.true <- avar(w.1, w.0, omega.1, omega.0, 1)
+  c(res, sqrt(res.true))
 
   expect_equal(!is.na(res), TRUE)
 
@@ -37,9 +39,11 @@ test_that("positive estimated variance (k = 2)",{
   y.1 <- cbind(y.11, y.12)
   y.0 <- cbind(y.01, y.02)
   w.1 <- w.0 <- cbind(rep(1/n, n), rep(1/n, n))
+  z.1 <- rnorm(n * 2 * 500)
+  z.0 <- rnorm(n * 2 * 500)
 
 
-  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, c(1, 1), 1, "triangle", TRUE, 50)$dnmnt
+  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, c(1, 1), 1, "triangle", TRUE, z.1, z.0)$dnmnt
 
   omega.1 <- omega.0 <- array(rep(c(sd^2,0,0,sd^2), each = n), dim = c(n, 2, 2))
   res.true <- avar(w.1, w.0, omega.1, omega.0, c(1, 1))

@@ -128,8 +128,8 @@ stud_err <- function(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad){
 #' @param x.0 a vector of regressor for control observation
 #' @inheritParams stud_err
 #' @inheritParams eps_hat
-#' @param M number of bootstrap simulation draws
-#' @param seed seed for random number generation; default is 1
+#' @param z.1 a vector of simulated standard normal random variables of length \code{length(y.1) * M} for some \code{M}
+#' @param z.0 a vector of simulated standard normal random variables of length \code{length(y.0) * M} for some \code{M}
 #'
 #' @return a list of following components
 #' \describe{
@@ -145,16 +145,18 @@ stud_err <- function(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad){
 #' y.1 <- x.1^2 + stats::rnorm(500, 0, 0.1)
 #' y.0 <- x.0^2 + stats::rnorm(500, 0, 0.1)
 #' w.1 <- w.0 <- rep(1/500, 500)
-#' stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, 50)
-stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, M, seed = 1){
+#' z.1 <- rnorm(500 * 500)
+#' z.0 <- rnorm(500 * 500)
+#' stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, z.1, z.0)
+stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z.1, z.0){
 
   k <- length(T.grad)
   n.1 <- length(y.1) / k
   n.0 <- length(y.0) / k
+  M <- length(z.1) / (k * n.1)
 
-  set.seed(seed)
-  z.1 <- matrix(stats::rnorm(n.1 * k* M), n.1, k * M)
-  z.0 <- matrix(stats::rnorm(n.0 * k * M), n.0, k * M)
+  z.1 <- matrix(z.1, n.1, k * M)
+  z.0 <- matrix(z.0, n.0, k * M)
 
   w.1.rep <- matrix(rep(w.1, M), n.1, k * M)
   w.0.rep <- matrix(rep(w.0, M), n.0, k * M)

@@ -4,7 +4,7 @@
 \alias{stud_err_sim}
 \title{Simulation draws of studentized error}
 \usage{
-stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, M, seed = 1)
+stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z.1, z.0)
 }
 \arguments{
 \item{y.1}{dependent variable for treated observation; possibly a matrix with \code{nrow} equals the sample size}
@@ -27,9 +27,9 @@ stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, M, seed = 1)
 
 \item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
 
-\item{M}{number of bootstrap simulation draws}
+\item{z.1}{a vector of simulated standard normal random variables of length \code{length(y.1) * M} for some \code{M}}
 
-\item{seed}{seed for random number generation; default is 1}
+\item{z.0}{a vector of simulated standard normal random variables of length \code{length(y.0) * M} for some \code{M}}
 }
 \value{
 a list of following components
@@ -47,5 +47,7 @@ x.1 <- x.0 <- seq(from = -1, to = 1, length.out = 500)
 y.1 <- x.1^2 + stats::rnorm(500, 0, 0.1)
 y.0 <- x.0^2 + stats::rnorm(500, 0, 0.1)
 w.1 <- w.0 <- rep(1/500, 500)
-stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, 50)
+z.1 <- rnorm(500 * 500)
+z.0 <- rnorm(500 * 500)
+stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, z.1, z.0)
 }
