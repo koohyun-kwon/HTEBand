@@ -91,7 +91,7 @@ mat_sq <- function(mat, arr.ret = TRUE){
   k <- ncol(mat)
   n <- nrow(mat)
 
-  mat.1 <- matrix(rep(mat, each = k), ncol = k^2)
+  mat.1 <- t(matrix(rep(t(mat), each = k), nrow = k^2))
   mat.2 <- matrix(rep(mat, k), ncol = k^2)
 
   if(arr.ret){

@@ -1,4 +1,4 @@
-test_that("positive average variance", {
+test_that("positive asymptotic variance", {
   res <- avar(rep(1/50, 50), rep(1/50, 50), rep(1, 50), rep(1, 50), 1)
   expect_equal(res > 0, TRUE)
 
@@ -7,4 +7,46 @@ test_that("positive average variance", {
   T.grad <- c(1, 1)
   res <- avar(w.1, w.0, omega.1, omega.0, T.grad)
   expect_equal(res > 0, TRUE)
+
 })
+
+test_that("positive estimated variance (k = 1)",{
+
+  x.1 <- x.0 <- seq(from = -1, to = 1, length.out = 500)
+  y.1 <- x.1^2 + stats::rnorm(500, 0, 0.1)
+  y.0 <- x.0^2 + stats::rnorm(500, 0, 0.1)
+  w.1 <- w.0 <- rep(1/500, 500)
+  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, 50)$dnmnt
+  # omega.1 <- omega.0 <- rep(0.1^2, 500)
+  # res.true <- avar(w.1, w.0, omega.1, omega.0, 1)
+  # c(res, sqrt(res.true))
+
+  expect_equal(!is.na(res), TRUE)
+
+})
+
+test_that("positive estimated variance (k = 2)",{
+
+  n <- 500
+  sd <- 0.1
+  x.1 <- x.0 <- seq(from = -1, to = 1, length.out = n)
+  y.11 <- x.1^2 + stats::rnorm(n, 0, sd)
+  y.12 <- x.1 + stats::rnorm(n, 0, sd)
+  y.01 <- x.0^2 + stats::rnorm(n, 0, sd)
+  y.02 <- x.0 + stats::rnorm(n, 0, sd)
+  y.1 <- cbind(y.11, y.12)
+  y.0 <- cbind(y.01, y.02)
+  w.1 <- w.0 <- cbind(rep(1/n, n), rep(1/n, n))
+
+
+  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, c(1, 1), 1, "triangle", TRUE, 50)$dnmnt
+
+  omega.1 <- omega.0 <- array(rep(c(sd^2,0,0,sd^2), each = n), dim = c(n, 2, 2))
+  res.true <- avar(w.1, w.0, omega.1, omega.0, c(1, 1))
+  c(res, sqrt(res.true))
+
+  expect_equal(!is.na(res), TRUE)
+})
+
+
+
