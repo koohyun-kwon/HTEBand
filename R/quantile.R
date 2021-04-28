@@ -254,3 +254,63 @@ sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, leve
   return(stats::quantile(max.val, level))
 }
 
+#' True quantile value approximation
+#'
+#' Calulates the true quantile of the supremum of absolute value of a studentized process
+#' by simulation
+#'
+#' @param eps.1.mat a \code{n.1 * M} by \code{k} matrix of residuals generated from the true distribution,
+#' corresponding to the treated observations
+#' @param eps.0.mat a \code{n.0 * M} by \code{k} matrix of residuals generated from the true distribution,
+#' corresponding to the treated observations
+#' @inheritParams sup_quant_sim
+#' @inheritParams avar
+#'
+#' @return a scalar quantile value
+#' @export
+#'
+sup_quant_orc <- function(eps.1.mat, eps.0.mat, w.1.arr, w.0.arr, omega.1, omega.0, T.grad.mat,
+                          level, M, useloop = TRUE){
+
+  T.grad.mat <- v_to_m(T.grad.mat)
+  n.T <- nrow(T.grad.mat)
+  k <- ncol(T.grad.mat)
+  n.1 <- length(eps.1.mat) / (k * M)
+  n.0 <- length(eps.0.mat) / (k * M)
+
+  eps.1.mat <- v_to_m(eps.1.mat)
+  eps.1.mat <- matrix(t(eps.1.mat), n.1, k * M, byrow = TRUE)
+  eps.0.mat <- v_to_m(eps.0.mat)
+  eps.0.mat <- matrix(t(eps.0.mat), n.0, k * M, byrow = TRUE)
+
+  if(useloop){
+
+    max.val <- rep(0, M)
+    for(t in 1:n.T){
+
+      T.grad <- T.grad.mat[t, ]
+      w.1 <- w.1.arr[, , t]
+      w.0 <- w.0.arr[, , t]
+
+      w.1.rep <- matrix(rep(w.1, M), n.1, k * M)
+      w.0.rep <- matrix(rep(w.0, M), n.0, k * M)
+      T.grad.1.rep <- matrix(rep(matrix(rep(T.grad, each = n.1), ncol = k), M), n.1, k * M)
+      T.grad.0.rep <- matrix(rep(matrix(rep(T.grad, each = n.0), ncol = k), M), n.0, k * M)
+
+      nmrt.pre.1 <- T.grad.1.rep * w.1.rep * eps.1.mat
+      nmrt.pre.0 <- T.grad.0.rep * w.0.rep * eps.0.mat
+
+      nmrt.1 <- colSums(matrix(colSums(nmrt.pre.1), k, M))
+      nmrt.0 <- colSums(matrix(colSums(nmrt.pre.0), k, M))
+      nmrt <- nmrt.1 - nmrt.0
+
+      dnmnt <- sqrt(avar(w.1, w.0, omega.1, omega.0, T.grad))
+
+      val.new <- abs(nmrt / dnmnt)
+      max.val <- pmax(max.val, val.new)
+    }
+  }
+
+  return(stats::quantile(max.val, level))
+
+}

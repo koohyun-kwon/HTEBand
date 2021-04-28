@@ -118,19 +118,52 @@ test_that("positive estimated variance (k = 2); w.0 = 0",{
   expect_equal(!is.na(res), TRUE)
 })
 
-test_that("Valid quantile value", {
+test_that("Valid true and simulated quantile value", {
 
   n <- 500
+  M <- 500
   x <- stats::runif(n, min = -1, max = 1)
-  y <- x + rnorm(n, 0, 1/4)
   n.T <- 10
   eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
-  w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
+  omega <- rep(1, n)
+  T.grad.mat <- rep(1, n.T)
   level <- 0.95
-  res <- sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
-                       rep(1, n.T), level, 1, "triangle", FALSE, 100, seed = 1)
-  expect_equal(as.numeric(res) > stats::qnorm(level), TRUE)
-})
 
+  eps.1.mat <- rnorm(n * M)
+  eps.0.mat <- rnorm(M)
+  y <- x + rnorm(n, 0, 1)
+  w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
+
+  res <- sup_quant_orc(eps.1.mat, eps.0.mat, w, array(0, dim = c(1, 1, n.T)),
+                       omega, 0, T.grad.mat, level, M, useloop = TRUE)
+  res.est <- sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
+                           rep(1, n.T), level, 1, "triangle", FALSE, 1000)
+  c(res, res.est)
+
+  expect_equal(as.numeric(res) > stats::qnorm(level), TRUE)
+  expect_equal(as.numeric(res.est) > stats::qnorm(level), TRUE)
+
+  # # Optional test to investigate whether two values are close
+  #
+  # test.val <- 0
+  # for(i in 1:50){
+  #
+  #   print(i)
+  #   eps.1.mat <- rnorm(n * M)
+  #   eps.0.mat <- rnorm(M)
+  #   y <- x + rnorm(n, 0, 1)
+  #   w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
+  #
+  #   res <- sup_quant_orc(eps.1.mat, eps.0.mat, w, array(0, dim = c(1, 1, n.T)),
+  #                        omega, 0, T.grad.mat, level, M, useloop = TRUE)
+  #   res.est <- sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
+  #                            rep(1, n.T), level, 1, "triangle", FALSE, 1000)
+  #
+  #   test.val = test.val + (res - res.est)
+  # }
+  #
+  # test.val / 50
+
+})
 
 
