@@ -208,7 +208,8 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z
 #' @param w.0.arr A \code{n_0} by \code{k} by \code{n.T} dimensional array of weight values corresponding to treated observations
 #' @param T.grad.mat A \code{n.T} by \code{k} dimensional gradient matrix of \code{T_t f} for \code{t} = 1,..., \code{n.T}.
 #' @param level level of quantile
-#' @param useloop If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T}.
+#' @param useloop If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T};
+#' cureently only \code{useloop = TRUE} is implemented.
 #'
 #' @return a scalar quantile value
 #' @export
