@@ -171,7 +171,13 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z
   for(j in 1:k){
 
     resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern, loo)
-    resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, loo)
+
+    if(n.0 == 1){
+      resid.0[, j] <- 0
+    }else{
+      resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, loo)
+    }
+
   }
 
   resid.1.rep <- matrix(rep(resid.1, M), n.1, k * M)
@@ -192,3 +198,48 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z
   return(list(err.sim = nmrt / dnmnt, nmrt = nmrt, dnmnt = dnmnt))
 }
 
+#' #' Title
+#' #'
+#' #' @inheritParams stud_err_sim
+#' #' @param w.1.arr A \code{n_1} by \code{k} by \code{n.T} dimensional array of weight values corresponding to treated observations
+#' #' @param w.0.arr A \code{n_0} by \code{k} by \code{n.T} dimensional array of weight values corresponding to treated observations
+#' #' @param T.grad.mat A \code{n.T} by \code{k} dimensional gradient matrix of \code{T_t f} for \code{t} = 1,..., \code{n.T}.
+#' #' @param level level of quantile
+#' #' @param useloop If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T}.
+#' #'
+#' #' @return a scalar quantile value
+#' #' @export
+#' #'
+#' #' @examples
+#' #' n <- 500
+#' #' x <- stats::runif(n, min = -1, max = 1)
+#' #' y <- x + rnorm(n, 0, 1/4)
+#' #' n.T <- 10
+#' #' eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
+#' #' w <- w_get_Hol(y, x, eval, 1, 0.95)
+#' sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, level,
+#'                         deg, kern, loo, z.1, z.0, useloop = TRUE){
+#'
+#'   T.grad.mat <- v_to_m(T.grad.mat)
+#'   n.T <- nrow(T.grad.mat)
+#'   k <- ncol(T.grad.mat)
+#'   n.1 <- length(y.1) / k
+#'   n.0 <- length(y.0) / k
+#'   M <- length(z.1) / (k * n.1)
+#'
+#'   if(useloop){
+#'
+#'     max.val <- rep(0, M)
+#'     for(t in 1:n.T){
+#'
+#'       T.grad <- T.grad.mat[t, ]
+#'       w.1 <- w.1.arr[, , t]
+#'       w.0 <- w.0.arr[, , t]
+#'       val.new <- abs(stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z.1, z.0))
+#'       max.val <- pmax(max.val, val.new)
+#'     }
+#'   }
+#'
+#'   return(stats::quantile(max,val, level))
+#' }
+#'
