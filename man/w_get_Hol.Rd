@@ -8,7 +8,7 @@ w_get_Hol(
   y,
   x,
   eval,
-  M,
+  C,
   level,
   kern = "triangular",
   se.initial = "EHW",
@@ -23,7 +23,7 @@ w_get_Hol(
 
 \item{eval}{evaluation points}
 
-\item{M}{bound on the second derivative}
+\item{C}{bound on the second derivative}
 
 \item{level}{confidence level}
 
@@ -42,8 +42,8 @@ See \code{\link[RDHonest]{NPRreg.fit}} in \code{RDHonest} package for a list of 
 list with components
 
 \describe{
-    \item{w.mat}{matrix of optimal weigths with a dimension \code{length(y)} by
-    \code{length(eval)} corresponding to the evaluation points}
+    \item{w.mat}{matrix of optimal weigths with a dimension \code{length(y)} by \code{length(eval)}
+    corresponding to the evaluation points}
     \item{bw.vec}{vector of optimal bandwidths corresponding to the evaluation points}
 
 }
