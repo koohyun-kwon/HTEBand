@@ -6,7 +6,7 @@
 #' @param y vector of dependent variables
 #' @param x vector of regressors
 #' @param eval evaluation points
-#' @param M bound on the second derivative
+#' @param C bound on the second derivative
 #' @param level confidence level
 #' @param kern specifies kernel function used in the local regression; default = \code{"triangular"}.
 #' See \code{\link[RDHonest]{NPROptBW.fit}} in \code{RDHonest} package for a list of kernels available.
@@ -30,7 +30,7 @@
 #' y <- x + rnorm(500, 0, 1/4)
 #' eval <- seq(from = -0.9, to = 0.9, length.out = 5)
 #' w_get_Hol(y, x, eval, 1, 0.95)
-w_get_Hol <- function(y, x, eval, M, level, kern = "triangular", se.initial = "EHW", se.method = "nn", J = 3){
+w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "EHW", se.method = "nn", J = 3){
 
   n <- length(y)
   m <- length(eval)
@@ -41,7 +41,7 @@ w_get_Hol <- function(y, x, eval, M, level, kern = "triangular", se.initial = "E
 
     d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = eval[i])
 
-    bw.res.i <- RDHonest::NPROptBW.fit(d, M = M, kern = kern, opt.criterion = "OCI", alpha = 1 - level,
+    bw.res.i <- RDHonest::NPROptBW.fit(d, M = C, kern = kern, opt.criterion = "OCI", alpha = 1 - level,
                                       beta = 0.5, se.initial = se.initial)
     bw.vec[i] <- bw.res.i$h[1]
 
