@@ -19,8 +19,8 @@
 #' @return list with components
 #'
 #' \describe{
-#'     \item{w.mat}{matrix of optimal weigths with a dimension \code{length(y)} by
-#'     \code{length(eval)} corresponding to the evaluation points}
+#'     \item{w.mat}{matrix of optimal weigths with a dimension \code{length(y)} by \code{length(eval)}
+#'     corresponding to the evaluation points}
 #'     \item{bw.vec}{vector of optimal bandwidths corresponding to the evaluation points}
 #'
 #' }
