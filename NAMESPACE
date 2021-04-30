@@ -2,6 +2,8 @@
 
 export(RDH_lee)
 export(avar)
+export(cb_const)
+export(ci_reg_Hol)
 export(eps_hat)
 export(mat_sq)
 export(opt_w)
