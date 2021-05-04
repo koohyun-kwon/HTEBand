@@ -35,6 +35,23 @@ sd_Lip <- function(y, x, t, kern, h, deg, loo){
   return(sqrt(nmrt / dnmnt))
 }
 
+#' Lipschitz class true standard deviation
+#'
+#' Calculates the true standard deviation for regression function value estimator under Lipschitz class
+#'
+#' @inheritParams sd_Lip
+#' @param sd.true a vector of true conditional standard deviation values
+#'
+#' @return a scalar standard deviation value
+#' @export
+sd_Lip_true <- function(x, t, kern, h, sd.true){
+
+  nmrt <- sum(K_fun(x, t, h, kern)^2 * sd.true^2)
+  dnmnt <- sum(K_fun(x, t, h, kern))^2
+
+  return(sqrt(nmrt / dnmnt))
+}
+
 # bw_Lip <- function(y, x, t, TE, d, M, kern, alpha, beta, se.initial, bw.eq){
 #
 #
