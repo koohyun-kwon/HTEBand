@@ -29,3 +29,51 @@ ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = 
 
   return(c(ci.res$lower, ci.res$upper))
 }
+
+#' Confidence interval for regression function value for Lipschitz space
+#'
+#' Constructs a confidence interval for regression function value for Lipschitz space;
+#' it can be used to deal with both regression function value itself and
+#' difference between regression function values of treatment and control groups.
+#'
+#' @inheritParams bw_Lip
+#' @inheritParams ci_reg_Hol
+#' @param se.method methods for estimating standard error of estimate; currently,
+#' only "resid" is supported.
+#'
+#' @return a vector of lower and upper ends of confidence interval
+#' @export
+#'
+#' @examples
+#' x <- stats::runif(500, min = -1, max = 1)
+#' y <- x + rnorm(500, 0, 1/4)
+#' ci_reg_Lip(y, x, 1/2, 1, 0.99)
+ci_reg_Lip <- function(y, x, point, C, level, TE = FALSE, d = NULL, kern = "triangle",
+                       bw.eq = TRUE, deg = 0, loo = FALSE, se.method = "resid"){
+
+  opt.res <- bw_Lip(y, x, point, TE, d, C, kern, 1 - level, bw.eq, deg, loo)
+  h.opt <- opt.res$h.opt
+
+  if(TE == TRUE){
+
+    y.1 <- y[d == 1]
+    y.0 <- y[d == 0]
+    x.1 <- x[d == 1]
+    x.0 <- x[d == 0]
+
+    est.1 <- sum(K_fun(x.1, point, h.opt[1], kern) * y.1) / sum(K_fun(x.1, point, h.opt[1], kern))
+    est.0 <- sum(K_fun(x.0, point, h.opt[2], kern) * y.0) / sum(K_fun(x.0, point, h.opt[2], kern))
+    est <- est.1 - est.0
+  }else{
+
+    est <- sum(K_fun(x, point, h.opt, kern) * y) / sum(K_fun(x, point, h.opt, kern))
+  }
+
+  if(se.method == "resid"){
+
+    ci.lower <- est - opt.res$hl.opt
+    ci.upper <- est + opt.res$hl.opt
+  }
+
+  return(c(ci.lower, ci.upper))
+}
