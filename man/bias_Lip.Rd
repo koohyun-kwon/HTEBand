@@ -21,5 +21,5 @@ bias_Lip(x, t, M, kern, h)
 a scalar worst-case bias value
 }
 \description{
-Calculates the worst-case bias for regression function value estimator under Lipschitz class
+Calculates the worst-case supremum bias for regression function value estimator under Lipschitz class
 }
