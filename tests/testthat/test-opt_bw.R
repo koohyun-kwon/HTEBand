@@ -4,7 +4,7 @@ test_that("positive worst case bias", {
 })
 
 
-test_that("positive standard deviation", {
+test_that("positive variance", {
   n <- 250
   x <- seq(-1, 1, length.out = n)
   sd.true <- 1/2 + x^2
