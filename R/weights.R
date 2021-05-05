@@ -53,3 +53,66 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
 
   return(res)
 }
+
+
+#' Optimal weights for Lipschitz space
+#'
+#' Computes optimal weights and bandwidths for inference for nonparametric regression function values
+#' under Lipschitz space.
+#'
+#' @inheritParams ci_reg_Lip
+#' @param eval evaluation points
+#'
+#' @return a matrix of weights with each column corresponding to weights for each evaluation points,
+#' or if \code{TE = TRUE}, a list of two such matrices, with \code{w.mat.1} corresponding to that of the
+#' treated group and \code{w.mat.0} corresponding to that of the control group.
+#' @export
+#'
+#' @examples
+#' x <- stats::runif(500, min = -1, max = 1)
+#' y <- x + rnorm(500, 0, 1/4)
+#' eval <- seq(from = -0.9, to = 0.9, length.out = 5)
+#' w_get_Lip(y, x, eval, 1, 0.95)
+w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "triangle", bw.eq = TRUE,
+                      deg = 0, loo = FALSE, se.method = "resid"){
+
+  m <- length(eval)
+
+  if(TE == TRUE){
+
+    y.1 <- y[d == 1]
+    y.0 <- y[d == 0]
+    x.1 <- x[d == 1]
+    x.0 <- x[d == 0]
+
+    n.1 <- length(y.1)
+    n.0 <- length(y.0)
+
+    w.mat.1 <- matrix(0, n.1, m)
+    w.mat.0 <- matrix(0, n.0, m)
+
+    for(i in 1:m){
+
+      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg, loo)$h.opt
+      w.mat.1[, i] <- K_fun(x.1, eval[i], h.opt[1], kern) / sum(K_fun(x.1, eval[i], h.opt[1], kern))
+      w.mat.0[, i] <- K_fun(x.0, eval[i], h.opt[2], kern) / sum(K_fun(x.0, eval[i], h.opt[2], kern))
+    }
+
+    res <- list(w.mat.1 = w.mat.1, w.mat.0 = w.mat.0)
+
+  }else{
+
+    n <- length(y)
+    w.mat <- matrix(0, nrow = n, ncol = m)
+
+    for(i in 1:m){
+
+      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg, loo)$h.opt
+      w.mat[, i] <- K_fun(x, eval[i], h.opt, kern) / sum(K_fun(x, eval[i], h.opt, kern))
+    }
+
+    res <- w.mat
+  }
+
+  return(res)
+}

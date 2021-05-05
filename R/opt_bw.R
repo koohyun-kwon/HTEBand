@@ -10,10 +10,16 @@
 #'
 bias_Lip <- function(x, t, M, kern, h){
 
-  nmrt <- M * sum(K_fun(x, t, h, kern) * abs(x - t))
-  dnmnt <- sum(K_fun(x, t, h, kern))
+  if(h <= 0){
+    res <- Inf
+  }else{
 
-  return(nmrt / dnmnt)
+    nmrt <- M * sum(K_fun(x, t, h, kern) * abs(x - t))
+    dnmnt <- sum(K_fun(x, t, h, kern))
+    res <- nmrt/dnmnt
+  }
+
+  return(res)
 }
 
 #' Lipschitz class variance
@@ -27,12 +33,20 @@ bias_Lip <- function(x, t, M, kern, h){
 #' @export
 var_Lip <- function(y, x, t, kern, h, deg, loo){
 
-  sd.hat <- eps_hat(y, x, deg, kern, loo)
+  if(h <= 0){
 
-  nmrt <- sum(K_fun(x, t, h, kern)^2 * sd.hat^2)
-  dnmnt <- sum(K_fun(x, t, h, kern))^2
+    res <- 0
+  }else{
 
-  return(nmrt / dnmnt)
+    sd.hat <- eps_hat(y, x, deg, kern, loo)
+
+    nmrt <- sum(K_fun(x, t, h, kern)^2 * sd.hat^2)
+    dnmnt <- sum(K_fun(x, t, h, kern))^2
+
+    res <- nmrt / dnmnt
+  }
+
+  return(res)
 }
 
 #' Lipschitz class true variance
@@ -46,10 +60,17 @@ var_Lip <- function(y, x, t, kern, h, deg, loo){
 #' @export
 var_Lip_true <- function(x, t, kern, h, sd.true){
 
-  nmrt <- sum(K_fun(x, t, h, kern)^2 * sd.true^2)
-  dnmnt <- sum(K_fun(x, t, h, kern))^2
+  if(h <= 0){
 
-  return(nmrt / dnmnt)
+    res <- 0
+  }else{
+
+    nmrt <- sum(K_fun(x, t, h, kern)^2 * sd.true^2)
+    dnmnt <- sum(K_fun(x, t, h, kern))^2
+    res <- nmrt/ dnmnt
+  }
+
+  return(res)
 }
 
 #' Optimal bandwidths under Lipschitz class
