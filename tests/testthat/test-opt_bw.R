@@ -26,3 +26,48 @@ test_that("positive variance", {
   #
   # diff / 100
 })
+
+test_that("valid optimal bandwidth", {
+
+  n <- 250
+  x <- seq(-1, 1, length.out = n)
+  sd.true <- 1/2 + x^2
+  eps <- stats::rnorm(n, 0, sd.true)
+  y <- x + eps
+
+  res <- bw_Lip(y, x, 0, TE = FALSE, d = NULL, 1, "triangle", 0.05, bw.eq = TRUE,
+                1, FALSE)
+
+  res
+
+  expect_equal(res$h.opt > 0, TRUE)
+  expect_equal(res$hl.opt > 0, TRUE)
+})
+
+
+test_that("valid optimal bandwidth(TE)", {
+
+  n <- 250
+  x.1 <- x.0 <- seq(-1, 1, length.out = n)
+  sd.true <- 1/2 + x.1^2
+  eps <- stats::rnorm(n, 0, sd.true)
+  y.1 <- x.1 + eps
+  y.0 <- x.1^2 + eps/2
+
+  y <- c(y.1, y.0)
+  x <- c(x.1, x.0)
+  d <- rep(c(1, 0), each = n)
+
+  res <- bw_Lip(y, x, 0, TE = TRUE, d = d, 1, "triangle", 0.05, bw.eq = FALSE,
+                1, FALSE)
+  res.eq <- bw_Lip(y, x, 0, TE = TRUE, d = d, 1, "triangle", 0.05, bw.eq = TRUE,
+                   1, FALSE)
+
+  res
+  res.eq
+
+  expect_equal(res$h.opt > 0, rep(TRUE, 2))
+  expect_equal(res$hl.opt > 0, TRUE)
+  expect_equal(res.eq$h.opt > 0, rep(TRUE, 2))
+  expect_equal(res.eq$hl.opt > 0, TRUE)
+})

@@ -2,7 +2,7 @@
 % Please edit documentation in R/opt_bw.R
 \name{var_Lip_true}
 \alias{var_Lip_true}
-\title{Lipschitz class true standard deviation}
+\title{Lipschitz class true variance}
 \usage{
 var_Lip_true(x, t, kern, h, sd.true)
 }
@@ -18,8 +18,8 @@ var_Lip_true(x, t, kern, h, sd.true)
 \item{sd.true}{a vector of true conditional standard deviation values}
 }
 \value{
-a scalar standard deviation value
+a scalar variance value
 }
 \description{
-Calculates the true standard deviation for regression function value estimator under Lipschitz class
+Calculates the true variance for regression function value estimator under Lipschitz class
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/opt_bw.R
 \name{var_Lip}
 \alias{var_Lip}
-\title{Lipschitz class standard deviation}
+\title{Lipschitz class variance}
 \usage{
 var_Lip(y, x, t, kern, h, deg, loo)
 }
@@ -22,8 +22,8 @@ var_Lip(y, x, t, kern, h, deg, loo)
 \item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
 }
 \value{
-a scalar standard deviation value
+a scalar variance value
 }
 \description{
-Calculates the standard deviation for regression function value estimator under Lipschitz class
+Calculates the variance for regression function value estimator under Lipschitz class
 }
