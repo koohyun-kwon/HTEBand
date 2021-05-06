@@ -25,7 +25,14 @@ cb_const(
 }
 \arguments{
 \item{method}{character string used to define the parameter of interest and the function space.
-Currently, only \code{"reg.Hol"} is supported.}
+Possible choices are
+\describe{
+\item{"reg.Hol"}{Regression function values under Hölder space}
+\item{"reg.Lip"}{Regression function values under Lipschitz space}
+\item{"TE.Lip"}{CATE under Lipschitz space}
+\item{"TE.Lip.eqbw"}{CATE under Lipschitz space using the same bandwidths for the treatment
+and the control groups}
+}}
 
 \item{C.vec}{smoothness parameter for the function space; possibly a vector.}
 
