@@ -210,7 +210,7 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z
 #' @param level level of quantile
 #' @param M number of bootstrap simulations
 #' @param useloop If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T};
-#' cureently only \code{useloop = TRUE} is implemented.
+#' currently only \code{useloop = TRUE} is implemented.
 #' @param seed seed for the random number generation; default is \code{seed = NULL}.
 #'
 #' @return a scalar quantile value
