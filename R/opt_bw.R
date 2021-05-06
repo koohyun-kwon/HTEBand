@@ -107,13 +107,15 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
     y.0 <- y[d == 0]
     x.1 <- x[d == 1]
     x.0 <- x[d == 0]
+    resid.1 <- eps_hat(y.1, x.1, deg, kern, loo)
+    resid.0 <- eps_hat(y.0, x.0, deg, kern, loo)
 
     obj <- function(h){
 
       h.1 <- abs(h[1]) # optim() might evaluate negative bandwidths
       h.0 <- abs(h[2])
       bias <- M * (bias_Lip(x.1, t, M, kern, h.1) + bias_Lip(x.0, t, M, kern, h.0))
-      sd <- sqrt(var_Lip(y.1, x.1, t, kern, h.1, deg, loo) + var_Lip(y.0, x.0, t, kern, h.0, deg, loo))
+      sd <- sqrt(var_Lip_resid(x.1, t, kern, h.1, resid.1) + var_Lip_resid(x.0, t, kern, h.0, resid.0))
       c <- stats::qnorm(1 - alpha) / 2
       return(bias + c * sd)
     }
@@ -142,10 +144,12 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
 
   }else{
 
+    resid <- eps_hat(y, x, deg, kern, loo)
+
     obj.1 <- function(h){
 
       bias <- M * bias_Lip(x, t, M, kern, h)
-      sd <- sqrt(var_Lip(y, x, t, kern, h, deg, loo))
+      sd <- sqrt(var_Lip_resid(x, t, kern, h, resid))
       c <- stats::qnorm(1 - alpha) / 2
       return(bias + c * sd)
     }
