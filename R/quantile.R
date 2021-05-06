@@ -130,6 +130,10 @@ stud_err <- function(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad){
 #' @inheritParams eps_hat
 #' @param z.1 a vector of simulated standard normal random variables of length \code{length(y.1) * M} for some \code{M}
 #' @param z.0 a vector of simulated standard normal random variables of length \code{length(y.0) * M} for some \code{M}
+#' @param resid.1 a matrix of residuals with the same dimension of \code{y.1} calculated beforehand;
+#' it can be left unspecified
+#' @param resid.0 a matrix of residuals with the same dimension of \code{y.0} calculated beforehand;
+#' it can be left unspecified
 #'
 #' @return a list of following components
 #' \describe{
@@ -149,7 +153,7 @@ stud_err <- function(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad){
 #' z.0 <- rnorm(500 * 500)
 #' stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, z.1, z.0)
 stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo,
-                         z.1, z.0){
+                         z.1, z.0, resid.1 = NULL, resid.0 = NULL){
 
   k <- length(T.grad)
   n.1 <- length(y.1) / k
@@ -164,21 +168,23 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo,
   T.grad.1.rep <- matrix(rep(matrix(rep(T.grad, each = n.1), ncol = k), M), n.1, k * M)
   T.grad.0.rep <- matrix(rep(matrix(rep(T.grad, each = n.0), ncol = k), M), n.0, k * M)
 
-  resid.1 <- matrix(0, nrow = n.1, ncol = k)
-  resid.0 <- matrix(0, nrow = n.0, ncol = k)
-  y.1 <- v_to_m(y.1)
-  y.0 <- v_to_m(y.0)
+  if(is.null(resid.1) | is.null(resid.0)){
 
-  for(j in 1:k){
+    resid.1 <- matrix(0, nrow = n.1, ncol = k)
+    resid.0 <- matrix(0, nrow = n.0, ncol = k)
+    y.1 <- v_to_m(y.1)
+    y.0 <- v_to_m(y.0)
 
-    resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern, loo)
+    for(j in 1:k){
 
-    if(n.0 == 1){
-      resid.0[, j] <- 0
-    }else{
-      resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, loo)
+      resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern, loo)
+
+      if(n.0 == 1){
+        resid.0[, j] <- 0
+      }else{
+        resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, loo)
+      }
     }
-
   }
 
   resid.1.rep <- matrix(rep(resid.1, M), n.1, k * M)
@@ -235,6 +241,24 @@ sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, leve
   n.1 <- length(y.1) / k
   n.0 <- length(y.0) / k
 
+  resid.1 <- matrix(0, nrow = n.1, ncol = k)
+  resid.0 <- matrix(0, nrow = n.0, ncol = k)
+
+  y.1 <- v_to_m(y.1)
+  y.0 <- v_to_m(y.0)
+
+  for(j in 1:k){
+
+    resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern, loo)
+
+    if(n.0 == 1){
+      resid.0[, j] <- 0
+    }else{
+      resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, loo)
+    }
+  }
+
+
   if(!is.null(seed)) set.seed(seed)
   z.1 <- stats::rnorm(length(y.1) * M)
   z.0 <- stats::rnorm(length(y.0) * M)
@@ -247,7 +271,8 @@ sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, leve
       T.grad <- T.grad.mat[t, ]
       w.1 <- w.1.arr[, , t]
       w.0 <- w.0.arr[, , t]
-      val.new <- abs(stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z.1, z.0)$err.sim)
+      val.new <- abs(stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo,
+                                  z.1, z.0, resid.1, resid.0)$err.sim)
       max.val <- pmax(max.val, val.new)
     }
   }

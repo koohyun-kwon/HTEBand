@@ -4,7 +4,22 @@
 \alias{stud_err_sim}
 \title{Simulation draws of studentized error}
 \usage{
-stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z.1, z.0)
+stud_err_sim(
+  y.1,
+  y.0,
+  x.1,
+  x.0,
+  w.1,
+  w.0,
+  T.grad,
+  deg,
+  kern,
+  loo,
+  z.1,
+  z.0,
+  resid.1 = NULL,
+  resid.0 = NULL
+)
 }
 \arguments{
 \item{y.1}{dependent variable for treated observation; possibly a matrix with \code{nrow} equals the sample size}
@@ -30,6 +45,12 @@ stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z.1, z.0)
 \item{z.1}{a vector of simulated standard normal random variables of length \code{length(y.1) * M} for some \code{M}}
 
 \item{z.0}{a vector of simulated standard normal random variables of length \code{length(y.0) * M} for some \code{M}}
+
+\item{resid.1}{a matrix of residuals with the same dimension of \code{y.1} calculated beforehand;
+it can be left unspecified}
+
+\item{resid.0}{a matrix of residuals with the same dimension of \code{y.0} calculated beforehand;
+it can be left unspecified}
 }
 \value{
 a list of following components
