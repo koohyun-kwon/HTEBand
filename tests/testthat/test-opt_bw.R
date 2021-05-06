@@ -14,7 +14,7 @@ test_that("positive variance", {
 
   # Additional test for difference between estimated sd and true sd
   # diff <- 0
-  # true.val <- var_Lip_true(x, 0, "triangle", 0.1, sd.true)
+  # true.val <- var_Lip_resid(x, 0, "triangle", 0.1, sd.true)
   # for(i in 1:100){
   #
   #   print(i)

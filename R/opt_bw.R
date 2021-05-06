@@ -49,23 +49,26 @@ var_Lip <- function(y, x, t, kern, h, deg, loo){
   return(res)
 }
 
-#' Lipschitz class true variance
+#' Lipschitz class variance using residuals
 #'
-#' Calculates the true variance for regression function value estimator under Lipschitz class
+#' Calculates the variance for regression function value estimator under Lipschitz class using residuals
+#'
+#' When \code{resid} corresponds to the true conditional standard deviations, this function calculates
+#' the true variance value.
 #'
 #' @inheritParams var_Lip
-#' @param sd.true a vector of true conditional standard deviation values
+#' @param resid a vector of true conditional standard deviation values
 #'
 #' @return a scalar variance value
 #' @export
-var_Lip_true <- function(x, t, kern, h, sd.true){
+var_Lip_resid <- function(x, t, kern, h, resid){
 
   if(h <= 0){
 
     res <- 0
   }else{
 
-    nmrt <- sum(K_fun(x, t, h, kern)^2 * sd.true^2)
+    nmrt <- sum(K_fun(x, t, h, kern)^2 * resid^2)
     dnmnt <- sum(K_fun(x, t, h, kern))^2
     res <- nmrt/ dnmnt
   }
