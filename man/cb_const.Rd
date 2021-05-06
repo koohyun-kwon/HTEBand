@@ -20,7 +20,8 @@ cb_const(
   seed = NULL,
   useloop = TRUE,
   root.robust = FALSE,
-  ng = 10
+  ng = 10,
+  n.out = length(eval)
 )
 }
 \arguments{
@@ -66,6 +67,8 @@ default is \code{root.robust = FALSE}.}
 
 \item{ng}{the number of grids of quantile values over which the diagnostic test would be peformed
 if \code{root.robust = TRUE}; default is \code{ng = 10}.}
+
+\item{n.out}{the number of points the confidence band is evaluated; see details.}
 }
 \value{
 a data frame containing index set and corresponding confidence band values,
@@ -75,4 +78,8 @@ or if \code{root.robust = TRUE}, a list containing the data frame as well as
 \description{
 Calculate confidence band by searching for the optimal coverage probability
 for individual confidence intervals.
+}
+\details{
+The confidence band is calculated over the points in \code{eval} and interpolated over
+\code{n.out} number of grid points over \code{eval} using linear approximation.
 }
