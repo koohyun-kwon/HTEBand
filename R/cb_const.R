@@ -23,6 +23,11 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     se.method <- "nn"
     J <- 3
     C <- C.vec[1]
+  }else if(method %in% c("reg.Lip", "TE.Lip", "TE.Lip.eqbw")){
+
+    kern.reg <- "triangle"
+    se.method <- "resid"
+    C <- C.vec[1]
   }
 
   opt.res <- opt_w(method, C.vec, y, x, d, eval, T.grad.mat, level,
@@ -42,12 +47,21 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     cb.data[t, 2:3] <-
       if(method == "reg.Hol"){
         ci_reg_Hol(y, x, eval[t], C, ci.level, kern.reg, se.initial, se.method, J)
+      }else if(method == "reg.Lip"){
+        ci_reg_Lip(y, x, eval[t], C, ci.level, kern = kern.reg,
+                   deg = deg, loo = loo, se.method = se.method)
+      }else if(method == "TE.Lip"){
+        ci_reg_Lip(y, x, eval[t], C, ci.level, TE = TRUE, d = d, kern = kern.reg,
+                   bw.eq = FALSE, deg = deg, loo = loo, se.method = se.method)
+      }else if(method == "TE.Lip.bweq"){
+        ci_reg_Lip(y, x, eval[t], C, ci.level, TE = TRUE, d = d, kern = kern.reg,
+                   bw.eq = TRUE, deg = deg, loo = loo, se.method = se.method)
       }
   }
 
   res <-
     if(root.robust){
-      list(cb.data = cb.data, increasing = increasing, opt.grid)
+      list(cb.data = cb.data, increasing = increasing, opt.grid = opt.grid)
     }else{
       cb.data
     }
