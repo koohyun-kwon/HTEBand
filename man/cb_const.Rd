@@ -52,7 +52,7 @@ Currently, only \code{"reg.Hol"} is supported.}
 \item{seed}{seed for the random number generation; default is \code{seed = NULL}.}
 
 \item{useloop}{If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T};
-cureently only \code{useloop = TRUE} is implemented.}
+currently only \code{useloop = TRUE} is implemented.}
 
 \item{root.robust}{if \code{TRUE}, the fuction conducts diagnostic test whether optimizaiton worked well;
 default is \code{root.robust = FALSE}.}
