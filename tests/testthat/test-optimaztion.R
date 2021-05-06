@@ -81,3 +81,38 @@ test_that("valid optimal quantile value (Lipschitz)", {
   expect_equal(res.inc, TRUE)
 })
 
+
+test_that("valid optimal quantile value (Lipschitz-TE)", {
+
+  n <- 250
+  x.1 <- x.0 <- seq(-1, 1, length.out = n)
+  sd.true <- 1/2 + x.1^2
+  eps <- stats::rnorm(n, 0, sd.true)
+  y.1 <- x.1 + eps
+  y.0 <- x.1^2 + eps/2
+
+  y <- c(y.1, y.0)
+  x <- c(x.1, x.0)
+  d <- rep(c(1, 0), each = n)
+
+  M <- 500
+  n.T <- 10
+  eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
+
+  T.grad.mat <- rep(1, n.T)
+  level <- 0.95
+
+  res <- NA
+
+  system.time({
+    opt.res <- opt_w("TE.Lip", 1, y, x, d, eval, T.grad.mat, level,
+                     1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+                     root.robust = TRUE)
+    res <- opt.res$c.root
+    res.inc <- opt.res$increasing
+  })
+
+  expect_equal(!is.na(res), TRUE)
+  expect_equal(res.inc, TRUE)
+})
+

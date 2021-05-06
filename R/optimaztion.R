@@ -46,7 +46,7 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     se.method <- "nn"
     J <- 3
     C <- C.vec[1]
-  }else if(method == "reg.Lip" | method == "TE.Lip" | method == "TE.Lip.eqbw"){
+  }else if(method %in% c("reg.Lip", "TE.Lip", "TE.Lip.eqbw")){
 
     kern.reg <- "triangle"
     se.method <- "resid"
@@ -55,43 +55,85 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
 
   # Part 2: Calculating residuals
 
-  if(method == "reg.Hol" | method == "reg.Lip"){
+  if(method %in% c("reg.Hol", "reg.Lip")) d <- rep(1, length(y))
 
-    y.1 <- v_to_m(y)
-    y.0 <- v_to_m(0)
-    n.1 <- length(y.1) / k
-    n.0 <- length(y.0) / k
-
-    resid.1 <- matrix(0, nrow = n.1, ncol = k)
-    resid.0 <- matrix(0, nrow = n.0, ncol = k)
-
-    for(j in 1:k){
-
-      resid.1[, j] <- eps_hat(y.1[, j], x, deg, kern, loo)
-      resid.0[, j] <- 0
+  y.1 <- v_to_m(y[d == 1])
+  y.0 <-
+    if(sum(d == 0) > 0){
+      v_to_m(y[d == 0])
+    }else{
+      v_to_m(0)
     }
+
+  x.1 <- x[d == 1]
+  x.0 <-
+    if(sum(d == 0) > 0){
+      x[d == 0]
+    }else{
+      0
+    }
+
+  n.1 <- length(x.1)
+  n.0 <- length(x.0)
+
+  resid.1 <- matrix(0, nrow = n.1, ncol = k)
+  resid.0 <- matrix(0, nrow = n.0, ncol = k)
+
+  for(j in 1:k){
+
+    resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern, loo)
+    if(sum(d == 0) > 0) resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, loo)
   }
 
   # Part 3: Defining objective function
+
+  if(method %in% c("TE.Lip", "TE.Lip.eqbw")){
+
+    # match orders of (y, x, d) and residuals
+    y <- rbind(y.1, y.0)
+    x <- c(x.1, x.0)
+    d <- c(rep(1, n.1), rep(0, n.0))
+    resid <- rbind(resid.1, resid.0)
+  }
 
   eq <- function(c){
 
     level.int <- stats::pnorm(2 * c)
 
-    if(method == "reg.Hol" | method == "reg.Lip"){
+    if(method %in% c("reg.Hol", "reg.Lip", "TE.Lip", "TE.Lip.eqbw")){
 
-      w.1 <-
+      w.res <-
         if(method == "reg.Hol"){
           w_get_Hol(y, x, eval, C, level.int, kern.reg, se.initial, se.method, J)$w.mat
         }else if(method == "reg.Lip"){
           w_get_Lip(y, x, eval, C, level.int, kern = kern.reg, deg = deg, loo = loo,
                     se.method = se.method, resid = resid.1)
+        }else if(method == "TE.Lip"){
+          w_get_Lip(y, x, eval, C, level.int, TE = TRUE, d = d, kern = kern.reg,
+                    bw.eq = FALSE, deg = deg, loo = loo, se.method = se.method, resid = resid)
+        }else if(method == "TE.Lip.bweq"){
+          w_get_Lip(y, x, eval, C, level.int, TE = TRUE, d = d, kern = kern.reg,
+                    bw.eq = TRUE, deg = deg, loo = loo, se.method = se.method, resid = resid)
         }
 
-      w.1 <- array(w.1, dim = c(length(y), 1, n.T))
-      w.0 <- array(0, dim = c(1, 1, n.T))
+      w.1 <-
+        if(sum(d == 0) > 0){
+          w.res$w.mat.1
+        }else{
+          w.res
+        }
 
-      q.sim <- sup_quant_sim(y, 0, x, 0, w.1, w.0, rep(1, n.T),
+      w.0 <-
+        if(sum(d == 0) > 0){
+          w.res$w.mat.0
+        }else{
+          0
+        }
+
+      w.1 <- array(w.1, dim = c(nrow(y.1), k, n.T))
+      w.0 <- array(w.0, dim = c(nrow(y.0), k, n.T))
+
+      q.sim <- sup_quant_sim(y.1, y.0, x.1, x.0, w.1, w.0, rep(1, n.T),
                              level, deg, kern, loo, M, seed, useloop, resid.1, resid.0)
     }
 
@@ -117,7 +159,7 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
 
   # Part 5: Optional step of robustness check for the optimization result
 
-  if(root.robust){
+  if(root.robust == TRUE){
 
     c.grid <- seq(from = c.min, to = c.max, length.out = ng)
     obj.val <- numeric(ng)
