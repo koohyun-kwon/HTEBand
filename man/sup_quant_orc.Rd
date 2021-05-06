@@ -39,7 +39,7 @@ corresponding to the treated observations}
 \item{M}{number of bootstrap simulations}
 
 \item{useloop}{If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T};
-cureently only \code{useloop = TRUE} is implemented.}
+currently only \code{useloop = TRUE} is implemented.}
 }
 \value{
 a scalar quantile value

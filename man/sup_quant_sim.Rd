@@ -49,7 +49,7 @@ sup_quant_sim(
 \item{seed}{seed for the random number generation; default is \code{seed = NULL}.}
 
 \item{useloop}{If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T};
-cureently only \code{useloop = TRUE} is implemented.}
+currently only \code{useloop = TRUE} is implemented.}
 }
 \value{
 a scalar quantile value
