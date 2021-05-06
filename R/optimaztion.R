@@ -85,7 +85,7 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
           w_get_Hol(y, x, eval, C, level.int, kern.reg, se.initial, se.method, J)$w.mat
         }else if(method == "reg.Lip"){
           w_get_Lip(y, x, eval, C, level.int, kern = kern.reg, deg = deg, loo = loo,
-                    se.method = se.method)
+                    se.method = se.method, resid = resid.1)
         }
 
       w.1 <- array(w.1, dim = c(length(y), 1, n.T))

@@ -30,7 +30,7 @@ ci_reg_Lip(
 
 \item{level}{confidence level of each one-sided confidence intervals}
 
-\item{TE}{logical specifying whether there are treatment and control groups}
+\item{TE}{logical specifying whether there are treatment and control groups.}
 
 \item{d}{a vector of indicator variables specifying treatment and control group status;
 relevant only when \code{TE = TRUE}.}

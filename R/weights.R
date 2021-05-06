@@ -62,6 +62,7 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
 #'
 #' @inheritParams ci_reg_Lip
 #' @param eval evaluation points
+#' @param resid pre-calculated residuals with the same length as \code{y}; it can be left unspecified.
 #'
 #' @return a matrix of weights with each column corresponding to weights for each evaluation points,
 #' or if \code{TE = TRUE}, a list of two such matrices, with \code{w.mat.1} corresponding to that of the
@@ -74,7 +75,7 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
 #' eval <- seq(from = -0.9, to = 0.9, length.out = 5)
 #' w_get_Lip(y, x, eval, 1, 0.95)
 w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "triangle", bw.eq = TRUE,
-                      deg = 0, loo = FALSE, se.method = "resid"){
+                      deg = 0, loo = FALSE, se.method = "resid", resid = NULL){
 
   m <- length(eval)
 
@@ -93,7 +94,7 @@ w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "triang
 
     for(i in 1:m){
 
-      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg, loo)$h.opt
+      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg, loo, resid)$h.opt
       w.mat.1[, i] <- K_fun(x.1, eval[i], h.opt[1], kern) / sum(K_fun(x.1, eval[i], h.opt[1], kern))
       w.mat.0[, i] <- K_fun(x.0, eval[i], h.opt[2], kern) / sum(K_fun(x.0, eval[i], h.opt[2], kern))
     }
@@ -107,7 +108,7 @@ w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "triang
 
     for(i in 1:m){
 
-      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg, loo)$h.opt
+      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg, loo, resid)$h.opt
       w.mat[, i] <- K_fun(x, eval[i], h.opt, kern) / sum(K_fun(x, eval[i], h.opt, kern))
     }
 

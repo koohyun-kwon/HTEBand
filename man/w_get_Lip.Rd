@@ -16,7 +16,8 @@ w_get_Lip(
   bw.eq = TRUE,
   deg = 0,
   loo = FALSE,
-  se.method = "resid"
+  se.method = "resid",
+  resid = NULL
 )
 }
 \arguments{
@@ -30,7 +31,7 @@ w_get_Lip(
 
 \item{level}{confidence level of each one-sided confidence intervals}
 
-\item{TE}{logical specifying whether there are treatment and control groups}
+\item{TE}{logical specifying whether there are treatment and control groups.}
 
 \item{d}{a vector of indicator variables specifying treatment and control group status;
 relevant only when \code{TE = TRUE}.}
@@ -46,6 +47,8 @@ relevant only when \code{TE = TRUE}.}
 
 \item{se.method}{methods for estimating standard error of estimate; currently,
 only "resid" is supported.}
+
+\item{resid}{pre-calculated residuals with the same length as \code{y}; it can be left unspecified.}
 }
 \value{
 a matrix of weights with each column corresponding to weights for each evaluation points,

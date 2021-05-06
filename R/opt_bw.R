@@ -82,12 +82,13 @@ var_Lip_resid <- function(x, t, kern, h, resid){
 #'
 #' @inheritParams bias_Lip
 #' @inheritParams var_Lip
-#' @param TE logical specifying whether there are treatment and control groups
+#' @param TE logical specifying whether there are treatment and control groups.
 #' @param d a vector of indicator variables specifying treatment and control group status;
 #' relevant only when \code{TE = TRUE}.
-#' @param alpha determines confidence level \code{1 - alpha}
+#' @param alpha determines confidence level \code{1 - alpha}.
 #' @param bw.eq if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
 #' relevant only when \code{TE = TRUE}.
+#' @param resid pre-calculated residuals with the same length as \code{y}; it can be left unspecified.
 #'
 #' @return a list with the following components
 #' \describe{
@@ -99,7 +100,7 @@ var_Lip_resid <- function(x, t, kern, h, resid){
 #' }
 #' @export
 bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
-                   deg, loo){
+                   deg, loo, resid = NULL){
 
   if(TE == TRUE){
 
@@ -107,8 +108,17 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
     y.0 <- y[d == 0]
     x.1 <- x[d == 1]
     x.0 <- x[d == 0]
-    resid.1 <- eps_hat(y.1, x.1, deg, kern, loo)
-    resid.0 <- eps_hat(y.0, x.0, deg, kern, loo)
+
+    if(is.null(resid)){
+
+      resid.1 <- eps_hat(y.1, x.1, deg, kern, loo)
+      resid.0 <- eps_hat(y.0, x.0, deg, kern, loo)
+    }else{
+
+      resid.1 <- resid[d == 1]
+      resid.0 <- resid[d == 0]
+    }
+
 
     obj <- function(h){
 
@@ -144,7 +154,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
 
   }else{
 
-    resid <- eps_hat(y, x, deg, kern, loo)
+    if(is.null(resid)) resid <- eps_hat(y, x, deg, kern, loo)
 
     obj.1 <- function(h){
 

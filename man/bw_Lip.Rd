@@ -4,7 +4,20 @@
 \alias{bw_Lip}
 \title{Optimal bandwidths under Lipschitz class}
 \usage{
-bw_Lip(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE, deg, loo)
+bw_Lip(
+  y,
+  x,
+  t,
+  TE = FALSE,
+  d = NULL,
+  M,
+  kern,
+  alpha,
+  bw.eq = TRUE,
+  deg,
+  loo,
+  resid = NULL
+)
 }
 \arguments{
 \item{y}{vector of dependent variables}
@@ -13,7 +26,7 @@ bw_Lip(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE, deg, loo)
 
 \item{t}{a scalar evaluation point.}
 
-\item{TE}{logical specifying whether there are treatment and control groups}
+\item{TE}{logical specifying whether there are treatment and control groups.}
 
 \item{d}{a vector of indicator variables specifying treatment and control group status;
 relevant only when \code{TE = TRUE}.}
@@ -22,7 +35,7 @@ relevant only when \code{TE = TRUE}.}
 
 \item{kern}{a string for kernel name; currently \code{"triangle"} is supported.}
 
-\item{alpha}{determines confidence level \code{1 - alpha}}
+\item{alpha}{determines confidence level \code{1 - alpha}.}
 
 \item{bw.eq}{if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
 relevant only when \code{TE = TRUE}.}
@@ -30,6 +43,8 @@ relevant only when \code{TE = TRUE}.}
 \item{deg}{degree of local polynomial regression to be used}
 
 \item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
+
+\item{resid}{pre-calculated residuals with the same length as \code{y}; it can be left unspecified.}
 }
 \value{
 a list with the following components
