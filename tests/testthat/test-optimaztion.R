@@ -1,4 +1,4 @@
-test_that("valid optimal quantile value", {
+test_that("valid optimal quantile value (Holder)", {
 
   n <- 500
   M <- 500
@@ -54,3 +54,30 @@ test_that("valid optimal quantile value", {
   #
   # plot(grid, res, type = "l")
 })
+
+
+test_that("valid optimal quantile value (Lipschitz)", {
+
+  n <- 500
+  M <- 500
+  x <- stats::runif(n, min = -1, max = 1)
+  n.T <- 10
+  eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
+  T.grad.mat <- rep(1, n.T)
+  level <- 0.95
+  y <- x + rnorm(n, 0, 1/4)
+
+  res <- NA
+
+  system.time({
+    opt.res <- opt_w("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
+                     1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+                     root.robust = TRUE)
+    res <- opt.res$c.root
+    res.inc <- opt.res$increasing
+  })
+
+  expect_equal(!is.na(res), TRUE)
+  expect_equal(res.inc, TRUE)
+})
+

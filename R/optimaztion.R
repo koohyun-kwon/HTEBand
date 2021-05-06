@@ -89,29 +89,30 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                              level, deg, kern, loo, M, seed, useloop, resid.1, resid.0)
     }
 
-    return(c - q.sim)
+    eq.res <- list(val = c - q.sim, w.1 = w.1, w.0 = w.0)
+
+    return(eq.res)
+  }
+
+  eq.val <- function(c){
+    eq(c)$val
   }
 
   c.min <- stats::qnorm(level)
-  c.max <- stats::qnorm(1 - (1 - level)/(2 * n.T)) + 1  # Takes into account some numerical errors
+  c.max <- stats::qnorm(1 - (1 - level)/(2 * n.T)) + 1  # Add 1 to take into account some numerical errors
 
-  root.res <- stats::uniroot(eq, interval = c(c.min, c.max))
+  root.res <- stats::uniroot(eq.val, interval = c(c.min, c.max))
   c.root <- root.res$root
 
-  if(method == "reg.Hol"){
-
-    w.1 <- w_get_Hol(y, x, eval, C, stats::pnorm(2 * c.root),
-                     kern.reg, se.initial, se.method, J)$w.mat
-    w.1 <- array(w.1, dim = c(length(y), 1, n.T))
-    w.0 <- array(0, dim = c(1, 1, n.T))
-  }
+  w.1 <- eq(c.root)$w.1
+  w.0 <- eq(c.root)$w.0
 
   if(root.robust){
 
     c.grid <- seq(from = c.min, to = c.max, length.out = ng)
     obj.val <- numeric(ng)
 
-    for(i in 1:ng) obj.val[i] = eq(c.grid[i])
+    for(i in 1:ng) obj.val[i] = eq.val(c.grid[i])
 
     is.inc <- !is.unsorted(obj.val)
     opt.grid <- data.frame(c.grid = c.grid, obj.val = obj.val)
