@@ -148,7 +148,8 @@ stud_err <- function(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad){
 #' z.1 <- rnorm(500 * 500)
 #' z.0 <- rnorm(500 * 500)
 #' stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, z.1, z.0)
-stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo, z.1, z.0){
+stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo,
+                         z.1, z.0){
 
   k <- length(T.grad)
   n.1 <- length(y.1) / k
