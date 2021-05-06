@@ -37,6 +37,8 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
   T.grad.mat <- v_to_m(T.grad.mat)
   k <- ncol(T.grad.mat)
 
+  # Part 1: Setting initial variables
+
   if(method == "reg.Hol"){
 
     kern.reg <- "triangular"
@@ -50,6 +52,8 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     se.method <- "resid"
     C <- C.vec[1]
   }
+
+  # Part 2: Calculating residuals
 
   if(method == "reg.Hol" | method == "reg.Lip"){
 
@@ -67,6 +71,8 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
       resid.0[, j] <- 0
     }
   }
+
+  # Part 3: Defining objective function
 
   eq <- function(c){
 
@@ -98,6 +104,8 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     eq(c)$val
   }
 
+  # Part 4: Optimization
+
   c.min <- stats::qnorm(level)
   c.max <- stats::qnorm(1 - (1 - level)/(2 * n.T)) + 1  # Add 1 to take into account some numerical errors
 
@@ -106,6 +114,8 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
 
   w.1 <- eq(c.root)$w.1
   w.0 <- eq(c.root)$w.0
+
+  # Part 5: Optional step of robustness check for the optimization result
 
   if(root.robust){
 
