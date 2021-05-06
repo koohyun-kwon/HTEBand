@@ -18,7 +18,9 @@ sup_quant_sim(
   loo,
   M,
   seed = NULL,
-  useloop = TRUE
+  useloop = TRUE,
+  resid.1 = NULL,
+  resid.0 = NULL
 )
 }
 \arguments{
@@ -50,6 +52,12 @@ sup_quant_sim(
 
 \item{useloop}{If \code{TRUE}, the function is implemented by \code{for} loop over \code{t} = 1,..., \code{n.T};
 currently only \code{useloop = TRUE} is implemented.}
+
+\item{resid.1}{a matrix of residuals with the same dimension of \code{y.1} calculated beforehand;
+it can be left unspecified}
+
+\item{resid.0}{a matrix of residuals with the same dimension of \code{y.0} calculated beforehand;
+it can be left unspecified}
 }
 \value{
 a scalar quantile value

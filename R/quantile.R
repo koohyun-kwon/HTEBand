@@ -233,7 +233,7 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo,
 #' sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
 #' rep(1, n.T), 0.95, 1, "triangle", FALSE, 100)
 sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, level,
-                        deg, kern, loo, M, seed = NULL, useloop = TRUE){
+                        deg, kern, loo, M, seed = NULL, useloop = TRUE, resid.1 = NULL, resid.0 = NULL){
 
   T.grad.mat <- v_to_m(T.grad.mat)
   n.T <- nrow(T.grad.mat)
@@ -241,23 +241,25 @@ sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, leve
   n.1 <- length(y.1) / k
   n.0 <- length(y.0) / k
 
-  resid.1 <- matrix(0, nrow = n.1, ncol = k)
-  resid.0 <- matrix(0, nrow = n.0, ncol = k)
+  if(is.null(resid.1) | is.null(resid.0)){
 
-  y.1 <- v_to_m(y.1)
-  y.0 <- v_to_m(y.0)
+    resid.1 <- matrix(0, nrow = n.1, ncol = k)
+    resid.0 <- matrix(0, nrow = n.0, ncol = k)
 
-  for(j in 1:k){
+    y.1 <- v_to_m(y.1)
+    y.0 <- v_to_m(y.0)
 
-    resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern, loo)
+    for(j in 1:k){
 
-    if(n.0 == 1){
-      resid.0[, j] <- 0
-    }else{
-      resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, loo)
+      resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern, loo)
+
+      if(n.0 == 1){
+        resid.0[, j] <- 0
+      }else{
+        resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, loo)
+      }
     }
   }
-
 
   if(!is.null(seed)) set.seed(seed)
   z.1 <- stats::rnorm(length(y.1) * M)
