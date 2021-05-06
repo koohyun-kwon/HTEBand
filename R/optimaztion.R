@@ -34,6 +34,8 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                   root.robust = FALSE, ng = 10){
 
   n.T <- length(eval)
+  T.grad.mat <- v_to_m(T.grad.mat)
+  k <- ncol(T.grad.mat)
 
   if(method == "reg.Hol"){
 
@@ -42,19 +44,49 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     se.method <- "nn"
     J <- 3
     C <- C.vec[1]
+  }else if(method == "reg.Lip" | method == "TE.Lip" | method == "TE.Lip.eqbw"){
+
+    kern.reg <- "triangle"
+    se.method <- "resid"
+    C <- C.vec[1]
+  }
+
+  if(method == "reg.Hol" | method == "reg.Lip"){
+
+    y.1 <- v_to_m(y)
+    y.0 <- v_to_m(0)
+    n.1 <- length(y.1) / k
+    n.0 <- length(y.0) / k
+
+    resid.1 <- matrix(0, nrow = n.1, ncol = k)
+    resid.0 <- matrix(0, nrow = n.0, ncol = k)
+
+    for(j in 1:k){
+
+      resid.1[, j] <- eps_hat(y.1[, j], x, deg, kern, loo)
+      resid.0[, j] <- 0
+    }
   }
 
   eq <- function(c){
 
     level.int <- stats::pnorm(2 * c)
-    if(method == "reg.Hol"){
 
-      w.1 <- w_get_Hol(y, x, eval, C, level.int, kern.reg, se.initial, se.method, J)$w.mat
+    if(method == "reg.Hol" | method == "reg.Lip"){
+
+      w.1 <-
+        if(method == "reg.Hol"){
+          w_get_Hol(y, x, eval, C, level.int, kern.reg, se.initial, se.method, J)$w.mat
+        }else if(method == "reg.Lip"){
+          w_get_Lip(y, x, eval, C, level.int, kern = kern.reg, deg = deg, loo = loo,
+                    se.method = se.method)
+        }
+
       w.1 <- array(w.1, dim = c(length(y), 1, n.T))
       w.0 <- array(0, dim = c(1, 1, n.T))
 
       q.sim <- sup_quant_sim(y, 0, x, 0, w.1, w.0, rep(1, n.T),
-                             level, deg, kern, loo, M, seed, useloop)
+                             level, deg, kern, loo, M, seed, useloop, resid.1, resid.0)
     }
 
     return(c - q.sim)
