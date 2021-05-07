@@ -100,7 +100,9 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     y <- rbind(y.1, y.0)
     x <- c(x.1, x.0)
     d <- c(rep(1, n.1), rep(0, n.0))
-    resid <- rbind(resid.1, resid.0)
+    resid.1 <- as.vector(resid.1)
+    resid.0 <- as.vector(resid.0)
+    resid <- c(resid.1, resid.0)
   }
 
   eq <- function(c){
