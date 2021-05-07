@@ -118,7 +118,7 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
         }else if(method == "TE.Lip"){
           w_get_Lip(y, x, eval, C, level.int, TE = TRUE, d = d, kern = kern.reg,
                     bw.eq = FALSE, deg = deg, loo = loo, se.method = se.method, resid = resid)
-        }else if(method == "TE.Lip.bweq"){
+        }else if(method == "TE.Lip.eqbw"){
           w_get_Lip(y, x, eval, C, level.int, TE = TRUE, d = d, kern = kern.reg,
                     bw.eq = TRUE, deg = deg, loo = loo, se.method = se.method, resid = resid)
         }
