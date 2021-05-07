@@ -157,10 +157,10 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
 
   # Part 4: Optimization
 
-  c.min <- stats::qnorm(level)
-  c.max <- stats::qnorm(1 - (1 - level)/(2 * n.T)) + 1  # Add 1 to take into account some numerical errors
+  c.min <- stats::qnorm(level - 0.01)
+  c.max <- stats::qnorm(1 - 0.1^3)
 
-  root.res <- stats::uniroot(eq.val, interval = c(c.min, c.max))
+  root.res <- stats::uniroot(eq.val, interval = c(c.min, c.max), extendInt = "upX")
   c.root <- root.res$root
 
   w.1 <- eq(c.root)$w.1
