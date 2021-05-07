@@ -4,10 +4,10 @@
 #' for individual confidence intervals.
 #'
 #' The confidence band is calculated over the points in \code{eval} and interpolated over
-#' \code{n.out} number of grid points over \code{eval} using linear approximation.
+#' \code{x.out} using linear approximation.
 #'
 #' @inheritParams opt_w
-#' @param n.out the number of points the confidence band is evaluated; see details.
+#' @param x.out the grid of points the confidence band is evaluated; see details.
 #'
 #' @return a data frame containing index set and corresponding confidence band values,
 #' or if \code{root.robust = TRUE}, a list containing the data frame as well as
@@ -15,11 +15,10 @@
 #' @export
 cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                      deg, kern, loo, M, seed = NULL, useloop = TRUE,
-                     root.robust = FALSE, ng = 10, n.out = length(eval)){
+                     root.robust = FALSE, ng = 10, x.out = NULL){
 
   n.T <- length(eval)
   cb.grid <- matrix(0, nrow = n.T, ncol = 2)
-  cb.data <- data.frame(eval = eval, cb.lower = numeric(n.T), cb.upper = numeric(n.T))
 
   if(method == "reg.Hol"){
 
@@ -64,10 +63,13 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
       }
   }
 
-  xout <- seq(from = min(eval), to = max(eval), length.out = n.out)
-  cb.l <- stats::approx(eval, cb.grid[, 1])$y
-  cb.u <- stats::approx(eval, cb.grid[, 2])$y
-  cb.data <- data.frame(xout = xout, cb.lower = cb.l, cb.upper = cb.u)
+  if(is.null(x.out)){
+    cb.data <- data.frame(eval = eval, cb.lower = cb.grid[, 1], cb.upper = cb.grid[, 2])
+  }else{
+    cb.l <- stats::approx(eval, cb.grid[, 1], x.out)$y
+    cb.u <- stats::approx(eval, cb.grid[, 2], x.out)$y
+    cb.data <- data.frame(x.out = x.out, cb.lower = cb.l, cb.upper = cb.u)
+  }
 
   res <-
     if(root.robust){
