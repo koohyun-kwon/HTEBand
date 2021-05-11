@@ -48,7 +48,8 @@ relevant only when \code{TE = TRUE}.}
 only "resid" is supported.}
 }
 \value{
-a vector of lower and upper ends of confidence interval
+a vector of lower and upper ends of confidence interval, and a pair of bandwidths used for
+the treatment and control groups; if \code{TE = FALSE}, those two bandwidths have the same value.
 }
 \description{
 Constructs a confidence interval for regression function value for Lipschitz space;

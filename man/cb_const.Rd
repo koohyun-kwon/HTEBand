@@ -71,9 +71,11 @@ if \code{root.robust = TRUE}; default is \code{ng = 10}.}
 \item{x.out}{the grid of points the confidence band is evaluated; see details.}
 }
 \value{
-a data frame containing index set and corresponding confidence band values,
-or if \code{root.robust = TRUE}, a list containing the data frame as well as
-\code{increasing} and \code{opt.grid}; see \code{\link{opt_w}}.
+a data frame containing index set, corresponding confidence band values, and
+bandwidths used for the treatment and the control groups (for models without treatment and control groups,
+the same value of bandwidths will be returned). If \code{root.robust = TRUE},
+the function returns a list containing the data frame without bandwidths data
+ as well as \code{increasing} and \code{opt.grid}; see \code{\link{opt_w}}.
 }
 \description{
 Calculate confidence band by searching for the optimal coverage probability

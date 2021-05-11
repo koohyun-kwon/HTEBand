@@ -10,7 +10,8 @@
 #' @param level confidence level of each one-sided confidence intervals
 #' @inheritParams w_get_Hol
 #'
-#' @return a vector of lower and upper ends of the confidence interval
+#' @return a vector of lower and upper ends of the confidence interval  and a pair of bandwidths used for
+#' the treatment and control groups.
 #' @export
 #' @references Armstrong, Timothy B., and Michal Kolesár. 2020.
 #' "Simple and Honest Confidence Intervals in Nonparametric Regression." Quantitative Economics 11 (1): 1–39.
@@ -27,7 +28,7 @@ ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = 
                                     alpha = 1 - level, beta = 0.5, se.method = se.method, J = J,
                                     se.initial = se.initial)
 
-  return(c(ci.res$lower, ci.res$upper))
+  return(c(ci.res$lower, ci.res$upper, ci.res$hp, ci.res$hm))
 }
 
 #' Confidence interval for regression function value for Lipschitz space
@@ -41,7 +42,8 @@ ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = 
 #' @param se.method methods for estimating standard error of estimate; currently,
 #' only "resid" is supported.
 #'
-#' @return a vector of lower and upper ends of confidence interval
+#' @return a vector of lower and upper ends of confidence interval, and a pair of bandwidths used for
+#' the treatment and control groups; if \code{TE = FALSE}, those two bandwidths have the same value.
 #' @export
 #'
 #' @examples
@@ -67,6 +69,7 @@ ci_reg_Lip <- function(y, x, point, C, level, TE = FALSE, d = NULL, kern = "tria
   }else{
 
     est <- sum(K_fun(x, point, h.opt, kern) * y) / sum(K_fun(x, point, h.opt, kern))
+    h.opt <- rep(h.opt, 2)  # To make the returned value consistent
   }
 
   if(se.method == "resid"){
@@ -75,5 +78,5 @@ ci_reg_Lip <- function(y, x, point, C, level, TE = FALSE, d = NULL, kern = "tria
     ci.upper <- est + opt.res$hl.opt
   }
 
-  return(c(ci.lower, ci.upper))
+  return(c(ci.lower, ci.upper, h.opt))
 }

@@ -39,7 +39,8 @@ See \code{\link[RDHonest]{NPRreg.fit}} in \code{RDHonest} package for a list of 
 \item{J}{number of nearest neighbors, if "nn" is specified in se.method.}
 }
 \value{
-a vector of lower and upper ends of the confidence interval
+a vector of lower and upper ends of the confidence interval  and a pair of bandwidths used for
+the treatment and control groups.
 }
 \description{
 Constructs a confidence interval for regression function value for Hölder space based on

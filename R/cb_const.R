@@ -9,16 +9,18 @@
 #' @inheritParams opt_w
 #' @param x.out the grid of points the confidence band is evaluated; see details.
 #'
-#' @return a data frame containing index set and corresponding confidence band values,
-#' or if \code{root.robust = TRUE}, a list containing the data frame as well as
-#' \code{increasing} and \code{opt.grid}; see \code{\link{opt_w}}.
+#' @return a data frame containing index set, corresponding confidence band values, and
+#' bandwidths used for the treatment and the control groups (for models without treatment and control groups,
+#' the same value of bandwidths will be returned). If \code{root.robust = TRUE},
+#' the function returns a list containing the data frame without bandwidths data
+#'  as well as \code{increasing} and \code{opt.grid}; see \code{\link{opt_w}}.
 #' @export
 cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                      deg, kern, loo, M, seed = NULL, useloop = TRUE,
                      root.robust = FALSE, ng = 10, x.out = NULL){
 
   n.T <- length(eval)
-  cb.grid <- matrix(0, nrow = n.T, ncol = 2)
+  cb.grid <- matrix(NA, nrow = n.T, ncol = 4)
 
   if(method == "reg.Hol"){
 
@@ -64,7 +66,8 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
   }
 
   if(is.null(x.out)){
-    cb.data <- data.frame(eval = eval, cb.lower = cb.grid[, 1], cb.upper = cb.grid[, 2])
+    cb.data <- data.frame(eval = eval, cb.lower = cb.grid[, 1], cb.upper = cb.grid[, 2],
+                          h.t = cb.grid[, 3], h.c = cb.grid[, 4])
   }else{
     cb.l <- stats::approx(eval, cb.grid[, 1], x.out)$y
     cb.u <- stats::approx(eval, cb.grid[, 2], x.out)$y
