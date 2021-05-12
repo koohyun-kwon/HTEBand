@@ -4,7 +4,7 @@
 \alias{var_Lip}
 \title{Lipschitz class variance}
 \usage{
-var_Lip(y, x, t, kern, h, deg, loo)
+var_Lip(y, x, t, kern, h, deg, loo, sd.homo = TRUE)
 }
 \arguments{
 \item{y}{vector of dependent variables}
@@ -20,6 +20,9 @@ var_Lip(y, x, t, kern, h, deg, loo)
 \item{deg}{degree of local polynomial regression to be used}
 
 \item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
+
+\item{sd.homo}{logical indicating whether the variance would be estimated under locally homoskedastic variance
+assumption; the default is \code{sd.homo = TRUE}.}
 }
 \value{
 a scalar variance value
