@@ -13,20 +13,20 @@
 #
 # })
 #
-#
+
 # test_that("wiggly band? + running time", {
 #
 #   x <- seq(-1, 1, length.out = 500)
 #   true.fun <- function(x) x^2
-#   y <- true.fun(x) + rnorm(500, 0, 1/4)
+#   y <- true.fun(x) + rnorm(500, 0, abs(x)/4 + 1/16)
 #
 #   system.time({
-#     res <- NpregBand(y, x, 2, 0.95, "L")
+#     res <- NpregBand(y, x, 2, 0.95, "L", n.eval = 50)
 #   })
 #
 #
 #   system.time({
-#     res.H <- NpregBand(y, x, 80, 0.95, "H")
+#     res.H <- NpregBand(y, x, 2, 0.95, "H", n.eval = 50)
 #   })
 #
 #   res.all <- cbind(rbind(res, res.H), fspace = rep(c("L", "H"), each = nrow(res)),
