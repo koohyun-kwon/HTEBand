@@ -49,6 +49,64 @@ var_Lip <- function(y, x, t, kern, h, deg, loo){
   return(res)
 }
 
+#' Lipschitz class variance (stable version)
+#'
+#' Calculates the variance for regression function value estimator under Lipschitz class
+#'
+#' @inheritParams K_fun
+#' @inheritParams eps_hat
+#'
+#' @return a scalar variance value
+#' @export
+var_Lip_2 <- function(y, x, t, kern, h, deg, loo){
+
+  if(h <= 0){
+
+    res <- 0
+  }else{
+
+    d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = t)
+    d <- RDHonest::NPRPrelimVar.fit(d, se.initial = "EHW")
+    sd.hat <- sqrt(d$sigma2)
+
+    nmrt <- sum(K_fun(x, t, h, kern)^2 * sd.hat^2)
+    dnmnt <- sum(K_fun(x, t, h, kern))^2
+
+    res <- nmrt / dnmnt
+  }
+
+  return(res)
+}
+
+
+#' Lipschitz class variance (Holder hybrid version)
+#'
+#' Calculates the variance for regression function value estimator under Lipschitz class
+#'
+#' @inheritParams K_fun
+#' @inheritParams eps_hat
+#'
+#' @return a scalar variance value
+#' @export
+var_Lip_Hol <- function(y, x, t, kern, h, deg, loo){
+
+  if(h <= 0){
+
+    res <- 0
+  }else{
+
+    sd.hat <- eps_hat(y, x, deg, kern, loo)
+
+
+    d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = t)
+    w <- RDHonest::NPRreg.fit(d, h, kern = "triangular", se.method = "EHW", J = 3)$w
+
+    res <- sum(w^2 * sd.hat^2)
+  }
+
+  return(res)
+}
+
 #' Lipschitz class variance using residuals
 #'
 #' Calculates the variance for regression function value estimator under Lipschitz class using residuals
@@ -125,7 +183,8 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
       h.1 <- abs(h[1]) # optim() might evaluate negative bandwidths
       h.0 <- abs(h[2])
       bias <- M * (bias_Lip(x.1, t, M, kern, h.1) + bias_Lip(x.0, t, M, kern, h.0))
-      sd <- sqrt(var_Lip_resid(x.1, t, kern, h.1, resid.1) + var_Lip_resid(x.0, t, kern, h.0, resid.0))
+      # sd <- sqrt(var_Lip_resid(x.1, t, kern, h.1, resid.1) + var_Lip_resid(x.0, t, kern, h.0, resid.0))
+      sd <- sqrt(var_Lip_2(y.1, x.1, t, kern, h.1, deg, loo) + var_Lip_2(y.0, x.0, t, kern, h.0, deg, loo))
       c <- stats::qnorm(1 - alpha) / 2
       return(bias + c * sd)
     }
@@ -159,7 +218,8 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
     obj.1 <- function(h){
 
       bias <- M * bias_Lip(x, t, M, kern, h)
-      sd <- sqrt(var_Lip_resid(x, t, kern, h, resid))
+      # sd <- sqrt(var_Lip_resid(x, t, kern, h, resid))
+      sd <- sqrt(var_Lip_2(y, x, t, kern, h, deg, loo))
       c <- stats::qnorm(1 - alpha) / 2
       return(bias + c * sd)
     }
