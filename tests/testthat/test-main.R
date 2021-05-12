@@ -40,3 +40,5 @@
 #
 #   ggplot(data = res.all, aes(x = eval, group = fspace)) + geom_line(aes(y = h.t, color = fspace))
 # })
+
+# Testing for branching function
