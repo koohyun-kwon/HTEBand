@@ -13,7 +13,7 @@
 #
 # })
 #
-
+#
 # test_that("wiggly band? + running time", {
 #
 #   x <- seq(-1, 1, length.out = 500)

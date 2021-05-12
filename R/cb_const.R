@@ -36,10 +36,17 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     C <- C.vec[1]
   }
 
+  time.1 <- Sys.time()
+
   opt.res <- opt_w(method, C.vec, y, x, d, eval, T.grad.mat, level,
                    deg, kern, loo, M, seed, useloop,
                    root.robust, ng)
   c.opt <- opt.res$c.root
+
+  time.2 <- Sys.time()
+
+  print("Time took in optimization")
+  print(time.2 - time.1)
 
   if(root.robust){
     increasing <- opt.res$increasing
@@ -47,6 +54,8 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
   }
 
   ci.level <- stats::pnorm(2 * c.opt)
+
+  time.1 <- Sys.time()
 
   for(t in 1:n.T){
 
@@ -64,6 +73,11 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                    bw.eq = TRUE, deg = deg, loo = loo, se.method = se.method)
       }
   }
+
+  time.2 <- Sys.time()
+
+  print("Time took in constructing confidence bands")
+  print(time.2 - time.1)
 
   if(is.null(x.out)){
     cb.data <- data.frame(eval = eval, cb.lower = cb.grid[, 1], cb.upper = cb.grid[, 2],
