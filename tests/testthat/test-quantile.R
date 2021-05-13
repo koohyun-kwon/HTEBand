@@ -121,7 +121,7 @@ test_that("positive estimated variance (k = 2); w.0 = 0",{
 test_that("Valid true and simulated quantile value", {
 
   n <- 500
-  M <- 500
+  M <- 100
   x <- stats::runif(n, min = -1, max = 1)
   n.T <- 10
   eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
@@ -170,7 +170,7 @@ test_that("Valid true and simulated quantile value", {
 test_that("Valid true and simulated quantile value: heteroskedastic", {
 
   n <- 500
-  M <- 500
+  M <- 100
   x <- stats::runif(n, min = -1, max = 1)
   n.T <- 10
   eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
