@@ -27,59 +27,82 @@ test_that("positive variance", {
   # diff / 100
 })
 
-test_that("valid gradient values", {
-
-  n <- 250
-  x <- seq(-1, 1, length.out = n)
-  sd.true <- 1/2 + x^2
-  eps <- stats::rnorm(n, 0, sd.true)
-  y <- x + eps
-
-  # increasing bandwidth should increase bias
-  expect_equal(bias_Lip_gr(x, 0, 1, "triangle", 0.1) >= 0, TRUE)
-  # increasing bandwidth should decrease sd
-  expect_equal(sd_Lip_gr(y, x, 0, "triangle", 0.5, 0, FALSE) <= 0, TRUE)
-
-  # Optional tests
-
-  # h.min <- min(abs(x))
-  # h.grid <- seq(h.min, 0.5, length.out = 50)
-  # sd.res <- numeric(length(h.grid))
-  #
-  # for(i in 1:length(h.grid)) sd.res[i] <-
-  #   2 * sd_Lip_gr(y, x, 0, "triangle", h.grid[i], 0, FALSE) + bias_Lip_gr(x, 0, 1, "triangle", h.grid[i])
-  # res <- data.frame(h.grid = h.grid, sd.res = sd.res)
-  # library(tidyverse)
-  # ggplot(res, aes(x = h.grid, y = sd.res)) + geom_line() + ylim(-1, NA)
-})
-
-# test_that("valid optimal bandwidth", {
+# test_that("valid gradient values", {
 #
 #   n <- 250
 #   x <- seq(-1, 1, length.out = n)
 #   sd.true <- 1/2 + x^2
 #   eps <- stats::rnorm(n, 0, sd.true)
 #   y <- x + eps
-#   M <- 1
-#   t <- 0
-#   kern <- "triangle"
 #
-#   res <- bw_Lip(y, x, t, TE = FALSE, d = NULL, M, kern, 0.05, bw.eq = TRUE,
-#                 1, FALSE)
+#   # increasing bandwidth should increase bias
+#   expect_equal(bias_Lip_gr(x, 0, 1, "triangle", 0.1) >= 0, TRUE)
+#   # increasing bandwidth should decrease sd
+#   expect_equal(sd_Lip_gr(y, x, 0, "triangle", 0.5, 0, FALSE) <= 0, TRUE)
 #
-#   res
+#   # Optional tests
 #
-#   expect_equal(res$h.opt > 0, TRUE)
-#   expect_equal(res$hl.opt > 0, TRUE)
-#
-#   obj.1 <- function(h){
-#
-#     bias <- M * bias_Lip(x, t, M, kern, h)
-#     sd <- sqrt(var_Lip(y, x, t, kern, h, deg, loo))
-#     c <- stats::qnorm(1 - alpha) / 2
-#     return(bias + c * sd)
-#   }
+#   # h.min <- min(abs(x))
+#   # h.grid <- seq(h.min, 0.5, length.out = 50)
+#   # sd.res <- numeric(length(h.grid))
+#   #
+#   # for(i in 1:length(h.grid)) sd.res[i] <-
+#   #   2 * sd_Lip_gr(y, x, 0, "triangle", h.grid[i], 0, FALSE) + bias_Lip_gr(x, 0, 1, "triangle", h.grid[i])
+#   # res <- data.frame(h.grid = h.grid, sd.res = sd.res)
+#   # library(tidyverse)
+#   # ggplot(res, aes(x = h.grid, y = sd.res)) + geom_line() + ylim(-1, NA)
 # })
+
+test_that("valid optimal bandwidth", {
+
+  n <- 250
+  x <- seq(-1, 1, length.out = n)
+  sd.true <- 1/2 + x^2
+  eps <- stats::rnorm(n, 0, sd.true)
+  y <- x + eps
+  M <- 1
+  t <- 0
+  kern <- "triangle"
+  alpha <- 0.05
+
+  res <- bw_Lip(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
+                1, FALSE)
+
+  res
+
+  expect_equal(res$h.opt > 0, TRUE)
+  expect_equal(res$hl.opt > 0, TRUE)
+
+  # obj.1 <- function(h){
+  #
+  #   h <- abs(h)
+  #
+  #   bias <- bias_Lip(x, t, M, kern, h)
+  #   sd <- sqrt(var_Lip(y, x, t, kern, h, deg = 1, loo = FALSE))
+  #   c <- stats::qnorm(1 - alpha) / 2
+  #   return(bias + c * sd)
+  # }
+  #
+  # h.min <- sort(unique(abs(x - t)))[2]
+  # h.max <- max(abs(x - t))
+  #
+  # system.time({
+  #
+  #   opt.res <- stats::optimize(obj.1, c(h.min, h.max), tol = .Machine$double.eps^0.75)
+  # })
+  #
+  # gr <- function(h){
+  #
+  #   h <- abs(h)
+  #   c <- stats::qnorm(1 - alpha) / 2
+  #   bias_Lip_gr(x, t, M, kern, h) + c * sd_Lip_gr(y, x, t, kern, h, deg = 1, loo = FALSE)
+  # }
+  #
+  # system.time({
+  #
+  #   opt.res.2 <- stats::optim(h.max / 2, obj.1, gr, method = "BFGS")
+  # })
+})
 
 
 test_that("valid optimal bandwidth(TE)", {

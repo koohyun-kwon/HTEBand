@@ -56,5 +56,5 @@
 #   ggplot(data = res.all, aes(x = eval, group = fspace)) + geom_line(aes(y = cb.lower, color = fspace)) +
 #     geom_line(aes(y = cb.upper, color = fspace)) + geom_line(aes(y = truef))
 #
-#   ggplot(data = res.all, aes(x = eval, group = fspace)) + geom_line(aes(y = h.t, color = fspace))
+#   ggplot(data = res.all, aes(x = eval, group = fspace)) + geom_line(aes(y = h.t, color = fspace)) + ylim(0, NA)
 # })
