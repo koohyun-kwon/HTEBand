@@ -134,7 +134,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
 
       h.1 <- abs(h[1]) # optim() might evaluate negative bandwidths
       h.0 <- abs(h[2])
-      bias <- M * (bias_Lip(x.1, t, M, kern, h.1) + bias_Lip(x.0, t, M, kern, h.0))
+      bias <- bias_Lip(x.1, t, M, kern, h.1) + bias_Lip(x.0, t, M, kern, h.0)
       sd <- sqrt(var_Lip(y.1, x.1, t, kern, h.1, deg, loo) + var_Lip(y.0, x.0, t, kern, h.0, deg, loo))
       c <- stats::qnorm(1 - alpha) / 2
       return(bias + c * sd)
@@ -168,7 +168,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
 
     obj.1 <- function(h){
 
-      bias <- M * bias_Lip(x, t, M, kern, h)
+      bias <- bias_Lip(x, t, M, kern, h)
       sd <- sqrt(var_Lip(y, x, t, kern, h, deg, loo))
       c <- stats::qnorm(1 - alpha) / 2
       return(bias + c * sd)
