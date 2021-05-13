@@ -14,7 +14,7 @@
 # })
 #
 #
-# test_that("wiggly band? + running time", {
+# test_that(" running time", {
 #
 #   x <- seq(-1, 1, length.out = 500)
 #   true.fun <- function(x) x^2
@@ -23,6 +23,24 @@
 #   system.time({
 #     res <- NpregBand(y, x, 2, 0.95, "L", n.eval = 50)
 #   })
+#
+#   method = "reg.Lip"
+#   eval = res$eval
+#   C = 2
+#   kern.reg = "triangle"
+#   deg = 1
+#   loo = FALSE
+#   se.method = "resid"
+#   resid.1 = eps_hat(y, x, deg, kern.reg, loo)
+#   resid.0 <- 0
+#   d = rep(1, length(y))
+#   k = 1
+#   n.T = length(eval)
+#   T.grad.mat <- rep(1, n.T)
+#
+#   opt_w_2(2.5, method, C, y, x, d, eval, T.grad.mat, 0.95,
+#                       1, "triangle", loo = FALSE, M = 500, seed = NULL, useloop = TRUE,
+#                       root.robust = FALSE, ng = 10)
 #
 #
 #   system.time({

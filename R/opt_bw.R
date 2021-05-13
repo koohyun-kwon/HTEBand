@@ -22,6 +22,7 @@ bias_Lip <- function(x, t, M, kern, h){
   return(res)
 }
 
+
 #' Lipschitz class variance
 #'
 #' Calculates the variance for regression function value estimator under Lipschitz class

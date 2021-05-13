@@ -14,13 +14,13 @@ test_that("valid optimal quantile value (Holder)", {
   system.time({
     opt.res <- opt_w("reg.Hol", 1, y, x, 0, eval, T.grad.mat, level,
                       1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
-                      root.robust = TRUE)
+                      root.robust = FALSE)
     res <- opt.res$c.root
-    res.inc <- opt.res$increasing
+    #res.inc <- opt.res$increasing
   })
 
   expect_equal(!is.na(res), TRUE)
-  expect_equal(res.inc, TRUE)
+  #expect_equal(res.inc, TRUE)
 
   # Optional test
 
@@ -72,13 +72,13 @@ test_that("valid optimal quantile value (Lipschitz)", {
   system.time({
     opt.res <- opt_w("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
                      1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
-                     root.robust = TRUE)
+                     root.robust = FALSe)
     res <- opt.res$c.root
-    res.inc <- opt.res$increasing
+    #res.inc <- opt.res$increasing
   })
 
   expect_equal(!is.na(res), TRUE)
-  expect_equal(res.inc, TRUE)
+  #expect_equal(res.inc, TRUE)
 })
 
 
@@ -107,12 +107,12 @@ test_that("valid optimal quantile value (Lipschitz-TE)", {
   system.time({
     opt.res <- opt_w("TE.Lip", 1, y, x, d, eval, T.grad.mat, level,
                      1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
-                     root.robust = TRUE)
+                     root.robust = FALSE)
     res <- opt.res$c.root
-    res.inc <- opt.res$increasing
+    #res.inc <- opt.res$increasing
   })
 
   expect_equal(!is.na(res), TRUE)
-  expect_equal(res.inc, TRUE)
+  #expect_equal(res.inc, TRUE)
 })
 

@@ -130,3 +130,33 @@ K_fun <- function(x, t, h, kern = c("triangle")){
 
   return(res)
 }
+
+
+#' Kernel gradient function
+#'
+#' Calculates the values of the gradient of a given kernel function given a vector of regressors.
+#' Specifically, this function calculates the value of \eqn{\partial K((x - t) / h) / \partial h}.
+#'
+#' @param x a vector of regressors.
+#' @param t a scalar evaluation point.
+#' @param h a positive bandwidth.
+#' @param kern a string for kernel name; currently \code{"triangle"} is supported.
+#'
+#' @return a vector of kernel values with the same dimension as \code{x}.
+#' @export
+#'
+#' @examples
+#' x <- seq(-1, 1, length.out = 10)
+#' K_gr(x, 0, 0.5, "triangle")
+K_gr <- function(x, t, h, kern = c("triangle")){
+
+  if(is.na(h) | h <=0) stop("Invalid bandwidth")
+
+  kern = match.arg(kern)
+  if(kern == "triangle"){
+
+    res <- abs(x - t) * as.numeric(abs(x - t) < h) / h^2
+  }
+
+  return(res)
+}
