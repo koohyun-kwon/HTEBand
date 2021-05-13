@@ -27,6 +27,32 @@ test_that("positive variance", {
   # diff / 100
 })
 
+test_that("valid gradient values", {
+
+  n <- 250
+  x <- seq(-1, 1, length.out = n)
+  sd.true <- 1/2 + x^2
+  eps <- stats::rnorm(n, 0, sd.true)
+  y <- x + eps
+
+  # increasing bandwidth should increase bias
+  expect_equal(bias_Lip_gr(x, 0, 1, "triangle", 0.1) >= 0, TRUE)
+  # increasing bandwidth should decrease sd
+  expect_equal(sd_Lip_gr(y, x, 0, "triangle", 0.5, 0, FALSE) <= 0, TRUE)
+
+  # Optional tests
+
+  # h.min <- min(abs(x))
+  # h.grid <- seq(h.min, 0.5, length.out = 50)
+  # sd.res <- numeric(length(h.grid))
+  #
+  # for(i in 1:length(h.grid)) sd.res[i] <-
+  #   2 * sd_Lip_gr(y, x, 0, "triangle", h.grid[i], 0, FALSE) + bias_Lip_gr(x, 0, 1, "triangle", h.grid[i])
+  # res <- data.frame(h.grid = h.grid, sd.res = sd.res)
+  # library(tidyverse)
+  # ggplot(res, aes(x = h.grid, y = sd.res)) + geom_line() + ylim(-1, NA)
+})
+
 test_that("valid optimal bandwidth", {
 
   n <- 250

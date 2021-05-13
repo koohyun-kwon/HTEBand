@@ -72,7 +72,7 @@ test_that("valid optimal quantile value (Lipschitz)", {
   system.time({
     opt.res <- opt_w("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
                      1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
-                     root.robust = FALSe)
+                     root.robust = FALSE)
     res <- opt.res$c.root
     #res.inc <- opt.res$increasing
   })

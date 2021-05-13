@@ -15,11 +15,12 @@ test_that("valid confidence band (Holder)", {
     opt.res <- cb_const("reg.Hol", 1, y, x, 0, eval, T.grad.mat, level,
                         1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
                         root.robust = FALSE)
-    res <- opt.res$cb.data
+    #res <- opt.res$cb.data
     #res.inc <- opt.res$increasing
   })
 
-  expect_equal(is.double(res[, 2]), TRUE)
+  expect_equal(is.double(opt.res[, 2]), TRUE)
+  # expect_equal(is.double(res[, 2]), TRUE)
   #expect_equal(res.inc, TRUE)
 })
 
@@ -41,11 +42,12 @@ test_that("valid confidence band (Lipschitz)", {
     opt.res <- cb_const("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
                         1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
                         root.robust = FALSE)
-    res <- opt.res$cb.data
+    # res <- opt.res$cb.data
     #res.inc <- opt.res$increasing
   })
 
-  expect_equal(is.double(res[, 2]), TRUE)
+  expect_equal(is.double(opt.res[, 2]), TRUE)
+  # expect_equal(is.double(res[, 2]), TRUE)
   #expect_equal(res.inc, TRUE)
 })
 
@@ -76,10 +78,11 @@ test_that("valid confidence band (Lipschitz-TE)", {
     opt.res <- cb_const("TE.Lip", 2, y, x, d, eval, T.grad.mat, level,
                         1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
                         root.robust = FALSE)
-    res <- opt.res$cb.data
+    # res <- opt.res$cb.data
     #res.inc <- opt.res$increasing
   })
 
-  expect_equal(is.double(res[, 2]), TRUE)
+  expect_equal(is.double(opt.res[, 2]), TRUE)
+  # expect_equal(is.double(res[, 2]), TRUE)
   #expect_equal(res.inc, TRUE)
 })
