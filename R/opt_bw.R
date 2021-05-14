@@ -10,12 +10,20 @@
 #'
 bias_Lip <- function(x, t, M, kern, h){
 
-  if(h <= 0){
-    res <- Inf
+  h.min <- min(abs(x - t))
+
+  if(h < 0){
+    stop("Negative bandwidth is not allowed")
+  }else if(h <= h.min){
+
+    # As h approaches h.min from above, the bias approaches M * h.min
+    # This is in order to preserve the asymptotic bias representation that bias = h * C for some constant C > 0.
+    res <- M * h
   }else{
 
     nmrt <- M * sum(K_fun(x, t, h, kern) * abs(x - t))
     dnmnt <- sum(K_fun(x, t, h, kern))
+
     res <- nmrt/dnmnt
   }
 
