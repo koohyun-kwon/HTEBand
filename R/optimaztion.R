@@ -20,6 +20,7 @@
 #' default is \code{root.robust = FALSE}.
 #' @param ng the number of grids of quantile values over which the diagnostic test would be peformed
 #' if \code{root.robust = TRUE}; default is \code{ng = 10}.
+#' @param tol tolerance parameter when solving for the optimal quantile value; default is \code{tol = 1e-3}.
 #' @inheritParams sup_quant_sim
 #'
 #' @return a list of the following components
@@ -38,7 +39,7 @@
 #' @export
 opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                   deg, kern, loo, M, seed = NULL, useloop = TRUE,
-                  root.robust = FALSE, ng = 10){
+                  root.robust = FALSE, ng = 10, tol = 1e-3){
 
   n.T <- length(eval)
   T.grad.mat <- v_to_m(T.grad.mat)
@@ -160,7 +161,8 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
   c.min <- stats::qnorm(level - 0.01)
   c.max <- stats::qnorm(1 - 0.1^3)
 
-  root.res <- stats::uniroot(eq.val, interval = c(c.min, c.max), extendInt = "upX")
+  root.res <- stats::uniroot(eq.val, interval = c(c.min, c.max), extendInt = "upX",
+                             tol = tol)
   c.root <- root.res$root
 
   w.1 <- eq(c.root)$w.1

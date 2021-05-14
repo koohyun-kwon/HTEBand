@@ -20,7 +20,8 @@ opt_w(
   seed = NULL,
   useloop = TRUE,
   root.robust = FALSE,
-  ng = 10
+  ng = 10,
+  tol = 0.001
 )
 }
 \arguments{
@@ -66,6 +67,8 @@ default is \code{root.robust = FALSE}.}
 
 \item{ng}{the number of grids of quantile values over which the diagnostic test would be peformed
 if \code{root.robust = TRUE}; default is \code{ng = 10}.}
+
+\item{tol}{tolerance parameter when solving for the optimal quantile value; default is \code{tol = 1e-3}.}
 }
 \value{
 a list of the following components
