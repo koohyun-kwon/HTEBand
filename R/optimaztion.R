@@ -160,7 +160,7 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
   c.min <- stats::qnorm(level - 0.01)
   c.max <- stats::qnorm(1 - 0.1^3)
 
-  root.res <- stats::uniroot(eq.val, interval = c(c.min, c.max), extendInt = "upX")
+  root.res <- stats::uniroot(eq.val, interval = c(c.min, c.max), extendInt = "upX", tol = 1e-3)
   c.root <- root.res$root
 
   w.1 <- eq(c.root)$w.1

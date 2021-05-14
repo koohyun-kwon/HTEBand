@@ -163,7 +163,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
       h.1.init <- max(abs(x.1 - t)) / 2
       h.0.init <- max(abs(x.0 - t)) / 2
 
-      opt.res <- stats::optim(c(h.1.init, h.0.init), obj)
+      opt.res <- stats::optim(c(h.1.init, h.0.init), obj, control = list(reltol = 1e-4))
       h.opt <- abs(opt.res$par) # optim() might evaluate negative bandwidths
       hl.opt <- opt.res$value  # half-length
     }else{
@@ -175,7 +175,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
       h.min <- max(sort(unique(abs(x.1 - t)))[2], sort(unique(abs(x.0 - t)))[2])
       h.max <- max(abs(x.1 - t), abs(x.0 - t))
 
-      opt.res <- stats::optimize(obj.eq, c(h.min, h.max), tol = .Machine$double.eps^0.75)
+      opt.res <- stats::optimize(obj.eq, c(h.min, h.max), tol = .Machine$double.eps^0.25)
       h.opt <- rep(opt.res$minimum, 2)
       hl.opt <- opt.res$objective
     }
@@ -195,7 +195,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
     h.min <- sort(unique(abs(x - t)))[2]
     h.max <- abs(x - t)
 
-    opt.res <- stats::optimize(obj.1, c(h.min, h.max), tol = .Machine$double.eps^0.75)
+    opt.res <- stats::optimize(obj.1, c(h.min, h.max), tol = .Machine$double.eps^0.25)
     h.opt <- opt.res$minimum
     hl.opt <- opt.res$objective
   }
