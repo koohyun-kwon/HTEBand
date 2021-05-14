@@ -14,13 +14,20 @@ test_that("valid confidence band (Holder)", {
   system.time({
     opt.res <- cb_const("reg.Hol", 1, y, x, 0, eval, T.grad.mat, level,
                         1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
-                        root.robust = TRUE)
-    res <- opt.res$cb.data
-    res.inc <- opt.res$increasing
+                        root.robust = FALSE)
   })
 
-  expect_equal(is.double(res[, 2]), TRUE)
-  expect_equal(res.inc, TRUE)
+  expect_equal(is.na(opt.res[, 2]), rep(FALSE, n.T))
+
+  # system.time({
+  #   opt.res <- cb_const("reg.Hol", 1, y, x, 0, eval, T.grad.mat, level,
+  #                       1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+  #                       root.robust = TRUE)
+  #   res <- opt.res$cb.data
+  #   res.inc <- opt.res$increasing
+  # })
+  #
+  # expect_equal(is.double(res[, 2]), TRUE)
 })
 
 
@@ -40,13 +47,21 @@ test_that("valid confidence band (Lipschitz)", {
   system.time({
     opt.res <- cb_const("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
                         1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
-                        root.robust = TRUE)
-    res <- opt.res$cb.data
-    res.inc <- opt.res$increasing
+                        root.robust = FALSE)
   })
 
-  expect_equal(is.double(res[, 2]), TRUE)
-  expect_equal(res.inc, TRUE)
+  expect_equal(is.na(opt.res[, 2]), rep(FALSE, n.T))
+
+  # system.time({
+  #   opt.res <- cb_const("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
+  #                       1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+  #                       root.robust = TRUE)
+  #   res <- opt.res$cb.data
+  #   res.inc <- opt.res$increasing
+  # })
+  #
+  # expect_equal(is.double(res[, 2]), TRUE)
+  # expect_equal(res.inc, TRUE)
 })
 
 
@@ -75,11 +90,19 @@ test_that("valid confidence band (Lipschitz-TE)", {
   system.time({
     opt.res <- cb_const("TE.Lip", 2, y, x, d, eval, T.grad.mat, level,
                         1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
-                        root.robust = TRUE)
-    res <- opt.res$cb.data
-    res.inc <- opt.res$increasing
+                        root.robust = FALSE)
   })
 
-  expect_equal(is.double(res[, 2]), TRUE)
-  expect_equal(res.inc, TRUE)
+  expect_equal(is.na(opt.res[, 2]), rep(FALSE, n.T))
+
+  # system.time({
+  #   opt.res <- cb_const("TE.Lip", 2, y, x, d, eval, T.grad.mat, level,
+  #                       1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+  #                       root.robust = TRUE)
+  #   res <- opt.res$cb.data
+  #   res.inc <- opt.res$increasing
+  # })
+  #
+  # expect_equal(is.double(res[, 2]), TRUE)
+  # expect_equal(res.inc, TRUE)
 })
