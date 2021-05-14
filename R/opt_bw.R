@@ -35,20 +35,30 @@ bias_Lip <- function(x, t, M, kern, h){
 #' @export
 var_Lip <- function(y, x, t, kern, h, deg, loo, sd.homo = TRUE){
 
-  if(h <= 0){
+  h.min <- min(abs(x - t))
 
-    res <- 0
+  if(sd.homo == TRUE){
+
+    d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = t)
+    d <- RDHonest::NPRPrelimVar.fit(d, se.initial = "EHW")
+    sd.hat <- sqrt(d$sigma2)
   }else{
 
-    if(sd.homo == TRUE){
+    sd.hat <- eps_hat(y, x, deg, kern, loo)
+  }
 
-      d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = t)
-      d <- RDHonest::NPRPrelimVar.fit(d, se.initial = "EHW")
-      sd.hat <- sqrt(d$sigma2)
-    }else{
+  if(h < 0){
 
-      sd.hat <- eps_hat(y, x, deg, kern, loo)
-    }
+    stop("Negative bandwidth is not allowed")
+
+  }else if(h <= h.min){
+
+    # As h approaches h.min from above, the variance approaches sigma^2_{i(min)}
+    # This is in order to preserve the asymptotic bias representation that var = C_n / h for some constant C_n > 0.
+
+    min.ind <- which.min(abs(x - t))
+    res <- h.min * sd.hat[min.ind]^2 / h
+  }else{
 
     nmrt <- sum(K_fun(x, t, h, kern)^2 * sd.hat^2)
     dnmnt <- sum(K_fun(x, t, h, kern))^2
