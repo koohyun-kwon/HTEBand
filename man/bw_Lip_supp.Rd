@@ -4,7 +4,7 @@
 \alias{bw_Lip_supp}
 \title{Optimal bandwidths under Lipschitz class with supplied conditional variance}
 \usage{
-bw_Lip_supp(c.sd, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE)
+bw_Lip_supp(c.sd, x, t, TE = FALSE, d = NULL, M, kern, c, bw.eq = TRUE)
 }
 \arguments{
 \item{c.sd}{a vector of supplied conditional standard deviations}
@@ -22,7 +22,7 @@ relevant only when \code{TE = TRUE}.}
 
 \item{kern}{a string for kernel name; currently \code{"triangle"} is supported.}
 
-\item{alpha}{determines confidence level \code{1 - alpha}.}
+\item{c}{quantile value corresponding to \code{stats::qnorm(1 - alpha) / 2} given \code{alpha}}
 
 \item{bw.eq}{if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
 relevant only when \code{TE = TRUE}.}

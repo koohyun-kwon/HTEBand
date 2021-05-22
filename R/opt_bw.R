@@ -215,7 +215,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
 #' @param TE logical specifying whether there are treatment and control groups.
 #' @param d a vector of indicator variables specifying treatment and control group status;
 #' relevant only when \code{TE = TRUE}.
-#' @param alpha determines confidence level \code{1 - alpha}.
+#' @param c quantile value corresponding to \code{stats::qnorm(1 - alpha) / 2} given \code{alpha}
 #' @param bw.eq if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
 #' relevant only when \code{TE = TRUE}.
 #' @param c.sd a vector of supplied conditional standard deviations
@@ -229,7 +229,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
 #' \item{hl.opt}{the optimal half-length when the optimal bandwidth(s) is used.}
 #' }
 #' @export
-bw_Lip_supp <- function(c.sd, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE){
+bw_Lip_supp <- function(c.sd, x, t, TE = FALSE, d = NULL, M, kern, c, bw.eq = TRUE){
 
   if(TE == TRUE){
 
@@ -245,7 +245,6 @@ bw_Lip_supp <- function(c.sd, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq 
       h.0 <- abs(h[2])
       bias <- bias_Lip(x.1, t, M, kern, h.1) + bias_Lip(x.0, t, M, kern, h.0)
       sd <- sqrt(var_Lip_resid(x.1, t, kern, h.1, c.sd.1) + var_Lip_resid(x.0, t, kern, h.0, c.sd.0))
-      c <- stats::qnorm(1 - alpha) / 2
       return(bias + c * sd)
     }
 
@@ -277,7 +276,6 @@ bw_Lip_supp <- function(c.sd, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq 
 
       bias <- bias_Lip(x, t, M, kern, h)
       sd <- sqrt(var_Lip_resid(x, t, kern, h, c.sd))
-      c <- stats::qnorm(1 - alpha) / 2
       return(bias + c * sd)
     }
 
