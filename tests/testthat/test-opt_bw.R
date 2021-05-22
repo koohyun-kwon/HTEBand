@@ -62,6 +62,7 @@ test_that("valid optimal bandwidth(TE)", {
                 1, FALSE)
   res.eq <- bw_Lip(y, x, 0, TE = TRUE, d = d, 1, "triangle", 0.05, bw.eq = TRUE,
                    1, FALSE)
+  # res.orc <- bw_Lip_supp(c(sd.true, sd.true/2), x, 0, TE = TRUE, d = d, 1, "triangle", 0.05, bw.eq = TRUE)
 
   res
   res.eq
