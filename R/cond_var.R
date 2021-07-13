@@ -21,7 +21,6 @@
 #' eps_hat(y, x, 1, "epa", TRUE)
 eps_hat <- function(y, x, deg, kern, loo){
 
-
   if(kern == "triangle"){
 
     K <- locpol::TrianK
