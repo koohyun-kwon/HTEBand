@@ -90,5 +90,5 @@ is recommended.
 x <- rep(seq(-1, 1, length.out = 500), each = 2)
 d <- rep(c(0, 1), 500)
 y <- d * x^2 + (1 - d) * x + rnorm(500, 0, 1/4)
-CATEBand(y, x, d, 2, 0.95, n.eval = 25)
+CATEBand(y, x, d, 2, 0.95, n.eval = 25, h.eq = TRUE)
 }

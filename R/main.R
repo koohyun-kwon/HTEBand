@@ -93,7 +93,7 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #' x <- rep(seq(-1, 1, length.out = 500), each = 2)
 #' d <- rep(c(0, 1), 500)
 #' y <- d * x^2 + (1 - d) * x + rnorm(500, 0, 1/4)
-#' CATEBand(y, x, d, 2, 0.95, n.eval = 25)
+#' CATEBand(y, x, d, 2, 0.95, n.eval = 25, h.eq = TRUE)
 CATEBand <- function(y, x, d, C, level, fclass = "L", h.eq = FALSE, n.eval = min(sum(d == 1), sum(d == 0)) / 5,
                      eval = NULL, q.int = 0.025, n.sim = 10^3, kern = "triangle", deg = 1, loo = FALSE, seed = NULL,
                      root.robust = FALSE, ng = 10, x.out = NULL){
