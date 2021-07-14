@@ -20,6 +20,15 @@
 #' default is \code{root.robust = FALSE}.
 #' @param ng the number of grids of quantile values over which the diagnostic test would be peformed
 #' if \code{root.robust = TRUE}; default is \code{ng = 10}.
+#' @param resid.1 residuals corresponding to the treated observations; it can be a vector
+#' or a matrix if \code{ncol(y) > 1}. For treatment effect models, its \eqn{i}th component
+#' corresponds to the \eqn{i}th component of \code{y[d == 1, ]}. If there are no
+#' treatment and control groups, \code{resid.1} corresponds to residuals for the
+#' entire observations. It can be specified to be \code{NULL}.
+#' @param resid.0 residuals corresponding to the control observations; it can be a vector
+#' or a matrix if \code{ncol(y) > 1}. Its \eqn{i}th component
+#' corresponds to the \eqn{i}th component of \code{y[d == 0, ]}. It can be specified to be
+#' \code{NULL}.
 #' @inheritParams sup_quant_sim
 #'
 #' @return a list of the following components
