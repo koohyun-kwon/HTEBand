@@ -10,6 +10,8 @@
 The goal of HTEBand is to construct uniform confidence bands for various
 types of heterogenous treatment effect parameters.
 
+This version is the one generated simulation results in version 13 of the draft.
+
 ## Installation
 
 You can install the development version from
