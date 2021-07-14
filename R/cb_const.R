@@ -36,9 +36,13 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     C <- C.vec[1]
   }
 
+  resid.res <- resid_calc(y, x, d, deg, kern)
+  resid.1 <- resid.res$resid.1
+  resid.0 <- resid.res$resid.0
+
   opt.res <- opt_w(method, C.vec, y, x, d, eval, T.grad.mat, level,
                    deg, kern, M, seed, useloop,
-                   root.robust, ng)
+                   root.robust, ng, resid.1, resid.0)
   c.opt <- opt.res$c.root
 
   if(root.robust){
