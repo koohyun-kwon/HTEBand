@@ -12,7 +12,7 @@ test_that("valid confidence band (Holder)", {
   res <- NA
 
   system.time({
-    opt.res <- cb_const("reg.Hol", 1, y, x, 0, eval, T.grad.mat, level,
+    opt.res <- cb_const("reg.Hol", 1, y, x, NULL, eval, T.grad.mat, level,
                         1, "tri", M, seed = NULL, useloop = TRUE,
                         root.robust = FALSE)
   })
@@ -20,7 +20,7 @@ test_that("valid confidence band (Holder)", {
   expect_equal(is.na(opt.res[, 2]), rep(FALSE, n.T))
 
   # system.time({
-  #   opt.res <- cb_const("reg.Hol", 1, y, x, 0, eval, T.grad.mat, level,
+  #   opt.res <- cb_const("reg.Hol", 1, y, x, NULL, eval, T.grad.mat, level,
   #                       1, "tri", M, seed = NULL, useloop = TRUE,
   #                       root.robust = TRUE)
   #   res <- opt.res$cb.data
@@ -45,7 +45,7 @@ test_that("valid confidence band (Lipschitz)", {
   res <- NA
 
   system.time({
-    opt.res <- cb_const("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
+    opt.res <- cb_const("reg.Lip", 1, y, x, NULL, eval, T.grad.mat, level,
                         1, "tri", M, seed = NULL, useloop = TRUE,
                         root.robust = FALSE)
   })
@@ -53,7 +53,7 @@ test_that("valid confidence band (Lipschitz)", {
   expect_equal(is.na(opt.res[, 2]), rep(FALSE, n.T))
 
   # system.time({
-  #   opt.res <- cb_const("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
+  #   opt.res <- cb_const("reg.Lip", 1, y, x, NULL, eval, T.grad.mat, level,
   #                       1, "tri", M, seed = NULL, useloop = TRUE,
   #                       root.robust = TRUE)
   #   res <- opt.res$cb.data

@@ -12,7 +12,7 @@
 #   res <- NA
 #
 #   system.time({
-#     opt.res <- opt_w("reg.Hol", 1, y, x, 0, eval, T.grad.mat, level,
+#     opt.res <- opt_w("reg.Hol", 1, y, x, NULL, eval, T.grad.mat, level,
 #                       1, "tri", M, seed = NULL, useloop = TRUE,
 #                       root.robust = TRUE)
 #     res <- opt.res$c.root
@@ -70,7 +70,7 @@
 #   res <- NA
 #
 #   system.time({
-#     opt.res <- opt_w("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
+#     opt.res <- opt_w("reg.Lip", 1, y, x, NULL, eval, T.grad.mat, level,
 #                      1, "tri", M, seed = NULL, useloop = TRUE,
 #                      root.robust = TRUE)
 #     res <- opt.res$c.root
