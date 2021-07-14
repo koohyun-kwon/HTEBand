@@ -4,7 +4,7 @@
 \alias{eps_hat}
 \title{Residual calculation}
 \usage{
-eps_hat(y, x, deg, kern, loo)
+eps_hat(y, x, deg)
 }
 \arguments{
 \item{y}{vector of dependent variables}
@@ -21,15 +21,10 @@ eps_hat(y, x, deg, kern, loo)
 vector of residuals with the same length as \code{y}
 }
 \description{
-Calculates residuals after nonparametric regression using \code{\link[locpol]{locPolSmootherC}}.
-}
-\details{
-The bandwidth is calculated using the rule-of-thumb method of Fan and Gijbels (1996)
-implemented by \code{\link[locpol]{thumbBw}}.
+Calculates residuals after nonparametric regression using \code{\link[nprobust]{lprobust}}.
 }
 \examples{
 x <- seq(from = -1, to = 1, length.out = 500)
 y <- x^2 + stats::rnorm(500, 0, 0.1)
-eps_hat(y, x, 0, "triangle", FALSE)
-eps_hat(y, x, 1, "epa", TRUE)
+eps_hat(y, x, 1)
 }

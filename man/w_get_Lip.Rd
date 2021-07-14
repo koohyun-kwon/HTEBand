@@ -15,9 +15,7 @@ w_get_Lip(
   kern = "triangle",
   bw.eq = TRUE,
   deg = 0,
-  loo = FALSE,
-  se.method = "resid",
-  resid = NULL
+  loo = FALSE
 )
 }
 \arguments{
@@ -44,11 +42,6 @@ relevant only when \code{TE = TRUE}.}
 \item{deg}{degree of local polynomial regression to be used}
 
 \item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
-
-\item{se.method}{methods for estimating standard error of estimate; currently,
-only "resid" is supported.}
-
-\item{resid}{pre-calculated residuals with the same length as \code{y}; it can be left unspecified.}
 }
 \value{
 a matrix of weights with each column corresponding to weights for each evaluation points,

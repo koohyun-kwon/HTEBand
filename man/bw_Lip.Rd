@@ -4,20 +4,7 @@
 \alias{bw_Lip}
 \title{Optimal bandwidths under Lipschitz class}
 \usage{
-bw_Lip(
-  y,
-  x,
-  t,
-  TE = FALSE,
-  d = NULL,
-  M,
-  kern,
-  alpha,
-  bw.eq = TRUE,
-  deg,
-  loo,
-  resid = NULL
-)
+bw_Lip(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE, deg, loo)
 }
 \arguments{
 \item{y}{vector of dependent variables}
@@ -43,8 +30,6 @@ relevant only when \code{TE = TRUE}.}
 \item{deg}{degree of local polynomial regression to be used}
 
 \item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
-
-\item{resid}{pre-calculated residuals with the same length as \code{y}; it can be left unspecified.}
 }
 \value{
 a list with the following components

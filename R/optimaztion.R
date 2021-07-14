@@ -36,16 +36,39 @@
 #' over grid values of quantiles; provided only if \code{root.robust = TRUE}}
 #' }
 #' @export
-opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
+opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
                   deg, kern, loo, M, seed = NULL, useloop = TRUE,
-                  root.robust = FALSE, ng = 10){
+                  root.robust = FALSE, ng = 10, resid.1 = NULL, resid.0 = NULL){
 
   n.T <- length(eval)
   T.grad.mat <- v_to_m(T.grad.mat)
   k <- ncol(T.grad.mat)
+  is.TE <- 0 %in% d & sum(d == 0) > 1
+  y <- v_to_m(y)
+  n <- nrow(y)
+  if(!is.TE) d <- rep(1, n)
+
+  y.1 <- v_to_m(y[d == 1, ])
+  x.1 <- x[d == 1]
+
+  if(is.TE){
+
+    # Reordering (y, x, d): treated obs first, control obs later
+    y.0 <- v_to_m(y[d == 0, ])
+    y <- rbind(y.1, y.0)
+    x.0 <- x[d == 0]
+    x <- c(x.1, x.0)
+    d <- c(rep(1, length(x.1)), rep(0, length(x.0)))
+  }else{
+
+    # Even if there is no control group, these values will be used as an input
+    # in the quantile calculation function
+    y.0 <- matrix(0, nrow = 1, ncol = k)
+    x.0 <- 0
+  }
+
 
   # Part 1: Setting initial variables
-
   if(method == "reg.Hol"){
 
     kern.reg <- "triangular"
@@ -62,48 +85,42 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
 
   # Part 2: Calculating residuals
 
-  if(method %in% c("reg.Hol", "reg.Lip")) d <- rep(1, length(y))
+  if(is.null(resid.1)){
 
-  y.1 <- v_to_m(y[d == 1])
-  y.0 <-
-    if(sum(d == 0) > 0){
-      v_to_m(y[d == 0])
+    resid.all <- resid_calc(y, x, d, deg)
+    resid.1 <- resid.all$resid.1
+    resid.0 <- resid.all$resid.0
+
+  }else{
+
+    resid.1 <- v_to_m(resid.1)
+    if(!is.null(resid.0)){
+      resid.0 <- v_to_m(resid.0)
     }else{
-      v_to_m(0)
+      resid.0 <- matrix(0, nrow = 1, ncol = k)
     }
-
-  x.1 <- x[d == 1]
-  x.0 <-
-    if(sum(d == 0) > 0){
-      x[d == 0]
-    }else{
-      0
-    }
-
-  n.1 <- length(x.1)
-  n.0 <- length(x.0)
-
-  resid.1 <- matrix(0, nrow = n.1, ncol = k)
-  resid.0 <- matrix(0, nrow = n.0, ncol = k)
-
-  for(j in 1:k){
-
-    resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern, loo)
-    if(sum(d == 0) > 0) resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, loo)
   }
+
+
 
   # Part 3: Defining objective function
 
-  if(method %in% c("TE.Lip", "TE.Lip.eqbw")){
-
-    # match orders of (y, x, d) and residuals
-    y <- rbind(y.1, y.0)
-    x <- c(x.1, x.0)
-    d <- c(rep(1, n.1), rep(0, n.0))
-    resid.1 <- as.vector(resid.1)
-    resid.0 <- as.vector(resid.0)
-    resid <- c(resid.1, resid.0)
-  }
+  # if(method %in% c("TE.Lip", "TE.Lip.eqbw")){
+  #
+  #   # re-defining (y, x, d) to match the orders with the residuals
+  #
+  #   y <- v_to_m(y)
+  #   y.1 <- v_to_m(y[d == 1, ])
+  #   y.0 <- v_to_m(y[d == 0, ])
+  #   x.1 <- x[d == 1]
+  #   x.0 <- x[d == 0]
+  #   y <- rbind(y.1, y.0)
+  #   x <- c(x.1, x.0)
+  #   d <- c(rep(1, length(x.1)), rep(0, length(x.0)))
+  #   resid.1 <- as.vector(resid.1)
+  #   resid.0 <- as.vector(resid.0)
+  #   resid <- c(resid.1, resid.0)
+  # }
 
   eq <- function(c){
 
@@ -115,14 +132,13 @@ opt_w <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
         if(method == "reg.Hol"){
           w_get_Hol(y, x, eval, C, level.int, kern.reg, se.initial, se.method, J)$w.mat
         }else if(method == "reg.Lip"){
-          w_get_Lip(y, x, eval, C, level.int, kern = kern.reg, deg = deg, loo = loo,
-                    se.method = se.method, resid = resid.1)
+          w_get_Lip(y, x, eval, C, level.int, kern = kern.reg, deg = deg, loo = loo)
         }else if(method == "TE.Lip"){
           w_get_Lip(y, x, eval, C, level.int, TE = TRUE, d = d, kern = kern.reg,
-                    bw.eq = FALSE, deg = deg, loo = loo, se.method = se.method, resid = resid)
+                    bw.eq = FALSE, deg = deg)
         }else if(method == "TE.Lip.eqbw"){
           w_get_Lip(y, x, eval, C, level.int, TE = TRUE, d = d, kern = kern.reg,
-                    bw.eq = TRUE, deg = deg, loo = loo, se.method = se.method, resid = resid)
+                    bw.eq = TRUE, deg = deg, loo = loo)
         }
 
       w.1 <-

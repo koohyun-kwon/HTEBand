@@ -9,7 +9,7 @@ opt_w(
   C.vec,
   y,
   x,
-  d,
+  d = NULL,
   eval,
   T.grad.mat,
   level,
@@ -20,7 +20,9 @@ opt_w(
   seed = NULL,
   useloop = TRUE,
   root.robust = FALSE,
-  ng = 10
+  ng = 10,
+  resid.1 = NULL,
+  resid.0 = NULL
 )
 }
 \arguments{
@@ -66,6 +68,12 @@ default is \code{root.robust = FALSE}.}
 
 \item{ng}{the number of grids of quantile values over which the diagnostic test would be peformed
 if \code{root.robust = TRUE}; default is \code{ng = 10}.}
+
+\item{resid.1}{a matrix of residuals with the same dimension of \code{y.1} calculated beforehand;
+it can be left unspecified}
+
+\item{resid.0}{a matrix of residuals with the same dimension of \code{y.0} calculated beforehand;
+it can be left unspecified}
 }
 \value{
 a list of the following components

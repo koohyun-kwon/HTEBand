@@ -1,6 +1,6 @@
 #' Lipschitz class worst-case bias
 #'
-#' Calculates the worst-case supremum bias for regression function value estimator under Lipschitz class
+#' Calculates the worst-case supremum bias for regression function value estimator under Lipschitz class.
 #'
 #' @inheritParams K_fun
 #' @param M bound on the first derivative
@@ -52,7 +52,7 @@ var_Lip <- function(y, x, t, kern, h, deg, loo, sd.homo = TRUE){
     sd.hat <- sqrt(d$sigma2)
   }else{
 
-    sd.hat <- eps_hat(y, x, deg, kern, loo)
+    sd.hat <- eps_hat(y, x, deg)
   }
 
   if(h < 0){
@@ -116,7 +116,6 @@ var_Lip_resid <- function(x, t, kern, h, resid){
 #' @param alpha determines confidence level \code{1 - alpha}.
 #' @param bw.eq if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
 #' relevant only when \code{TE = TRUE}.
-#' @param resid pre-calculated residuals with the same length as \code{y}; it can be left unspecified.
 #'
 #' @return a list with the following components
 #' \describe{
@@ -128,7 +127,7 @@ var_Lip_resid <- function(x, t, kern, h, resid){
 #' }
 #' @export
 bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
-                   deg, loo, resid = NULL){
+                   deg, loo){
 
   if(TE == TRUE){
 
@@ -136,16 +135,6 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
     y.0 <- y[d == 0]
     x.1 <- x[d == 1]
     x.0 <- x[d == 0]
-
-    if(is.null(resid)){
-
-      resid.1 <- eps_hat(y.1, x.1, deg, kern, loo)
-      resid.0 <- eps_hat(y.0, x.0, deg, kern, loo)
-    }else{
-
-      resid.1 <- resid[d == 1]
-      resid.0 <- resid[d == 0]
-    }
 
 
     obj <- function(h){
@@ -181,8 +170,6 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
     }
 
   }else{
-
-    if(is.null(resid)) resid <- eps_hat(y, x, deg, kern, loo)
 
     obj.1 <- function(h){
 

@@ -177,12 +177,12 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo,
 
     for(j in 1:k){
 
-      resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern, loo)
+      resid.1[, j] <- eps_hat(y.1[, j], x.1, deg)
 
       if(n.0 == 1){
         resid.0[, j] <- 0
       }else{
-        resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, loo)
+        resid.0[, j] <- eps_hat(y.0[, j], x.0, deg)
       }
     }
   }
@@ -251,12 +251,12 @@ sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, leve
 
     for(j in 1:k){
 
-      resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern, loo)
+      resid.1[, j] <- eps_hat(y.1[, j], x.1, deg)
 
       if(n.0 == 1){
         resid.0[, j] <- 0
       }else{
-        resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, loo)
+        resid.0[, j] <- eps_hat(y.0[, j], x.0, deg)
       }
     }
   }

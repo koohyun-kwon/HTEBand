@@ -60,7 +60,7 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
   n.T <- length(eval)
   T.grad.mat <- rep(1, n.T)
 
-  cb.res <- cb_const(method, C, y, x, 0, eval, T.grad.mat, level,
+  cb.res <- cb_const(method, C, y, x, NULL, eval, T.grad.mat, level,
                      deg, kern, loo, n.sim, seed, useloop = TRUE,
                      root.robust, ng, x.out)
 
