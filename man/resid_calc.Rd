@@ -4,7 +4,7 @@
 \alias{resid_calc}
 \title{Residual calculation function}
 \usage{
-resid_calc(y, x, d = NULL, deg, kern)
+resid_calc(y, x, d = NULL, deg, kern = "epa")
 }
 \arguments{
 \item{y}{dependent variable; possibly a matrix with \code{nrow(y)} equals the number of observations.}
