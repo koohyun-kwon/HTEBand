@@ -4,7 +4,7 @@
 \alias{eps_hat}
 \title{Residual calculation}
 \usage{
-eps_hat(y, x, deg, kern = "epa")
+eps_hat(y, x, deg, kern = "epa", reg.method = "npr")
 }
 \arguments{
 \item{y}{vector of dependent variables}
@@ -16,15 +16,25 @@ eps_hat(y, x, deg, kern = "epa")
 \item{kern}{kernel used to calculate conditional variance function;
 supports \code{"tri"}, \code{"epa"},
 \code{"uni"}, and \code{"gau"}. Default is \code{kern = "epa"}.}
+
+\item{reg.method}{nonparametric regression method used to calculate residuals;
+either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
+(standing for \code{locpol} package).}
 }
 \value{
 vector of residuals with the same length as \code{y}
 }
 \description{
-Calculates residuals after nonparametric regression using \code{\link[nprobust]{lprobust}}.
+Calculates residuals after nonparametric regression using \code{\link[nprobust]{lprobust}}
+or \code{\link[locpol]{locPolSmootherC}}.
+}
+\details{
+For now, only \code{kern = "tri"} and \code{kern = "epa"} are supported when
+\code{reg.method = "locpol"}.
 }
 \examples{
 x <- seq(from = -1, to = 1, length.out = 500)
 y <- x^2 + stats::rnorm(500, 0, 0.1)
 eps_hat(y, x, 1)
+eps_hat(y, x, 1, reg.method = "locpol")
 }

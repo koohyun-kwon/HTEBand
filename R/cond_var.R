@@ -1,6 +1,10 @@
 #' Residual calculation
 #'
-#' Calculates residuals after nonparametric regression using \code{\link[nprobust]{lprobust}}.
+#' Calculates residuals after nonparametric regression using \code{\link[nprobust]{lprobust}}
+#' or \code{\link[locpol]{locPolSmootherC}}.
+#'
+#' For now, only \code{kern = "tri"} and \code{kern = "epa"} are supported when
+#' \code{reg.method = "locpol"}.
 #'
 #'
 #' @param y vector of dependent variables
@@ -9,6 +13,9 @@
 #' @param kern kernel used to calculate conditional variance function;
 #' supports \code{"tri"}, \code{"epa"},
 #' \code{"uni"}, and \code{"gau"}. Default is \code{kern = "epa"}.
+#' @param reg.method nonparametric regression method used to calculate residuals;
+#' either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
+#' (standing for \code{locpol} package).
 #'
 #' @return vector of residuals with the same length as \code{y}
 #' @export
@@ -17,11 +24,26 @@
 #' x <- seq(from = -1, to = 1, length.out = 500)
 #' y <- x^2 + stats::rnorm(500, 0, 0.1)
 #' eps_hat(y, x, 1)
-eps_hat <- function(y, x, deg, kern = "epa"){
+#' eps_hat(y, x, 1, reg.method = "locpol")
+eps_hat <- function(y, x, deg, kern = "epa", reg.method = "npr"){
 
-  lp.res <- nprobust::lprobust(y, x, x, p = deg, kernel = kern)
-  yhat.lp <- lp.res$Estimate[, "tau.us"]
-  eps.hat <- y - yhat.lp
+  if(reg.method == "npr"){
+    lp.res <- nprobust::lprobust(y, x, x, p = deg, kernel = kern)
+    yhat.lp <- lp.res$Estimate[, "tau.us"]
+    eps.hat <- y - yhat.lp
+  }else if(reg.method == "locpol"){
+
+    if(kern == "tri"){
+      K <- locpol::TrianK
+    }else if(kern == "epa"){
+      K <- locpol::EpaK
+    }
+
+    bw <- locpol::thumbBw(x, y, deg, K)
+    locpol.res <- locpol::locPolSmootherC(x, y, x, bw, deg, K)
+    y.hat <- locpol.res$beta0
+    eps.hat <- y - y.hat
+  }
 
   return(eps.hat)
 }
