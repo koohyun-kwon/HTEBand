@@ -14,7 +14,7 @@ NpregBand(
   eval = NULL,
   q.int = 0.025,
   n.sim = 10^3,
-  kern = "triangle",
+  kern = "tri",
   deg = 1,
   seed = NULL,
   root.robust = FALSE,
@@ -47,7 +47,7 @@ of \code{x}. \code{q.int} should be between 0 and 0.5. The default is \code{q.in
 \item{n.sim}{number of bootstrap samples to use when calculating quantiles of suprema of empirical processes;
 the default is \code{n.sim = 10^3}}
 
-\item{kern}{type of kernel used in estimation; currently, only the triangle kernel (\code{kern = "triangle"})
+\item{kern}{type of kernel used in estimation; currently, only the triangle kernel (\code{kern = "tri"})
 is supported.}
 
 \item{deg}{degree of local polynomial estimator used in the first-stage variance estimation;

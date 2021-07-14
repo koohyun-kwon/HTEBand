@@ -37,7 +37,9 @@ stud_err_sim(
 
 \item{deg}{degree of local polynomial regression to be used}
 
-\item{kern}{name of the kernel. Supports \code{"triangle"} and \code{"epa"}.}
+\item{kern}{kernel used to calculate conditional variance function;
+supports \code{"tri"}, \code{"epa"},
+\code{"uni"}, and \code{"gau"}. Default is \code{kern = "epa"}.}
 
 \item{z.1}{a vector of simulated standard normal random variables of length \code{length(y.1) * M} for some \code{M}}
 
@@ -67,5 +69,5 @@ y.0 <- x.0^2 + stats::rnorm(500, 0, 0.1)
 w.1 <- w.0 <- rep(1/500, 500)
 z.1 <- rnorm(500 * 500)
 z.0 <- rnorm(500 * 500)
-stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", z.1, z.0)
+stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "tri", z.1, z.0)
 }

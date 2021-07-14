@@ -4,7 +4,7 @@
 \alias{eps_hat}
 \title{Residual calculation}
 \usage{
-eps_hat(y, x, deg)
+eps_hat(y, x, deg, kern = "epa")
 }
 \arguments{
 \item{y}{vector of dependent variables}
@@ -13,7 +13,9 @@ eps_hat(y, x, deg)
 
 \item{deg}{degree of local polynomial regression to be used}
 
-\item{kern}{name of the kernel. Supports \code{"triangle"} and \code{"epa"}.}
+\item{kern}{kernel used to calculate conditional variance function;
+supports \code{"tri"}, \code{"epa"},
+\code{"uni"}, and \code{"gau"}. Default is \code{kern = "epa"}.}
 }
 \value{
 vector of residuals with the same length as \code{y}

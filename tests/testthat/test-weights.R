@@ -26,9 +26,9 @@ test_that("valid weights: Lipschitz", {
   x <- c(x.1, x.0)
   d <- rep(c(1, 0), each = n)
 
-  res <- w_get_Lip(y, x, eval, 2, 0.95, TE = TRUE, d = d, kern = "triangle", bw.eq = FALSE,
+  res <- w_get_Lip(y, x, eval, 2, 0.95, TE = TRUE, d = d, kern = "tri", bw.eq = FALSE,
                    deg = 0)
-  res.eq <- w_get_Lip(y, x, eval, 2, 0.95, TE = TRUE, d = d, kern = "triangle", bw.eq = TRUE,
+  res.eq <- w_get_Lip(y, x, eval, 2, 0.95, TE = TRUE, d = d, kern = "tri", bw.eq = TRUE,
                       deg = 0)
 
   expect_equal(as.numeric(res$w.mat.1 >= 0), rep(1, n * m))

@@ -20,7 +20,7 @@ relevant only when \code{TE = TRUE}.}
 
 \item{M}{bound on the first derivative}
 
-\item{kern}{a string for kernel name; currently \code{"triangle"} is supported.}
+\item{kern}{a string for kernel name; currently \code{"tri"} is supported.}
 
 \item{alpha}{determines confidence level \code{1 - alpha}.}
 

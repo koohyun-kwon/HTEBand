@@ -6,7 +6,9 @@
 #' @param y vector of dependent variables
 #' @param x vector of regressors
 #' @param deg degree of local polynomial regression to be used
-#' @param kern name of the kernel. Supports \code{"triangle"} and \code{"epa"}.
+#' @param kern kernel used to calculate conditional variance function;
+#' supports \code{"tri"}, \code{"epa"},
+#' \code{"uni"}, and \code{"gau"}. Default is \code{kern = "epa"}.
 #'
 #' @return vector of residuals with the same length as \code{y}
 #' @export
@@ -15,9 +17,9 @@
 #' x <- seq(from = -1, to = 1, length.out = 500)
 #' y <- x^2 + stats::rnorm(500, 0, 0.1)
 #' eps_hat(y, x, 1)
-eps_hat <- function(y, x, deg){
+eps_hat <- function(y, x, deg, kern = "epa"){
 
-  lp.res <- nprobust::lprobust(y, x, x, p = deg)
+  lp.res <- nprobust::lprobust(y, x, x, p = deg, kernel = kern)
   yhat.lp <- lp.res$Estimate[, "tau.us"]
   eps.hat <- y - yhat.lp
 

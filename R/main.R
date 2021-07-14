@@ -21,7 +21,7 @@
 #' of \code{x}. \code{q.int} should be between 0 and 0.5. The default is \code{q.int = 0.025}.
 #' @param n.sim number of bootstrap samples to use when calculating quantiles of suprema of empirical processes;
 #' the default is \code{n.sim = 10^3}
-#' @param kern type of kernel used in estimation; currently, only the triangle kernel (\code{kern = "triangle"})
+#' @param kern type of kernel used in estimation; currently, only the triangle kernel (\code{kern = "tri"})
 #' is supported.
 #' @param deg degree of local polynomial estimator used in the first-stage variance estimation;
 #' the default is \code{deg = 1}.
@@ -38,7 +38,7 @@
 #' y <- x^2 + rnorm(500, 0, 1/4)
 #' NpregBand(y, x, 2, 0.95, "L", n.eval = 25)
 NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) / 5, eval = NULL, q.int = 0.025,
-                      n.sim = 10^3, kern = "triangle", deg = 1, seed = NULL,
+                      n.sim = 10^3, kern = "tri", deg = 1, seed = NULL,
                       root.robust = FALSE, ng = 10, x.out = NULL){
 
   fclass <- match.arg(fclass)
@@ -93,7 +93,7 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #' y <- d * x^2 + (1 - d) * x + rnorm(500, 0, 1/4)
 #' CATEBand(y, x, d, 2, 0.95, n.eval = 25, h.eq = TRUE)
 CATEBand <- function(y, x, d, C, level, fclass = "L", h.eq = FALSE, n.eval = min(sum(d == 1), sum(d == 0)) / 5,
-                     eval = NULL, q.int = 0.025, n.sim = 10^3, kern = "triangle", deg = 1, seed = NULL,
+                     eval = NULL, q.int = 0.025, n.sim = 10^3, kern = "tri", deg = 1, seed = NULL,
                      root.robust = FALSE, ng = 10, x.out = NULL){
 
   method <-

@@ -51,7 +51,9 @@ and the control groups}
 
 \item{deg}{degree of local polynomial regression to be used}
 
-\item{kern}{name of the kernel. Supports \code{"triangle"} and \code{"epa"}.}
+\item{kern}{kernel used to calculate conditional variance function;
+supports \code{"tri"}, \code{"epa"},
+\code{"uni"}, and \code{"gau"}. Default is \code{kern = "epa"}.}
 
 \item{M}{number of bootstrap simulations}
 

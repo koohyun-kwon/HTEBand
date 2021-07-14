@@ -11,10 +11,10 @@ test_that("valid confidence interval - Lipschitz regression", {
   x <- c(x.1, x.0)
   d <- rep(c(1, 0), each = n)
 
-  res <- ci_reg_Lip(y, x, 0, 2, 0.99, TE = TRUE, d = d, kern = "triangle",
+  res <- ci_reg_Lip(y, x, 0, 2, 0.99, TE = TRUE, d = d, kern = "tri",
                     bw.eq = FALSE, deg = 0, se.method = "resid")
 
-  res.eq <- ci_reg_Lip(y, x, 0, 2, 0.99, TE = TRUE, d = d, kern = "triangle",
+  res.eq <- ci_reg_Lip(y, x, 0, 2, 0.99, TE = TRUE, d = d, kern = "tri",
                        bw.eq = TRUE, deg = 0, se.method = "resid")
 
   res

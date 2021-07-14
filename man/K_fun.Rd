@@ -4,7 +4,7 @@
 \alias{K_fun}
 \title{Kernel function}
 \usage{
-K_fun(x, t, h, kern = c("triangle"))
+K_fun(x, t, h, kern = c("tri"))
 }
 \arguments{
 \item{x}{a vector of regressors.}
@@ -13,7 +13,7 @@ K_fun(x, t, h, kern = c("triangle"))
 
 \item{h}{a positive bandwidth.}
 
-\item{kern}{a string for kernel name; currently \code{"triangle"} is supported.}
+\item{kern}{a string for kernel name; currently \code{"tri"} is supported.}
 }
 \value{
 a vector of kernel values with the same dimension as \code{x}.
@@ -23,5 +23,5 @@ Calculates the values of kernel function given a vector of regressors.
 }
 \examples{
 x <- seq(-1, 1, length.out = 10)
-K_fun(x, 0, 0.5, "triangle")
+K_fun(x, 0, 0.5, "tri")
 }

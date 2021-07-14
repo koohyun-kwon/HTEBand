@@ -12,7 +12,7 @@ w_get_Lip(
   level,
   TE = FALSE,
   d = NULL,
-  kern = "triangle",
+  kern = "tri",
   bw.eq = TRUE,
   deg = 0
 )
@@ -33,7 +33,7 @@ w_get_Lip(
 \item{d}{a vector of indicator variables specifying treatment and control group status;
 relevant only when \code{TE = TRUE}.}
 
-\item{kern}{a string for kernel name; currently \code{"triangle"} is supported.}
+\item{kern}{a string for kernel name; currently \code{"tri"} is supported.}
 
 \item{bw.eq}{if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
 relevant only when \code{TE = TRUE}.}

@@ -13,7 +13,7 @@ var_Lip(y, x, t, kern, h, deg, sd.homo = TRUE)
 
 \item{t}{a scalar evaluation point.}
 
-\item{kern}{a string for kernel name; currently \code{"triangle"} is supported.}
+\item{kern}{a string for kernel name; currently \code{"tri"} is supported.}
 
 \item{h}{a positive bandwidth.}
 

@@ -13,7 +13,7 @@ bias_Lip(x, t, M, kern, h)
 
 \item{M}{bound on the first derivative}
 
-\item{kern}{a string for kernel name; currently \code{"triangle"} is supported.}
+\item{kern}{a string for kernel name; currently \code{"tri"} is supported.}
 
 \item{h}{a positive bandwidth.}
 }

@@ -110,20 +110,20 @@ mat_sq <- function(mat, arr.ret = TRUE){
 #' @param x a vector of regressors.
 #' @param t a scalar evaluation point.
 #' @param h a positive bandwidth.
-#' @param kern a string for kernel name; currently \code{"triangle"} is supported.
+#' @param kern a string for kernel name; currently \code{"tri"} is supported.
 #'
 #' @return a vector of kernel values with the same dimension as \code{x}.
 #' @export
 #'
 #' @examples
 #' x <- seq(-1, 1, length.out = 10)
-#' K_fun(x, 0, 0.5, "triangle")
-K_fun <- function(x, t, h, kern = c("triangle")){
+#' K_fun(x, 0, 0.5, "tri")
+K_fun <- function(x, t, h, kern = c("tri")){
 
   if(is.na(h) | h <=0) stop("Invalid bandwidth")
 
   kern = match.arg(kern)
-  if(kern == "triangle"){
+  if(kern == "tri"){
 
     res <- pmax(1 - abs(x - t) / h, 0)
   }

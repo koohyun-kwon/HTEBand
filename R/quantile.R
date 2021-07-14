@@ -151,7 +151,7 @@ stud_err <- function(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad){
 #' w.1 <- w.0 <- rep(1/500, 500)
 #' z.1 <- rnorm(500 * 500)
 #' z.0 <- rnorm(500 * 500)
-#' stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", z.1, z.0)
+#' stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "tri", z.1, z.0)
 stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern,
                          z.1, z.0, resid.1 = NULL, resid.0 = NULL){
 
@@ -177,12 +177,12 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern,
 
     for(j in 1:k){
 
-      resid.1[, j] <- eps_hat(y.1[, j], x.1, deg)
+      resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern)
 
       if(n.0 == 1){
         resid.0[, j] <- 0
       }else{
-        resid.0[, j] <- eps_hat(y.0[, j], x.0, deg)
+        resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern)
       }
     }
   }
@@ -231,7 +231,7 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern,
 #' eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
 #' w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
 #' sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
-#' rep(1, n.T), 0.95, 1, "triangle", 100)
+#' rep(1, n.T), 0.95, 1, "tri", 100)
 sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, level,
                         deg, kern, M, seed = NULL, useloop = TRUE, resid.1 = NULL, resid.0 = NULL){
 

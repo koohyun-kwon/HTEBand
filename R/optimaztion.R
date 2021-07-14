@@ -78,7 +78,7 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
     C <- C.vec[1]
   }else if(method %in% c("reg.Lip", "TE.Lip", "TE.Lip.eqbw")){
 
-    kern.reg <- "triangle"
+    kern.reg <- "tri"
     se.method <- "resid"
     C <- C.vec[1]
   }

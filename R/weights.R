@@ -73,7 +73,7 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
 #' y <- x + rnorm(500, 0, 1/4)
 #' eval <- seq(from = -0.9, to = 0.9, length.out = 5)
 #' w_get_Lip(y, x, eval, 1, 0.95)
-w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "triangle", bw.eq = TRUE,
+w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "tri", bw.eq = TRUE,
                       deg = 0){
 
   m <- length(eval)
