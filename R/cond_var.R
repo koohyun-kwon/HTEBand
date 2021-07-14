@@ -36,7 +36,7 @@ eps_hat <- function(y, x, deg, kern = "epa"){
 #' @return a list of residuals corresponding to treated individuals (\code{resid.1}) and control individuals (\code{resid.0});
 #' if there is no control group, \code{resid.0 = 0} is returned.
 #' @export
-resid_calc <- function(y, x, d = NULL, deg){
+resid_calc <- function(y, x, d = NULL, deg, kern){
 
   is.TE <- sum(d == 0) > 0
   if(!is.TE) d <- rep(1, length(y))
@@ -68,8 +68,8 @@ resid_calc <- function(y, x, d = NULL, deg){
 
   for(j in 1:k){
 
-    resid.1[, j] <- eps_hat(y.1[, j], x.1, deg)
-    if(is.TE) resid.0[, j] <- eps_hat(y.0[, j], x.0, deg)
+    resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern)
+    if(is.TE) resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern)
   }
 
   return(list(resid.1 = resid.1, resid.0 = resid.0))

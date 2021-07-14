@@ -96,7 +96,7 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
 
   if(is.null(resid.1)){
 
-    resid.all <- resid_calc(y, x, d, deg)
+    resid.all <- resid_calc(y, x, d, deg, kern)
     resid.1 <- resid.all$resid.1
     resid.0 <- resid.all$resid.0
 

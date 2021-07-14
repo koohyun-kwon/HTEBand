@@ -4,7 +4,7 @@
 \alias{resid_calc}
 \title{Residual calculation function}
 \usage{
-resid_calc(y, x, d = NULL, deg)
+resid_calc(y, x, d = NULL, deg, kern)
 }
 \arguments{
 \item{y}{dependent variable; possibly a matrix with \code{nrow(y)} equals the number of observations.}
@@ -14,6 +14,10 @@ resid_calc(y, x, d = NULL, deg)
 \item{d}{a vector of treatment indicator; it can be arbitrarily specified when not used.}
 
 \item{deg}{degree of local polynomial regression to be used}
+
+\item{kern}{kernel used to calculate conditional variance function;
+supports \code{"tri"}, \code{"epa"},
+\code{"uni"}, and \code{"gau"}. Default is \code{kern = "epa"}.}
 }
 \value{
 a list of residuals corresponding to treated individuals (\code{resid.1}) and control individuals (\code{resid.0});
