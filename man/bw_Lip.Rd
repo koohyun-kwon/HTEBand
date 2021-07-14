@@ -4,7 +4,7 @@
 \alias{bw_Lip}
 \title{Optimal bandwidths under Lipschitz class}
 \usage{
-bw_Lip(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE, deg, loo)
+bw_Lip(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE, deg)
 }
 \arguments{
 \item{y}{vector of dependent variables}
@@ -28,8 +28,6 @@ relevant only when \code{TE = TRUE}.}
 relevant only when \code{TE = TRUE}.}
 
 \item{deg}{degree of local polynomial regression to be used}
-
-\item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
 }
 \value{
 a list with the following components

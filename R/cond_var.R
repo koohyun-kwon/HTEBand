@@ -7,7 +7,6 @@
 #' @param x vector of regressors
 #' @param deg degree of local polynomial regression to be used
 #' @param kern name of the kernel. Supports \code{"triangle"} and \code{"epa"}.
-#' @param loo If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.
 #'
 #' @return vector of residuals with the same length as \code{y}
 #' @export

@@ -16,7 +16,7 @@
 #'  as well as \code{increasing} and \code{opt.grid}; see \code{\link{opt_w}}.
 #' @export
 cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
-                     deg, kern, loo, M, seed = NULL, useloop = TRUE,
+                     deg, kern, M, seed = NULL, useloop = TRUE,
                      root.robust = FALSE, ng = 10, x.out = NULL){
 
   n.T <- length(eval)
@@ -37,7 +37,7 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
   }
 
   opt.res <- opt_w(method, C.vec, y, x, d, eval, T.grad.mat, level,
-                   deg, kern, loo, M, seed, useloop,
+                   deg, kern, M, seed, useloop,
                    root.robust, ng)
   c.opt <- opt.res$c.root
 
@@ -55,13 +55,13 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
         ci_reg_Hol(y, x, eval[t], C, ci.level, kern.reg, se.initial, se.method, J)
       }else if(method == "reg.Lip"){
         ci_reg_Lip(y, x, eval[t], C, ci.level, kern = kern.reg,
-                   deg = deg, loo = loo, se.method = se.method)
+                   deg = deg, se.method = se.method)
       }else if(method == "TE.Lip"){
         ci_reg_Lip(y, x, eval[t], C, ci.level, TE = TRUE, d = d, kern = kern.reg,
-                   bw.eq = FALSE, deg = deg, loo = loo, se.method = se.method)
+                   bw.eq = FALSE, deg = deg, se.method = se.method)
       }else if(method == "TE.Lip.eqbw"){
         ci_reg_Lip(y, x, eval[t], C, ci.level, TE = TRUE, d = d, kern = kern.reg,
-                   bw.eq = TRUE, deg = deg, loo = loo, se.method = se.method)
+                   bw.eq = TRUE, deg = deg, se.method = se.method)
       }
   }
 

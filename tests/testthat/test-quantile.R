@@ -33,7 +33,7 @@ test_that("positive estimated variance (k = 1)",{
   w.1 <- w.0 <- rep(1/500, 500)
   z.1 <- rnorm(500 * 500)
   z.0 <- rnorm(500 * 500)
-  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, z.1, z.0)$dnmnt
+  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", z.1, z.0)$dnmnt
   omega.1 <- omega.0 <- rep(0.1^2, 500)
   res.true <- avar(w.1, w.0, omega.1, omega.0, 1)
   c(res, sqrt(res.true))
@@ -52,7 +52,7 @@ test_that("positive estimated variance (k = 1); w.0 = 0",{
   w.0 <- 0
   z.1 <- rnorm(500 * 500)
   z.0 <- rep(0, 500)
-  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, z.1, z.0)$dnmnt
+  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", z.1, z.0)$dnmnt
   omega.1 <- rep(0.1^2, 500)
   omega.0 <- 0
   res.true <- avar(w.1, w.0, omega.1, omega.0, 1)
@@ -80,7 +80,7 @@ test_that("positive estimated variance (k = 2)",{
   z.0 <- rnorm(n * 2 * 500)
 
 
-  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, c(1, 1), 1, "triangle", TRUE, z.1, z.0)$dnmnt
+  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, c(1, 1), 1, "triangle", z.1, z.0)$dnmnt
 
   omega.1 <- omega.0 <- array(rep(c(2 * sd^2, sd^2, sd^2 , 2 * sd^2), each = n), dim = c(n, 2, 2))
   res.true <- avar(w.1, w.0, omega.1, omega.0, c(1, 1))
@@ -108,7 +108,7 @@ test_that("positive estimated variance (k = 2); w.0 = 0",{
   z.0 <- rep(0, 2 * 500)
 
 
-  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, c(1, 1), 1, "triangle", TRUE, z.1, z.0)$dnmnt
+  res <- stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, c(1, 1), 1, "triangle", z.1, z.0)$dnmnt
 
   omega.1 <- array(rep(c(sd^2,0,0,sd^2), each = n), dim = c(n, 2, 2))
   omega.0 <- array(c(0, 0, 0, 0), dim = c(1, 2, 2))
@@ -137,7 +137,7 @@ test_that("Valid true and simulated quantile value", {
   res <- sup_quant_orc(eps.1.mat, eps.0.mat, w, array(0, dim = c(1, 1, n.T)),
                        omega, 0, T.grad.mat, level, M, useloop = TRUE)
   res.est <- sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
-                           rep(1, n.T), level, 1, "triangle", FALSE, 1000)
+                           rep(1, n.T), level, 1, "triangle", 1000)
   c(res, res.est)
 
   expect_equal(as.numeric(res) > stats::qnorm(level), TRUE)
@@ -157,7 +157,7 @@ test_that("Valid true and simulated quantile value", {
   #   res <- sup_quant_orc(eps.1.mat, eps.0.mat, w, array(0, dim = c(1, 1, n.T)),
   #                        omega, 0, T.grad.mat, level, M, useloop = TRUE)
   #   res.est <- sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
-  #                            rep(1, n.T), level, 1, "triangle", FALSE, 1000)
+  #                            rep(1, n.T), level, 1, "triangle", 1000)
   #
   #   test.val = test.val + (res - res.est)/res
   # }
@@ -186,7 +186,7 @@ test_that("Valid true and simulated quantile value: heteroskedastic", {
   res <- sup_quant_orc(eps.1.mat, eps.0.mat, w, array(0, dim = c(1, 1, n.T)),
                        omega, 0, T.grad.mat, level, M, useloop = TRUE)
   res.est <- sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
-                           rep(1, n.T), level, 1, "triangle", FALSE, 1000)
+                           rep(1, n.T), level, 1, "triangle", 1000)
   c(res, res.est)
 
   expect_equal(as.numeric(res) > stats::qnorm(level), TRUE)
@@ -206,7 +206,7 @@ test_that("Valid true and simulated quantile value: heteroskedastic", {
   #   res <- sup_quant_orc(eps.1.mat, eps.0.mat, w, array(0, dim = c(1, 1, n.T)),
   #                        omega, 0, T.grad.mat, level, M, useloop = TRUE)
   #   res.est <- sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
-  #                            rep(1, n.T), level, 1, "triangle", FALSE, 1000)
+  #                            rep(1, n.T), level, 1, "triangle", 1000)
   #
   #   test.val = test.val + (res - res.est)/res
   # }

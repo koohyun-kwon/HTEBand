@@ -13,7 +13,7 @@
 #
 #   system.time({
 #     opt.res <- opt_w("reg.Hol", 1, y, x, 0, eval, T.grad.mat, level,
-#                       1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+#                       1, "triangle", M, seed = NULL, useloop = TRUE,
 #                       root.robust = TRUE)
 #     res <- opt.res$c.root
 #     res.inc <- opt.res$increasing
@@ -38,7 +38,7 @@
 #   #   w.0 <- array(0, dim = c(1, 1, n.T))
 #   #
 #   #   q.sim <- sup_quant_sim(y, 0, x, 0, w.1, w.0, rep(1, n.T), level,
-#   #                          1, "triangle", FALSE, M, seed = NULL, useloop = TRUE)
+#   #                          1, "triangle", M, seed = NULL, useloop = TRUE)
 #   #   return(c - q.sim)
 #   # }
 #   #
@@ -71,7 +71,7 @@
 #
 #   system.time({
 #     opt.res <- opt_w("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
-#                      1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+#                      1, "triangle", M, seed = NULL, useloop = TRUE,
 #                      root.robust = TRUE)
 #     res <- opt.res$c.root
 #     res.inc <- opt.res$increasing
@@ -106,7 +106,7 @@
 #
 #   system.time({
 #     opt.res <- opt_w("TE.Lip", 1, y, x, d, eval, T.grad.mat, level,
-#                      1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+#                      1, "triangle", M, seed = NULL, useloop = TRUE,
 #                      root.robust = TRUE)
 #     res <- opt.res$c.root
 #     res.inc <- opt.res$increasing

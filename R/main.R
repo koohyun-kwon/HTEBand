@@ -25,8 +25,6 @@
 #' is supported.
 #' @param deg degree of local polynomial estimator used in the first-stage variance estimation;
 #' the default is \code{deg = 1}.
-#' @param loo logical indicating whether the leave-one-out procedure would be used in the first-stage variance estimation;
-#' the default is \code{loo = FALSE}; see \code{\link[locpol]{locPolSmootherC}} for details.
 #' @param seed seed number for bootstrap random sample generation. The default is \code{seed = NULL}.
 #' @inheritParams cb_const
 #'
@@ -40,7 +38,7 @@
 #' y <- x^2 + rnorm(500, 0, 1/4)
 #' NpregBand(y, x, 2, 0.95, "L", n.eval = 25)
 NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) / 5, eval = NULL, q.int = 0.025,
-                      n.sim = 10^3, kern = "triangle", deg = 1, loo = FALSE, seed = NULL,
+                      n.sim = 10^3, kern = "triangle", deg = 1, seed = NULL,
                       root.robust = FALSE, ng = 10, x.out = NULL){
 
   fclass <- match.arg(fclass)
@@ -61,7 +59,7 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
   T.grad.mat <- rep(1, n.T)
 
   cb.res <- cb_const(method, C, y, x, NULL, eval, T.grad.mat, level,
-                     deg, kern, loo, n.sim, seed, useloop = TRUE,
+                     deg, kern, n.sim, seed, useloop = TRUE,
                      root.robust, ng, x.out)
 
   return(cb.res)
@@ -95,7 +93,7 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #' y <- d * x^2 + (1 - d) * x + rnorm(500, 0, 1/4)
 #' CATEBand(y, x, d, 2, 0.95, n.eval = 25, h.eq = TRUE)
 CATEBand <- function(y, x, d, C, level, fclass = "L", h.eq = FALSE, n.eval = min(sum(d == 1), sum(d == 0)) / 5,
-                     eval = NULL, q.int = 0.025, n.sim = 10^3, kern = "triangle", deg = 1, loo = FALSE, seed = NULL,
+                     eval = NULL, q.int = 0.025, n.sim = 10^3, kern = "triangle", deg = 1, seed = NULL,
                      root.robust = FALSE, ng = 10, x.out = NULL){
 
   method <-
@@ -117,7 +115,7 @@ CATEBand <- function(y, x, d, C, level, fclass = "L", h.eq = FALSE, n.eval = min
   T.grad.mat <- rep(1, n.T)
 
   cb.res <- cb_const(method, C, y, x, d, eval, T.grad.mat, level,
-                     deg, kern, loo, n.sim, seed, useloop = TRUE,
+                     deg, kern, n.sim, seed, useloop = TRUE,
                      root.robust, ng, x.out)
 
   return(cb.res)

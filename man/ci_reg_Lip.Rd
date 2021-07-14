@@ -15,7 +15,6 @@ ci_reg_Lip(
   kern = "triangle",
   bw.eq = TRUE,
   deg = 0,
-  loo = FALSE,
   se.method = "resid"
 )
 }
@@ -41,8 +40,6 @@ relevant only when \code{TE = TRUE}.}
 relevant only when \code{TE = TRUE}.}
 
 \item{deg}{degree of local polynomial regression to be used}
-
-\item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
 
 \item{se.method}{methods for estimating standard error of estimate; currently,
 only "resid" is supported.}

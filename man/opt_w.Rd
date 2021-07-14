@@ -15,7 +15,6 @@ opt_w(
   level,
   deg,
   kern,
-  loo,
   M,
   seed = NULL,
   useloop = TRUE,
@@ -53,8 +52,6 @@ and the control groups}
 \item{deg}{degree of local polynomial regression to be used}
 
 \item{kern}{name of the kernel. Supports \code{"triangle"} and \code{"epa"}.}
-
-\item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
 
 \item{M}{number of bootstrap simulations}
 

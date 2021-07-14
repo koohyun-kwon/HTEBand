@@ -151,8 +151,8 @@ stud_err <- function(w.1, w.0, resid.1, resid.0, omega.1, omega.0, T.grad){
 #' w.1 <- w.0 <- rep(1/500, 500)
 #' z.1 <- rnorm(500 * 500)
 #' z.0 <- rnorm(500 * 500)
-#' stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, z.1, z.0)
-stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo,
+#' stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", z.1, z.0)
+stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern,
                          z.1, z.0, resid.1 = NULL, resid.0 = NULL){
 
   k <- length(T.grad)
@@ -231,9 +231,9 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo,
 #' eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
 #' w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
 #' sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
-#' rep(1, n.T), 0.95, 1, "triangle", FALSE, 100)
+#' rep(1, n.T), 0.95, 1, "triangle", 100)
 sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, level,
-                        deg, kern, loo, M, seed = NULL, useloop = TRUE, resid.1 = NULL, resid.0 = NULL){
+                        deg, kern, M, seed = NULL, useloop = TRUE, resid.1 = NULL, resid.0 = NULL){
 
   T.grad.mat <- v_to_m(T.grad.mat)
   n.T <- nrow(T.grad.mat)
@@ -273,7 +273,7 @@ sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, leve
       T.grad <- T.grad.mat[t, ]
       w.1 <- w.1.arr[, , t]
       w.0 <- w.0.arr[, , t]
-      val.new <- abs(stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern, loo,
+      val.new <- abs(stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern,
                                   z.1, z.0, resid.1, resid.0)$err.sim)
       max.val <- pmax(max.val, val.new)
     }

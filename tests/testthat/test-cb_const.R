@@ -13,7 +13,7 @@ test_that("valid confidence band (Holder)", {
 
   system.time({
     opt.res <- cb_const("reg.Hol", 1, y, x, 0, eval, T.grad.mat, level,
-                        1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+                        1, "triangle", M, seed = NULL, useloop = TRUE,
                         root.robust = FALSE)
   })
 
@@ -21,7 +21,7 @@ test_that("valid confidence band (Holder)", {
 
   # system.time({
   #   opt.res <- cb_const("reg.Hol", 1, y, x, 0, eval, T.grad.mat, level,
-  #                       1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+  #                       1, "triangle", M, seed = NULL, useloop = TRUE,
   #                       root.robust = TRUE)
   #   res <- opt.res$cb.data
   #   res.inc <- opt.res$increasing
@@ -46,7 +46,7 @@ test_that("valid confidence band (Lipschitz)", {
 
   system.time({
     opt.res <- cb_const("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
-                        1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+                        1, "triangle", M, seed = NULL, useloop = TRUE,
                         root.robust = FALSE)
   })
 
@@ -54,7 +54,7 @@ test_that("valid confidence band (Lipschitz)", {
 
   # system.time({
   #   opt.res <- cb_const("reg.Lip", 1, y, x, 0, eval, T.grad.mat, level,
-  #                       1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+  #                       1, "triangle", M, seed = NULL, useloop = TRUE,
   #                       root.robust = TRUE)
   #   res <- opt.res$cb.data
   #   res.inc <- opt.res$increasing
@@ -89,7 +89,7 @@ test_that("valid confidence band (Lipschitz-TE)", {
 
   system.time({
     opt.res <- cb_const("TE.Lip", 2, y, x, d, eval, T.grad.mat, level,
-                        1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+                        1, "triangle", M, seed = NULL, useloop = TRUE,
                         root.robust = FALSE)
   })
 
@@ -97,7 +97,7 @@ test_that("valid confidence band (Lipschitz-TE)", {
 
   # system.time({
   #   opt.res <- cb_const("TE.Lip", 2, y, x, d, eval, T.grad.mat, level,
-  #                       1, "triangle", FALSE, M, seed = NULL, useloop = TRUE,
+  #                       1, "triangle", M, seed = NULL, useloop = TRUE,
   #                       root.robust = TRUE)
   #   res <- opt.res$cb.data
   #   res.inc <- opt.res$increasing

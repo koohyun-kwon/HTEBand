@@ -15,7 +15,6 @@ sup_quant_sim(
   level,
   deg,
   kern,
-  loo,
   M,
   seed = NULL,
   useloop = TRUE,
@@ -43,8 +42,6 @@ sup_quant_sim(
 \item{deg}{degree of local polynomial regression to be used}
 
 \item{kern}{name of the kernel. Supports \code{"triangle"} and \code{"epa"}.}
-
-\item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
 
 \item{M}{number of bootstrap simulations}
 
@@ -74,5 +71,5 @@ n.T <- 10
 eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
 w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
 sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
-rep(1, n.T), 0.95, 1, "triangle", FALSE, 100)
+rep(1, n.T), 0.95, 1, "triangle", 100)
 }

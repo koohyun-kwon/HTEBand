@@ -10,7 +10,7 @@ test_that("positive variance", {
   sd.true <- 1/2 + x^2
   eps <- stats::rnorm(n, 0, sd.true)
   y <- x + eps
-  expect_equal(var_Lip(y, x, 0, "triangle", 0.1, 0, FALSE) > 0, TRUE)
+  expect_equal(var_Lip(y, x, 0, "triangle", 0.1, 0) > 0, TRUE)
 
   # Additional test for difference between estimated sd and true sd
   # diff <- 0
@@ -21,7 +21,7 @@ test_that("positive variance", {
   #   eps <- stats::rnorm(n, 0, sd.true)
   #   y <- x + eps
   #
-  #   diff <- diff + (var_Lip(y, x, 0, "triangle", 0.1, 0, FALSE) - true.val) / true.val
+  #   diff <- diff + (var_Lip(y, x, 0, "triangle", 0.1, 0) - true.val) / true.val
   # }
   #
   # diff / 100
@@ -36,7 +36,7 @@ test_that("valid optimal bandwidth", {
   y <- x + eps
 
   res <- bw_Lip(y, x, 0, TE = FALSE, d = NULL, 1, "triangle", 0.05, bw.eq = TRUE,
-                1, FALSE)
+                1)
 
   res
 
@@ -59,9 +59,9 @@ test_that("valid optimal bandwidth(TE)", {
   d <- rep(c(1, 0), each = n)
 
   res <- bw_Lip(y, x, 0, TE = TRUE, d = d, 1, "triangle", 0.05, bw.eq = FALSE,
-                1, FALSE)
+                1)
   res.eq <- bw_Lip(y, x, 0, TE = TRUE, d = d, 1, "triangle", 0.05, bw.eq = TRUE,
-                   1, FALSE)
+                   1)
   # res.orc <- bw_Lip_supp(c(sd.true, sd.true/2), x, 0, TE = TRUE, d = d, 1, "triangle", 0.05, bw.eq = TRUE)
 
   res

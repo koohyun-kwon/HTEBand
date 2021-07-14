@@ -14,8 +14,7 @@ w_get_Lip(
   d = NULL,
   kern = "triangle",
   bw.eq = TRUE,
-  deg = 0,
-  loo = FALSE
+  deg = 0
 )
 }
 \arguments{
@@ -40,8 +39,6 @@ relevant only when \code{TE = TRUE}.}
 relevant only when \code{TE = TRUE}.}
 
 \item{deg}{degree of local polynomial regression to be used}
-
-\item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
 }
 \value{
 a matrix of weights with each column corresponding to weights for each evaluation points,

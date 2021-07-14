@@ -16,7 +16,6 @@ NpregBand(
   n.sim = 10^3,
   kern = "triangle",
   deg = 1,
-  loo = FALSE,
   seed = NULL,
   root.robust = FALSE,
   ng = 10,
@@ -53,9 +52,6 @@ is supported.}
 
 \item{deg}{degree of local polynomial estimator used in the first-stage variance estimation;
 the default is \code{deg = 1}.}
-
-\item{loo}{logical indicating whether the leave-one-out procedure would be used in the first-stage variance estimation;
-the default is \code{loo = FALSE}; see \code{\link[locpol]{locPolSmootherC}} for details.}
 
 \item{seed}{seed number for bootstrap random sample generation. The default is \code{seed = NULL}.}
 

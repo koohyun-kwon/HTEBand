@@ -14,7 +14,6 @@ stud_err_sim(
   T.grad,
   deg,
   kern,
-  loo,
   z.1,
   z.0,
   resid.1 = NULL,
@@ -39,8 +38,6 @@ stud_err_sim(
 \item{deg}{degree of local polynomial regression to be used}
 
 \item{kern}{name of the kernel. Supports \code{"triangle"} and \code{"epa"}.}
-
-\item{loo}{If \code{TRUE}, the leave-one-out version is used; see \code{\link[locpol]{locPolSmootherC}}.}
 
 \item{z.1}{a vector of simulated standard normal random variables of length \code{length(y.1) * M} for some \code{M}}
 
@@ -70,5 +67,5 @@ y.0 <- x.0^2 + stats::rnorm(500, 0, 0.1)
 w.1 <- w.0 <- rep(1/500, 500)
 z.1 <- rnorm(500 * 500)
 z.0 <- rnorm(500 * 500)
-stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", TRUE, z.1, z.0)
+stud_err_sim(y.1, y.0, x.1, x.0, w.1, w.0, 1, 1, "triangle", z.1, z.0)
 }

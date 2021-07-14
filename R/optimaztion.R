@@ -37,7 +37,7 @@
 #' }
 #' @export
 opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
-                  deg, kern, loo, M, seed = NULL, useloop = TRUE,
+                  deg, kern, M, seed = NULL, useloop = TRUE,
                   root.robust = FALSE, ng = 10, resid.1 = NULL, resid.0 = NULL){
 
   n.T <- length(eval)
@@ -132,13 +132,13 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
         if(method == "reg.Hol"){
           w_get_Hol(y, x, eval, C, level.int, kern.reg, se.initial, se.method, J)$w.mat
         }else if(method == "reg.Lip"){
-          w_get_Lip(y, x, eval, C, level.int, kern = kern.reg, deg = deg, loo = loo)
+          w_get_Lip(y, x, eval, C, level.int, kern = kern.reg, deg = deg)
         }else if(method == "TE.Lip"){
           w_get_Lip(y, x, eval, C, level.int, TE = TRUE, d = d, kern = kern.reg,
                     bw.eq = FALSE, deg = deg)
         }else if(method == "TE.Lip.eqbw"){
           w_get_Lip(y, x, eval, C, level.int, TE = TRUE, d = d, kern = kern.reg,
-                    bw.eq = TRUE, deg = deg, loo = loo)
+                    bw.eq = TRUE, deg = deg)
         }
 
       w.1 <-
@@ -159,7 +159,7 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
       w.0 <- array(w.0, dim = c(nrow(y.0), k, n.T))
 
       q.sim <- sup_quant_sim(y.1, y.0, x.1, x.0, w.1, w.0, rep(1, n.T),
-                             level, deg, kern, loo, M, seed, useloop, resid.1, resid.0)
+                             level, deg, kern, M, seed, useloop, resid.1, resid.0)
     }
 
     eq.res <- list(val = c - q.sim, w.1 = w.1, w.0 = w.0)

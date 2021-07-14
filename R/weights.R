@@ -74,7 +74,7 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
 #' eval <- seq(from = -0.9, to = 0.9, length.out = 5)
 #' w_get_Lip(y, x, eval, 1, 0.95)
 w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "triangle", bw.eq = TRUE,
-                      deg = 0, loo = FALSE){
+                      deg = 0){
 
   m <- length(eval)
 
@@ -93,7 +93,7 @@ w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "triang
 
     for(i in 1:m){
 
-      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg, loo)$h.opt
+      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg)$h.opt
       w.mat.1[, i] <- K_fun(x.1, eval[i], h.opt[1], kern) / sum(K_fun(x.1, eval[i], h.opt[1], kern))
       w.mat.0[, i] <- K_fun(x.0, eval[i], h.opt[2], kern) / sum(K_fun(x.0, eval[i], h.opt[2], kern))
     }
@@ -107,7 +107,7 @@ w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "triang
 
     for(i in 1:m){
 
-      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg, loo)$h.opt
+      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg)$h.opt
       w.mat[, i] <- K_fun(x, eval[i], h.opt, kern) / sum(K_fun(x, eval[i], h.opt, kern))
     }
 

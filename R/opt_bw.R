@@ -41,7 +41,7 @@ bias_Lip <- function(x, t, M, kern, h){
 #'
 #' @return a scalar variance value
 #' @export
-var_Lip <- function(y, x, t, kern, h, deg, loo, sd.homo = TRUE){
+var_Lip <- function(y, x, t, kern, h, deg, sd.homo = TRUE){
 
   h.min <- min(abs(x - t))
 
@@ -127,7 +127,7 @@ var_Lip_resid <- function(x, t, kern, h, resid){
 #' }
 #' @export
 bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
-                   deg, loo){
+                   deg){
 
   if(TE == TRUE){
 
@@ -142,7 +142,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
       h.1 <- abs(h[1]) # optim() might evaluate negative bandwidths
       h.0 <- abs(h[2])
       bias <- bias_Lip(x.1, t, M, kern, h.1) + bias_Lip(x.0, t, M, kern, h.0)
-      sd <- sqrt(var_Lip(y.1, x.1, t, kern, h.1, deg, loo) + var_Lip(y.0, x.0, t, kern, h.0, deg, loo))
+      sd <- sqrt(var_Lip(y.1, x.1, t, kern, h.1, deg) + var_Lip(y.0, x.0, t, kern, h.0, deg))
       c <- stats::qnorm(1 - alpha) / 2
       return(bias + c * sd)
     }
@@ -174,7 +174,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
     obj.1 <- function(h){
 
       bias <- bias_Lip(x, t, M, kern, h)
-      sd <- sqrt(var_Lip(y, x, t, kern, h, deg, loo))
+      sd <- sqrt(var_Lip(y, x, t, kern, h, deg))
       c <- stats::qnorm(1 - alpha) / 2
       return(bias + c * sd)
     }
