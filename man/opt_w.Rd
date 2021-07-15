@@ -22,7 +22,9 @@ opt_w(
   ng = 10,
   resid.1 = NULL,
   resid.0 = NULL,
-  var.reg = "npr"
+  var.reg = "npr",
+  c.method = "root",
+  c.supp = NULL
 )
 }
 \arguments{
@@ -83,6 +85,12 @@ corresponds to the \eqn{i}th component of \code{y[d == 0, ]}. It can be specifie
 \item{var.reg}{nonparametric regression method used to calculate residuals;
 either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
 (standing for \code{locpol} package). Default is \code{var.reg = "npr"}.}
+
+\item{c.method}{method to calculate the optimal value of \eqn{c_n}, an element
+in \code{c("root", "supp")}; default is \code{c.method = "root"}.}
+
+\item{c.supp}{value of \eqn{c_n} to be used when \code{c.method = "supp"};
+default is \code{c.supp = NULL}.}
 }
 \value{
 a list of the following components

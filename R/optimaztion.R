@@ -29,6 +29,10 @@
 #' or a matrix if \code{ncol(y) > 1}. Its \eqn{i}th component
 #' corresponds to the \eqn{i}th component of \code{y[d == 0, ]}. It can be specified to be
 #' \code{NULL}.
+#' @param c.method method to calculate the optimal value of \eqn{c_n}, an element
+#' in \code{c("root", "supp")}; default is \code{c.method = "root"}.
+#' @param c.supp value of \eqn{c_n} to be used when \code{c.method = "supp"};
+#' default is \code{c.supp = NULL}.
 #' @inheritParams sup_quant_sim
 #'
 #' @return a list of the following components
@@ -48,7 +52,7 @@
 opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
                   deg, kern, M, seed = NULL, useloop = TRUE,
                   root.robust = FALSE, ng = 10, resid.1 = NULL, resid.0 = NULL,
-                  var.reg = "npr"){
+                  var.reg = "npr", c.method = "root", c.supp = NULL){
 
   n.T <- length(eval)
   T.grad.mat <- v_to_m(T.grad.mat)
@@ -111,26 +115,7 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
     }
   }
 
-
-
-  # Part 3: Defining objective function
-
-  # if(method %in% c("TE.Lip", "TE.Lip.eqbw")){
-  #
-  #   # re-defining (y, x, d) to match the orders with the residuals
-  #
-  #   y <- v_to_m(y)
-  #   y.1 <- v_to_m(y[d == 1, ])
-  #   y.0 <- v_to_m(y[d == 0, ])
-  #   x.1 <- x[d == 1]
-  #   x.0 <- x[d == 0]
-  #   y <- rbind(y.1, y.0)
-  #   x <- c(x.1, x.0)
-  #   d <- c(rep(1, length(x.1)), rep(0, length(x.0)))
-  #   resid.1 <- as.vector(resid.1)
-  #   resid.0 <- as.vector(resid.0)
-  #   resid <- c(resid.1, resid.0)
-  # }
+  # Part 3: optimal weight function and simulated critical value
 
   eq <- function(c){
 
@@ -172,29 +157,41 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
                              level, deg, kern, M, seed, useloop, resid.1, resid.0)
     }
 
-    eq.res <- list(val = c - q.sim, w.1 = w.1, w.0 = w.0)
+    # eq.res <- list(val = c - q.sim, w.1 = w.1, w.0 = w.0)
+    eq.res <- list(q.sim = q.sim, w.1 = w.1, w.0 = w.0)
 
     return(eq.res)
   }
 
-  eq.val <- function(c){
-    eq(c)$val
+  # Part 4: Weight function calculation
+
+  if(c.method == "root"){
+
+    eq.val <- function(c){
+      c - eq(c)$q.sim
+    }
+
+    c.min <- stats::qnorm(level - 0.01)
+    c.max <- stats::qnorm(1 - 0.1^3)
+
+    root.res <- stats::uniroot(eq.val, interval = c(c.min, c.max), extendInt = "upX", tol = 1e-3)
+    c.root <- root.res$root
+
+  }else if(c.method == "supp"){
+
+    try(if(is.null(c.supp)) stop("Supply value of c.supp"))
+    c.root <- c.supp
   }
 
-  # Part 4: Optimization
+  eq.res <- eq(c.root)
 
-  c.min <- stats::qnorm(level - 0.01)
-  c.max <- stats::qnorm(1 - 0.1^3)
-
-  root.res <- stats::uniroot(eq.val, interval = c(c.min, c.max), extendInt = "upX", tol = 1e-3)
-  c.root <- root.res$root
-
-  w.1 <- eq(c.root)$w.1
-  w.0 <- eq(c.root)$w.0
+  w.1 <- eq.res$w.1
+  w.0 <- eq.res$w.0
+  q.sim <- eq.res$q.sim
 
   # Part 5: Optional step of robustness check for the optimization result
 
-  if(root.robust == TRUE){
+  if(root.robust == TRUE & c.method == "root"){
 
     c.grid <- seq(from = c.min, to = c.max, length.out = ng)
     obj.val <- numeric(ng)
@@ -204,11 +201,12 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
     is.inc <- !is.unsorted(obj.val)
     opt.grid <- data.frame(c.grid = c.grid, obj.val = obj.val)
 
-    res <- list(w.1 = w.1, w.0 = w.0, c.root = c.root, increasing = is.inc, opt.grid = opt.grid)
+    res <- list(w.1 = w.1, w.0 = w.0, c.root = c.root, q.sim = q.sim,
+                increasing = is.inc, opt.grid = opt.grid)
 
   }else{
 
-    res <- list(w.1 = w.1, w.0 = w.0, c.root = c.root)
+    res <- list(w.1 = w.1, w.0 = w.0, c.root = c.root, q.sim = q.sim)
   }
 
 

@@ -130,3 +130,18 @@ K_fun <- function(x, t, h, kern = c("tri")){
 
   return(res)
 }
+
+#' Optimal value of \eqn{c_n}
+#'
+#' @param n sample size
+#' @param p Holder space exponent, either 1 or 2.
+#'
+#' @return the value of the optimal \eqn{c_n}.
+#' @export
+#'
+#' @examples opt_cn(500, 2)
+opt_cn <- function(n, p){
+
+  res <- sqrt(2 * log(n) / (2 * p + 1))
+  return(res)
+}

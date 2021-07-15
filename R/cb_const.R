@@ -17,10 +17,12 @@
 #' @export
 cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                      deg, kern, M, var.reg = "npr", seed = NULL, useloop = TRUE,
-                     root.robust = FALSE, ng = 10, x.out = NULL){
+                     root.robust = FALSE, ng = 10, x.out = NULL,
+                     c.method = "root"){
 
   n.T <- length(eval)
   cb.grid <- matrix(NA, nrow = n.T, ncol = 4)
+  n <- length(x)
 
   if(method == "reg.Hol"){
 
@@ -29,43 +31,55 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     se.method <- "nn"
     J <- 3
     C <- C.vec[1]
+    p <- 2
   }else if(method %in% c("reg.Lip", "TE.Lip", "TE.Lip.eqbw")){
 
     kern.reg <- "tri"
     se.method <- "resid"
     C <- C.vec[1]
+    p <- 1
   }
 
   resid.res <- resid_calc(y, x, d, deg, kern, var.reg)
   resid.1 <- resid.res$resid.1
   resid.0 <- resid.res$resid.0
 
-  opt.res <- opt_w(method, C.vec, y, x, d, eval, T.grad.mat, level,
-                   deg, kern, M, seed, useloop,
-                   root.robust, ng, resid.1, resid.0)
-  c.opt <- opt.res$c.root
+  if(c.method == "root"){
 
-  if(root.robust){
-    increasing <- opt.res$increasing
-    opt.grid <- opt.res$opt.grid
+    opt.res <- opt_w(method, C.vec, y, x, d, eval, T.grad.mat, level,
+                     deg, kern, M, seed, useloop,
+                     root.robust, ng, resid.1, resid.0)
+    c.opt <- opt.res$c.root
+
+    if(root.robust){
+      increasing <- opt.res$increasing
+      opt.grid <- opt.res$opt.grid
+    }
+
+    ci.level <- stats::pnorm(2 * c.opt)
+    ci.cv <- NULL
+  }else if(c.method == "supp"){
+
+    # to be done
   }
 
-  ci.level <- stats::pnorm(2 * c.opt)
+
 
   for(t in 1:n.T){
 
     cb.grid[t, ] <-
       if(method == "reg.Hol"){
-        ci_reg_Hol(y, x, eval[t], C, ci.level, kern.reg, se.initial, se.method, J)
+        ci_reg_Hol(y, x, eval[t], C, ci.level, kern.reg, se.initial, se.method, J,
+                   cv = ci.cv)
       }else if(method == "reg.Lip"){
         ci_reg_Lip(y, x, eval[t], C, ci.level, kern = kern.reg,
-                   deg = deg, se.method = se.method)
+                   deg = deg, se.method = se.method, cv = ci.cv)
       }else if(method == "TE.Lip"){
         ci_reg_Lip(y, x, eval[t], C, ci.level, TE = TRUE, d = d, kern = kern.reg,
-                   bw.eq = FALSE, deg = deg, se.method = se.method)
+                   bw.eq = FALSE, deg = deg, se.method = se.method, cv = ci.cv)
       }else if(method == "TE.Lip.eqbw"){
         ci_reg_Lip(y, x, eval[t], C, ci.level, TE = TRUE, d = d, kern = kern.reg,
-                   bw.eq = TRUE, deg = deg, se.method = se.method)
+                   bw.eq = TRUE, deg = deg, se.method = se.method, cv = ci.cv)
       }
   }
 
