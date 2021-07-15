@@ -88,7 +88,7 @@ test_that("valid confidence band (Lipschitz-TE)", {
   res <- NA
 
   system.time({
-    opt.res <- cb_const("TE.Lip", 2, y, x, d, eval, T.grad.mat, level,
+    opt.res <- cb_const("TE.Lip.eqbw", 2, y, x, d, eval, T.grad.mat, level,
                         1, "tri", M, seed = NULL, useloop = TRUE,
                         root.robust = FALSE)
   })
@@ -105,4 +105,51 @@ test_that("valid confidence band (Lipschitz-TE)", {
   #
   # expect_equal(is.double(res[, 2]), TRUE)
   # expect_equal(res.inc, TRUE)
+})
+
+
+test_that("valid confidence band (Holder / supplied c_n)", {
+
+  n <- 500
+  M <- 500
+  x <- stats::runif(n, min = -1, max = 1)
+  n.T <- 10
+  eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
+  T.grad.mat <- rep(1, n.T)
+  level <- 0.95
+  y <- x + rnorm(n, 0, 1/4)
+
+  res <- NA
+
+  system.time({
+    opt.res <- cb_const("reg.Hol", 1, y, x, NULL, eval, T.grad.mat, level,
+                        1, "tri", M, seed = NULL, useloop = TRUE,
+                        root.robust = FALSE, c.method = "supp")
+  })
+
+  expect_equal(is.na(opt.res[, 2]), rep(FALSE, n.T))
+})
+
+
+test_that("valid confidence band (Lipschitz / supplied c_n)", {
+
+  n <- 500
+  M <- 500
+  x <- stats::runif(n, min = -1, max = 1)
+  n.T <- 10
+  eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
+  T.grad.mat <- rep(1, n.T)
+  level <- 0.95
+  y <- x + rnorm(n, 0, 1/4)
+
+  res <- NA
+
+  system.time({
+    opt.res <- cb_const("reg.Lip", 1, y, x, NULL, eval, T.grad.mat, level,
+                        1, "tri", M, seed = NULL, useloop = TRUE,
+                        root.robust = FALSE, c.method = "supp")
+  })
+
+  expect_equal(is.na(opt.res[, 2]), rep(FALSE, n.T))
+
 })

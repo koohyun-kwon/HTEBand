@@ -45,25 +45,29 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
   resid.0 <- resid.res$resid.0
 
   if(c.method == "root"){
-
-    opt.res <- opt_w(method, C.vec, y, x, d, eval, T.grad.mat, level,
-                     deg, kern, M, seed, useloop,
-                     root.robust, ng, resid.1, resid.0)
-    c.opt <- opt.res$c.root
-
-    if(root.robust){
-      increasing <- opt.res$increasing
-      opt.grid <- opt.res$opt.grid
-    }
-
-    ci.level <- stats::pnorm(2 * c.opt)
-    ci.cv <- NULL
+    c.supp = NULL
   }else if(c.method == "supp"){
-
-    # to be done
+    c.supp = opt_cn(n, p)
   }
 
+  opt.res <- opt_w(method, C.vec, y, x, d, eval, T.grad.mat, level,
+                   deg, kern, M, seed, useloop,
+                   root.robust, ng, resid.1, resid.0, c.method = c.method,
+                   c.supp = c.supp)
 
+  c.opt <- opt.res$c.root
+  ci.level <- stats::pnorm(2 * c.opt)
+
+  if(c.method == "root"){
+    ci.cv = NULL
+  }else if(c.method == "supp"){
+    ci.cv <- opt.res$q.sim
+  }
+
+  if(root.robust & c.method == "root"){
+    increasing <- opt.res$increasing
+    opt.grid <- opt.res$opt.grid
+  }
 
   for(t in 1:n.T){
 
