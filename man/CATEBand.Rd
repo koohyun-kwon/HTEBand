@@ -22,7 +22,8 @@ CATEBand(
   seed = NULL,
   root.robust = FALSE,
   ng = 10,
-  x.out = NULL
+  x.out = NULL,
+  c.method = "root"
 )
 }
 \arguments{
@@ -73,6 +74,9 @@ default is \code{root.robust = FALSE}.}
 if \code{root.robust = TRUE}; default is \code{ng = 10}.}
 
 \item{x.out}{the grid of points the confidence band is evaluated; see details.}
+
+\item{c.method}{method to calculate the optimal value of \eqn{c_n}, an element
+in \code{c("root", "supp")}; default is \code{c.method = "root"}.}
 }
 \value{
 a data frame containing index set and corresponding confidence band values,
