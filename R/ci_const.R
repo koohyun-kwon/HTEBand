@@ -36,7 +36,7 @@ ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = 
   ci.lower <- ci.res$estimate - hl
   ci.upper <- ci.res$estimate + hl
 
-  return(c(ci.lower, ci.upper, ci.res$hp, ci.res$hm))
+  return(c(ci.lower, ci.upper, ci.res$hp, ci.res$hp))
 }
 
 #' Confidence interval for regression function value for Lipschitz space
