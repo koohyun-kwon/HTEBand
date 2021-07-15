@@ -16,6 +16,7 @@ cb_const(
   deg,
   kern,
   M,
+  var.reg = "npr",
   seed = NULL,
   useloop = TRUE,
   root.robust = FALSE,
@@ -55,6 +56,10 @@ supports \code{"tri"}, \code{"epa"},
 \code{"uni"}, and \code{"gau"}. Default is \code{kern = "epa"}.}
 
 \item{M}{number of bootstrap simulations}
+
+\item{var.reg}{nonparametric regression method used to calculate residuals;
+either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
+(standing for \code{locpol} package). Default is \code{var.reg = "npr"}.}
 
 \item{seed}{seed for the random number generation; default is \code{seed = NULL}.}
 

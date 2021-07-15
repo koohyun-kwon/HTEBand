@@ -19,7 +19,8 @@ sup_quant_sim(
   seed = NULL,
   useloop = TRUE,
   resid.1 = NULL,
-  resid.0 = NULL
+  resid.0 = NULL,
+  var.reg = "npr"
 )
 }
 \arguments{
@@ -57,6 +58,10 @@ it can be left unspecified}
 
 \item{resid.0}{a matrix of residuals with the same dimension of \code{y.0} calculated beforehand;
 it can be left unspecified}
+
+\item{var.reg}{nonparametric regression method used to calculate residuals;
+either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
+(standing for \code{locpol} package). Default is \code{var.reg = "npr"}.}
 }
 \value{
 a scalar quantile value

@@ -38,7 +38,7 @@
 #' y <- x^2 + rnorm(500, 0, 1/4)
 #' NpregBand(y, x, 2, 0.95, "L", n.eval = 25)
 NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) / 5, eval = NULL, q.int = 0.025,
-                      n.sim = 10^3, kern = "tri", deg = 1, seed = NULL,
+                      n.sim = 10^3, kern = "tri", deg = 1, var.reg = "npr", seed = NULL,
                       root.robust = FALSE, ng = 10, x.out = NULL){
 
   fclass <- match.arg(fclass)
@@ -59,7 +59,7 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
   T.grad.mat <- rep(1, n.T)
 
   cb.res <- cb_const(method, C, y, x, NULL, eval, T.grad.mat, level,
-                     deg, kern, n.sim, seed, useloop = TRUE,
+                     deg, kern, n.sim, var.reg, seed, useloop = TRUE,
                      root.robust, ng, x.out)
 
   return(cb.res)
@@ -93,7 +93,7 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #' y <- d * x^2 + (1 - d) * x + rnorm(500, 0, 1/4)
 #' CATEBand(y, x, d, 2, 0.95, n.eval = 25, h.eq = TRUE)
 CATEBand <- function(y, x, d, C, level, fclass = "L", h.eq = FALSE, n.eval = min(sum(d == 1), sum(d == 0)) / 5,
-                     eval = NULL, q.int = 0.025, n.sim = 10^3, kern = "tri", deg = 1, seed = NULL,
+                     eval = NULL, q.int = 0.025, n.sim = 10^3, kern = "tri", deg = 1, var.reg = "npr", seed = NULL,
                      root.robust = FALSE, ng = 10, x.out = NULL){
 
   method <-
@@ -115,7 +115,7 @@ CATEBand <- function(y, x, d, C, level, fclass = "L", h.eq = FALSE, n.eval = min
   T.grad.mat <- rep(1, n.T)
 
   cb.res <- cb_const(method, C, y, x, d, eval, T.grad.mat, level,
-                     deg, kern, n.sim, seed, useloop = TRUE,
+                     deg, kern, n.sim, var.reg, seed, useloop = TRUE,
                      root.robust, ng, x.out)
 
   return(cb.res)

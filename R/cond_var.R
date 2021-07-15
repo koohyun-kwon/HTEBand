@@ -4,7 +4,7 @@
 #' or \code{\link[locpol]{locPolSmootherC}}.
 #'
 #' For now, only \code{kern = "tri"} and \code{kern = "epa"} are supported when
-#' \code{reg.method = "locpol"}.
+#' \code{var.reg = "locpol"}.
 #'
 #'
 #' @param y vector of dependent variables
@@ -13,9 +13,9 @@
 #' @param kern kernel used to calculate conditional variance function;
 #' supports \code{"tri"}, \code{"epa"},
 #' \code{"uni"}, and \code{"gau"}. Default is \code{kern = "epa"}.
-#' @param reg.method nonparametric regression method used to calculate residuals;
+#' @param var.reg nonparametric regression method used to calculate residuals;
 #' either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
-#' (standing for \code{locpol} package).
+#' (standing for \code{locpol} package). Default is \code{var.reg = "npr"}.
 #'
 #' @return vector of residuals with the same length as \code{y}
 #' @export
@@ -24,14 +24,14 @@
 #' x <- seq(from = -1, to = 1, length.out = 500)
 #' y <- x^2 + stats::rnorm(500, 0, 0.1)
 #' eps_hat(y, x, 1)
-#' eps_hat(y, x, 1, reg.method = "locpol")
-eps_hat <- function(y, x, deg, kern = "epa", reg.method = "npr"){
+#' eps_hat(y, x, 1, var.reg = "locpol")
+eps_hat <- function(y, x, deg, kern = "epa", var.reg = "npr"){
 
-  if(reg.method == "npr"){
+  if(var.reg == "npr"){
     lp.res <- nprobust::lprobust(y, x, x, p = deg, kernel = kern)
     yhat.lp <- lp.res$Estimate[, "tau.us"]
     eps.hat <- y - yhat.lp
-  }else if(reg.method == "locpol"){
+  }else if(var.reg == "locpol"){
 
     if(kern == "tri"){
       K <- locpol::TrianK
@@ -58,7 +58,7 @@ eps_hat <- function(y, x, deg, kern = "epa", reg.method = "npr"){
 #' @return a list of residuals corresponding to treated individuals (\code{resid.1}) and control individuals (\code{resid.0});
 #' if there is no control group, \code{resid.0 = 0} is returned.
 #' @export
-resid_calc <- function(y, x, d = NULL, deg, kern = "epa"){
+resid_calc <- function(y, x, d = NULL, deg, kern = "epa", var.reg = "npr"){
 
   is.TE <- sum(d == 0) > 0
   if(!is.TE) d <- rep(1, length(y))
@@ -90,8 +90,8 @@ resid_calc <- function(y, x, d = NULL, deg, kern = "epa"){
 
   for(j in 1:k){
 
-    resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern)
-    if(is.TE) resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern)
+    resid.1[, j] <- eps_hat(y.1[, j], x.1, deg, kern, var.reg)
+    if(is.TE) resid.0[, j] <- eps_hat(y.0[, j], x.0, deg, kern, var.reg)
   }
 
   return(list(resid.1 = resid.1, resid.0 = resid.0))

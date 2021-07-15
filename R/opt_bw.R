@@ -52,7 +52,7 @@ var_Lip <- function(y, x, t, kern, h, deg, sd.homo = TRUE){
     sd.hat <- sqrt(d$sigma2)
   }else{
 
-    sd.hat <- eps_hat(y, x, deg)
+    sd.hat <- eps_hat(y, x, deg)  # Not used right now
   }
 
   if(h < 0){

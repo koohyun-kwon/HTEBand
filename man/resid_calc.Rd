@@ -4,7 +4,7 @@
 \alias{resid_calc}
 \title{Residual calculation function}
 \usage{
-resid_calc(y, x, d = NULL, deg, kern = "epa")
+resid_calc(y, x, d = NULL, deg, kern = "epa", var.reg = "npr")
 }
 \arguments{
 \item{y}{dependent variable; possibly a matrix with \code{nrow(y)} equals the number of observations.}
@@ -18,6 +18,10 @@ resid_calc(y, x, d = NULL, deg, kern = "epa")
 \item{kern}{kernel used to calculate conditional variance function;
 supports \code{"tri"}, \code{"epa"},
 \code{"uni"}, and \code{"gau"}. Default is \code{kern = "epa"}.}
+
+\item{var.reg}{nonparametric regression method used to calculate residuals;
+either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
+(standing for \code{locpol} package). Default is \code{var.reg = "npr"}.}
 }
 \value{
 a list of residuals corresponding to treated individuals (\code{resid.1}) and control individuals (\code{resid.0});

@@ -47,7 +47,8 @@
 #' @export
 opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
                   deg, kern, M, seed = NULL, useloop = TRUE,
-                  root.robust = FALSE, ng = 10, resid.1 = NULL, resid.0 = NULL){
+                  root.robust = FALSE, ng = 10, resid.1 = NULL, resid.0 = NULL,
+                  var.reg = "npr"){
 
   n.T <- length(eval)
   T.grad.mat <- v_to_m(T.grad.mat)
@@ -96,7 +97,7 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
 
   if(is.null(resid.1)){
 
-    resid.all <- resid_calc(y, x, d, deg, kern)
+    resid.all <- resid_calc(y, x, d, deg, kern, var.reg)
     resid.1 <- resid.all$resid.1
     resid.0 <- resid.all$resid.0
 

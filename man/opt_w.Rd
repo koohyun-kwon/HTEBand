@@ -21,7 +21,8 @@ opt_w(
   root.robust = FALSE,
   ng = 10,
   resid.1 = NULL,
-  resid.0 = NULL
+  resid.0 = NULL,
+  var.reg = "npr"
 )
 }
 \arguments{
@@ -78,6 +79,10 @@ entire observations. It can be specified to be \code{NULL}.}
 or a matrix if \code{ncol(y) > 1}. Its \eqn{i}th component
 corresponds to the \eqn{i}th component of \code{y[d == 0, ]}. It can be specified to be
 \code{NULL}.}
+
+\item{var.reg}{nonparametric regression method used to calculate residuals;
+either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
+(standing for \code{locpol} package). Default is \code{var.reg = "npr"}.}
 }
 \value{
 a list of the following components

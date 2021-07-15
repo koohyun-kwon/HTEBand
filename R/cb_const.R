@@ -16,7 +16,7 @@
 #'  as well as \code{increasing} and \code{opt.grid}; see \code{\link{opt_w}}.
 #' @export
 cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
-                     deg, kern, M, seed = NULL, useloop = TRUE,
+                     deg, kern, M, var.reg = "npr", seed = NULL, useloop = TRUE,
                      root.robust = FALSE, ng = 10, x.out = NULL){
 
   n.T <- length(eval)
@@ -36,7 +36,7 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     C <- C.vec[1]
   }
 
-  resid.res <- resid_calc(y, x, d, deg, kern)
+  resid.res <- resid_calc(y, x, d, deg, kern, var.reg)
   resid.1 <- resid.res$resid.1
   resid.0 <- resid.res$resid.0
 

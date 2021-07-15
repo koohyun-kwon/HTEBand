@@ -18,6 +18,7 @@ CATEBand(
   n.sim = 10^3,
   kern = "tri",
   deg = 1,
+  var.reg = "npr",
   seed = NULL,
   root.robust = FALSE,
   ng = 10,
@@ -58,6 +59,10 @@ is supported.}
 
 \item{deg}{degree of local polynomial estimator used in the first-stage variance estimation;
 the default is \code{deg = 1}.}
+
+\item{var.reg}{nonparametric regression method used to calculate residuals;
+either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
+(standing for \code{locpol} package). Default is \code{var.reg = "npr"}.}
 
 \item{seed}{seed number for bootstrap random sample generation. The default is \code{seed = NULL}.}
 
