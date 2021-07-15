@@ -4,7 +4,6 @@
 # HTEBand
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 The goal of HTEBand is to construct uniform confidence bands for various
@@ -22,10 +21,25 @@ remotes::install_github("koohyun-kwon/HTEBand")
 
 ## Example
 
-Adding two numbers via `testfun()`:
+Nonparametric regression via `NpregBand()`:
 
 ``` r
 library(HTEBand)
-test_fun(1, 2)
-#> [1] 3
+library(tidyverse)
+#> ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+#> ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+#> ✓ tibble  3.1.2     ✓ dplyr   1.0.7
+#> ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+#> ✓ readr   1.4.0     ✓ forcats 0.5.1
+#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+#> x dplyr::filter() masks stats::filter()
+#> x dplyr::lag()    masks stats::lag()
+x <- seq(-1, 1, length.out = 500)
+y <- x^2 + rnorm(500, 0, 1/4)
+cb.res <- NpregBand(y, x, 2, 0.95, "L", n.eval = 25)
+cb.res$fx <- (cb.res$eval)^2
+ggplot(data = cb.res) + geom_line(aes(x = eval, y = cb.lower)) +
+  geom_line(aes(x = eval, y = cb.upper)) + geom_line(aes(x = eval, y = fx), color = "red")
 ```
+
+<img src="man/figures/README-example-1.png" width="100%" />
