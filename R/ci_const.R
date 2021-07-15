@@ -8,6 +8,8 @@
 #' @param point point where the regression function value would be evaluated
 #' @param C bound on the second derivative
 #' @param level confidence level of each one-sided confidence intervals
+#' @param cv supplied value of critical value to be used in constructing confidence interval;
+#' default is \code{cv = NULL}.
 #' @inheritParams w_get_Hol
 #'
 #' @return a vector of lower and upper ends of the confidence interval  and a pair of bandwidths used for
@@ -21,7 +23,7 @@
 #' y <- x + rnorm(500, 0, 1/4)
 #' ci_reg_Hol(y, x, 1/2, 1, 0.99)
 ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = "EHW",
-                       se.method = "nn", J = 3){
+                       se.method = "nn", J = 3, cv = NULL){
 
   d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point)
 
@@ -31,7 +33,11 @@ ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = 
 
   maxbias <- ci.res$maxbias
   sd <- unname(ci.res$sd)
-  c <- stats::qnorm(level)/2
+  if(is.null(cv)){
+    c <- stats::qnorm(level)/2  # We are constructing two-sided, not one-sided, CI.
+  }else{
+    c <- cv
+  }
   hl <- maxbias + sd * c
   ci.lower <- ci.res$estimate - hl
   ci.upper <- ci.res$estimate + hl
@@ -59,7 +65,7 @@ ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = 
 #' y <- x + rnorm(500, 0, 1/4)
 #' ci_reg_Lip(y, x, 1/2, 1, 0.99)
 ci_reg_Lip <- function(y, x, point, C, level, TE = FALSE, d = NULL, kern = "tri",
-                       bw.eq = TRUE, deg = 0, se.method = "resid"){
+                       bw.eq = TRUE, deg = 0, se.method = "resid", cv = NULL){
 
   opt.res <- bw_Lip(y, x, point, TE, d, C, kern, 1 - level, bw.eq, deg)
   h.opt <- opt.res$h.opt
@@ -82,8 +88,13 @@ ci_reg_Lip <- function(y, x, point, C, level, TE = FALSE, d = NULL, kern = "tri"
 
   if(se.method == "resid"){
 
-    ci.lower <- est - opt.res$hl.opt
-    ci.upper <- est + opt.res$hl.opt
+    if(is.null(cv)){
+      ci.lower <- est - opt.res$hl.opt
+      ci.upper <- est + opt.res$hl.opt
+    }else{
+      ci.lower <- est - opt.res$b.opt - cv * opt.res$sd.opt
+      ci.upper <- est + opt.res$b.opt + cv * opt.res$sd.opt
+    }
   }
 
   return(c(ci.lower, ci.upper, h.opt))

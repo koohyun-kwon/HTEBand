@@ -13,7 +13,8 @@ ci_reg_Hol(
   kern = "triangular",
   se.initial = "EHW",
   se.method = "nn",
-  J = 3
+  J = 3,
+  cv = NULL
 )
 }
 \arguments{
@@ -37,6 +38,9 @@ See \code{\link[RDHonest]{NPROptBW.fit}} in \code{RDHonest} package for a list o
 See \code{\link[RDHonest]{NPRreg.fit}} in \code{RDHonest} package for a list of method available.}
 
 \item{J}{number of nearest neighbors, if "nn" is specified in se.method.}
+
+\item{cv}{supplied value of critical value to be used in constructing confidence interval;
+default is \code{cv = NULL}.}
 }
 \value{
 a vector of lower and upper ends of the confidence interval  and a pair of bandwidths used for

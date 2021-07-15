@@ -15,7 +15,8 @@ ci_reg_Lip(
   kern = "tri",
   bw.eq = TRUE,
   deg = 0,
-  se.method = "resid"
+  se.method = "resid",
+  cv = NULL
 )
 }
 \arguments{
@@ -43,6 +44,9 @@ relevant only when \code{TE = TRUE}.}
 
 \item{se.method}{methods for estimating standard error of estimate; currently,
 only "resid" is supported.}
+
+\item{cv}{supplied value of critical value to be used in constructing confidence interval;
+default is \code{cv = NULL}.}
 }
 \value{
 a vector of lower and upper ends of confidence interval, and a pair of bandwidths used for
