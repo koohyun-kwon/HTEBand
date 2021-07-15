@@ -37,6 +37,11 @@ a list with the following components
 for estimators for treatment and control groups.}
 
 \item{hl.opt}{the optimal half-length when the optimal bandwidth(s) is used.}
+
+\item{b.opt}{the bias corresponding to the optimal bandwidth \code{h.opt}.}
+
+\item{sd.opt}{the standard deviation corresponding to the optimal bandwidth
+\code{h.opt}.}
 }
 }
 \description{

@@ -124,6 +124,11 @@ var_Lip_resid <- function(x, t, kern, h, resid){
 #' for estimators for treatment and control groups.}
 #'
 #' \item{hl.opt}{the optimal half-length when the optimal bandwidth(s) is used.}
+#'
+#' \item{b.opt}{the bias corresponding to the optimal bandwidth \code{h.opt}.}
+#'
+#' \item{sd.opt}{the standard deviation corresponding to the optimal bandwidth
+#' \code{h.opt}.}
 #' }
 #' @export
 bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
@@ -136,15 +141,20 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
     x.1 <- x[d == 1]
     x.0 <- x[d == 0]
 
+    b.fun <- function(h.1, h.0){
+      bias_Lip(x.1, t, M, kern, h.1) + bias_Lip(x.0, t, M, kern, h.0)
+    }
+    sd.fun <- function(h.1, h.0){
+      sqrt(var_Lip(y.1, x.1, t, kern, h.1, deg) + var_Lip(y.0, x.0, t, kern, h.0, deg))
+    }
+
 
     obj <- function(h){
 
       h.1 <- abs(h[1]) # optim() might evaluate negative bandwidths
       h.0 <- abs(h[2])
-      bias <- bias_Lip(x.1, t, M, kern, h.1) + bias_Lip(x.0, t, M, kern, h.0)
-      sd <- sqrt(var_Lip(y.1, x.1, t, kern, h.1, deg) + var_Lip(y.0, x.0, t, kern, h.0, deg))
       c <- stats::qnorm(1 - alpha) / 2
-      return(bias + c * sd)
+      return(b.fun(h.1, h.0) + c * sd.fun(h.1, h.0))
     }
 
     if(bw.eq == FALSE){
@@ -168,15 +178,22 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
       h.opt <- rep(opt.res$minimum, 2)
       hl.opt <- opt.res$objective
     }
+    b.opt <- b.fun(h.opt[1], h.opt[2])
+    sd.opt <- sd.fun(h.opt[1], h.opt[2])
 
   }else{
 
+    b.fun <- function(h){
+      bias_Lip(x, t, M, kern, h)
+    }
+    sd.fun <- function(h){
+      sqrt(var_Lip(y, x, t, kern, h, deg))
+    }
+
     obj.1 <- function(h){
 
-      bias <- bias_Lip(x, t, M, kern, h)
-      sd <- sqrt(var_Lip(y, x, t, kern, h, deg))
       c <- stats::qnorm(1 - alpha) / 2
-      return(bias + c * sd)
+      return(b.fun(h) + c * sd.fun(h))
     }
 
     h.min <- sort(unique(abs(x - t)))[2]
@@ -185,9 +202,11 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
     opt.res <- stats::optimize(obj.1, c(h.min, h.max), tol = .Machine$double.eps^0.25)
     h.opt <- opt.res$minimum
     hl.opt <- opt.res$objective
+    b.opt <- b.fun(h.opt)
+    sd.opt <- sd.fun(h.opt)
   }
 
-  res <- list(h.opt = h.opt, hl.opt = hl.opt)
+  res <- list(h.opt = h.opt, hl.opt = hl.opt, b.opt = b.opt, sd.opt = sd.opt)
   return(res)
 }
 

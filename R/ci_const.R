@@ -20,7 +20,8 @@
 #' x <- stats::runif(500, min = -1, max = 1)
 #' y <- x + rnorm(500, 0, 1/4)
 #' ci_reg_Hol(y, x, 1/2, 1, 0.99)
-ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = "EHW", se.method = "nn", J = 3){
+ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = "EHW",
+                       se.method = "nn", J = 3){
 
   d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point)
 
