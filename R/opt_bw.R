@@ -30,6 +30,46 @@ bias_Lip <- function(x, t, M, kern, h){
   return(res)
 }
 
+
+#' Holder class worst-case bias
+#'
+#' Calculates the worst-case supremum bias for regression function value estimator under Holder class.
+#'
+#' @inheritParams K_fun
+#' @param M bound on the first derivative
+#'
+#' @return a scalar worst-case bias value
+#' @export
+#'
+bias_Hol <- function(d, M, kern, h){
+
+  d <- NPRPrelimVar.fit(d, se.initial = "EHW")
+
+  if(kern == "tri"){
+    kern.rdh = "triangular"
+  }
+
+  r1 <- RDHonest::NPRreg.fit(d, h, kern.rdh, order = 1, se.method = "supplied.var",
+                             TRUE, J = 3)
+
+  w <- r1$w
+  wt <- w[w != 0]
+  xx <- d$X[w != 0]
+  nobs <- length(wt)
+
+  if (nobs == 0) bias <- sqrt(.Machine$double.xmax/10)
+
+  w2p <- function(s) abs(sum((wt * (xx - s))[xx >= s]))
+  w2m <- function(s) abs(sum((wt * (s - xx))[xx <= s]))
+  bp <- stats::integrate(function(s) vapply(s, w2p,
+                                            numeric(1)), 0, h)$value
+  bm <- stats::integrate(function(s) vapply(s, w2m,
+                                            numeric(1)), -h, 0)$value
+  bias <- M * (bp + bm)
+
+  return(bias)
+}
+
 #' Lipschitz class variance
 #'
 #' Calculates the variance for regression function value estimator under Lipschitz class
