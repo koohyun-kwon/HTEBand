@@ -36,7 +36,7 @@ library(tidyverse)
 #> x dplyr::lag()    masks stats::lag()
 x <- seq(-1, 1, length.out = 500)
 y <- x^2 + rnorm(500, 0, 1/4)
-cb.res <- NpregBand(y, x, 2, 0.95, "L", n.eval = 25)
+cb.res <- NpregBand(y, x, 2, 0.95, "L", n.eval = 25, c.method = "supp")
 cb.res$fx <- (cb.res$eval)^2
 ggplot(data = cb.res) + geom_line(aes(x = eval, y = cb.lower)) +
   geom_line(aes(x = eval, y = cb.upper)) + geom_line(aes(x = eval, y = fx), color = "red")
