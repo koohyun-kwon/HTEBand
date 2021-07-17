@@ -192,6 +192,7 @@ var_Lip_resid <- function(x, t, kern, h, resid){
 #' @param alpha determines confidence level \code{1 - alpha}.
 #' @param bw.eq if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
 #' relevant only when \code{TE = TRUE}.
+#' @param p Hölder exponent, either \code{p = 1} or \code{p = 2}. Default is \code{p = 1}.
 #'
 #' @return a list with the following components
 #' \describe{
@@ -208,7 +209,7 @@ var_Lip_resid <- function(x, t, kern, h, resid){
 #' }
 #' @export
 bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
-                   deg){
+                   deg, p = 1){
 
   if(TE == TRUE){
 
@@ -217,13 +218,21 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
     x.1 <- x[d == 1]
     x.0 <- x[d == 0]
 
-    b.fun <- function(h.1, h.0){
-      bias_Lip(x.1, t, M, kern, h.1) + bias_Lip(x.0, t, M, kern, h.0)
+    if(p == 1){
+      b.fun <- function(h.1, h.0){
+        bias_Lip(x.1, t, M, kern, h.1) + bias_Lip(x.0, t, M, kern, h.0)
+      }
+      sd.fun <- function(h.1, h.0){
+        sqrt(var_Lip(y.1, x.1, t, kern, h.1, deg) + var_Lip(y.0, x.0, t, kern, h.0, deg))
+      }
+    }else if(p == 2){
+      b.fun <- function(h.1, h.0){
+        bias_Hol(x.1, t, M, kern, h.1) + bias_Hol(x.0, t, M, kern, h.0)
+      }
+      sd.fun <- function(h.1, h.0){
+        sqrt(var_Hol(y.1, x.1, t, kern, h.1) + var_Hol(y.0, x.0, t, kern, h.0))
+      }
     }
-    sd.fun <- function(h.1, h.0){
-      sqrt(var_Lip(y.1, x.1, t, kern, h.1, deg) + var_Lip(y.0, x.0, t, kern, h.0, deg))
-    }
-
 
     obj <- function(h){
 
@@ -258,6 +267,8 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
     sd.opt <- sd.fun(h.opt[1], h.opt[2])
 
   }else{
+
+    try(if(p == 2) stop("use w_get_Hol()"))
 
     b.fun <- function(h){
       bias_Lip(x, t, M, kern, h)
