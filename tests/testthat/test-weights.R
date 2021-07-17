@@ -1,4 +1,4 @@
-test_that("valid weights and positive bandwidths: Holder", {
+test_that("valid weights: Holder", {
   n <- 500
   J <- 5
   x <- stats::runif(n, min = -1, max = 1)
@@ -6,6 +6,21 @@ test_that("valid weights and positive bandwidths: Holder", {
   eval <- seq(from = -0.9, to = 0.9, length.out = J)
   res <- w_get_Hol(y, x, eval, 1, 0.95)
   w.pos <- is.na(res)
+  expect_equal(sum(w.pos), 0)
+})
+
+test_that("valid weights: Holder(TE)", {
+  n <- 500
+  J <- 5
+  x <- stats::runif(n, min = -1, max = 1)
+  y.1 <- x + rnorm(n, 0, 1/4)
+  y.0 <- x^2 + rnorm(n, 0, 1/4)
+  x <- c(x, x)
+  y <- c(y.1, y.0)
+  d <- c(rep(1, n), rep(0, n))
+  eval <- seq(from = -0.9, to = 0.9, length.out = J)
+  res <- w_get_Hol(y, x, eval, 1, 0.95, TE = TRUE, d = d)
+  w.pos <- is.na(res$w.mat.1)
   expect_equal(sum(w.pos), 0)
 })
 

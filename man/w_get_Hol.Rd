@@ -14,7 +14,9 @@ w_get_Hol(
   se.initial = "EHW",
   se.method = "nn",
   J = 3,
-  TE = FALSE
+  TE = FALSE,
+  d = NULL,
+  bw.eq = TRUE
 )
 }
 \arguments{
@@ -38,6 +40,14 @@ See \code{\link[RDHonest]{NPROptBW.fit}} in \code{RDHonest} package for a list o
 See \code{\link[RDHonest]{NPRreg.fit}} in \code{RDHonest} package for a list of method available.}
 
 \item{J}{number of nearest neighbors, if "nn" is specified in se.method.}
+
+\item{TE}{logical specifying whether there are treatment and control groups.}
+
+\item{d}{a vector of indicator variables specifying treatment and control group status;
+relevant only when \code{TE = TRUE}.}
+
+\item{bw.eq}{if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
+relevant only when \code{TE = TRUE}.}
 }
 \value{
 list with components

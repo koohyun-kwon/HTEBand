@@ -15,6 +15,7 @@
 #' @param se.method methods for estimating standard error of estimate; default = \code{"nn"}.
 #' See \code{\link[RDHonest]{NPRreg.fit}} in \code{RDHonest} package for a list of method available.
 #' @param J number of nearest neighbors, if "nn" is specified in se.method.
+#' @inheritParams w_get_Lip
 #'
 #' @return list with components
 #'
@@ -31,13 +32,19 @@
 #' eval <- seq(from = -0.9, to = 0.9, length.out = 5)
 #' w_get_Hol(y, x, eval, 1, 0.95)
 w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "EHW", se.method = "nn", J = 3,
-                      TE = FALSE){
+                      TE = FALSE, d = NULL, bw.eq = TRUE){
 
-  n <- length(y)
   m <- length(eval)
 
   if(TE){
 
+    if(kern == "triangular"){
+      kern.rdh <- kern
+      kern <- "tri"  # Naming convention is different
+    }
+
+    y.1 <- y[d == 1]
+    y.0 <- y[d == 0]
     x.1 <- x[d == 1]
     x.0 <- x[d == 0]
 
@@ -47,8 +54,21 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
     w.mat.1 <- matrix(0, n.1, m)
     w.mat.0 <- matrix(0, n.0, m)
 
+    for(i in 1:m){
+
+      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg, p = 2)$h.opt
+      d.1 <- RDHonest::LPPData(as.data.frame(cbind(y.1, x.1)), point = eval[i])
+      d.0 <- RDHonest::LPPData(as.data.frame(cbind(y.0, x.0)), point = eval[i])
+
+      w.mat.1[, i] <- RDHonest::NPRreg.fit(d.1, h.opt[1], kern = kern.rdh, se.method = se.method, J = J)$w
+      w.mat.0[, i] <- RDHonest::NPRreg.fit(d.0, h.opt[2], kern = kern.rdh, se.method = se.method, J = J)$w
+    }
+
+    res <- list(w.mat.1 = w.mat.1, w.mat.0 = w.mat.0)
+
   }else{
-    bw.vec <- numeric(m)
+
+    n <- length(y)
     w.mat <- matrix(0, nrow = n, ncol = m)
 
     for(i in 1:m){
@@ -57,9 +77,8 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
 
       bw.res.i <- RDHonest::NPROptBW.fit(d, M = C, kern = kern, opt.criterion = "OCI", alpha = 1 - level,
                                          beta = 0.5, se.initial = se.initial)
-      bw.vec[i] <- bw.res.i$h[1]
 
-      w.res.i <- RDHonest::NPRreg.fit(d, bw.vec[i], kern = kern, se.method = se.method, J = J)
+      w.res.i <- RDHonest::NPRreg.fit(d, bw.res.i$h[1], kern = kern, se.method = se.method, J = J)
       w.mat[, i] <- w.res.i$w
     }
 
