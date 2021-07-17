@@ -13,7 +13,8 @@ w_get_Hol(
   kern = "triangular",
   se.initial = "EHW",
   se.method = "nn",
-  J = 3
+  J = 3,
+  TE = FALSE
 )
 }
 \arguments{

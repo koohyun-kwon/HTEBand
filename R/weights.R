@@ -30,26 +30,41 @@
 #' y <- x + rnorm(500, 0, 1/4)
 #' eval <- seq(from = -0.9, to = 0.9, length.out = 5)
 #' w_get_Hol(y, x, eval, 1, 0.95)
-w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "EHW", se.method = "nn", J = 3){
+w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "EHW", se.method = "nn", J = 3,
+                      TE = FALSE){
 
   n <- length(y)
   m <- length(eval)
-  bw.vec <- numeric(m)
-  w.mat <- matrix(0, nrow = n, ncol = m)
 
-  for(i in 1:m){
+  if(TE){
 
-    d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = eval[i])
+    x.1 <- x[d == 1]
+    x.0 <- x[d == 0]
 
-    bw.res.i <- RDHonest::NPROptBW.fit(d, M = C, kern = kern, opt.criterion = "OCI", alpha = 1 - level,
-                                      beta = 0.5, se.initial = se.initial)
-    bw.vec[i] <- bw.res.i$h[1]
+    n.1 <- length(x.1)
+    n.0 <- length(x.0)
 
-    w.res.i <- RDHonest::NPRreg.fit(d, bw.vec[i], kern = kern, se.method = se.method, J = J)
-    w.mat[, i] <- w.res.i$w
+    w.mat.1 <- matrix(0, n.1, m)
+    w.mat.0 <- matrix(0, n.0, m)
+
+  }else{
+    bw.vec <- numeric(m)
+    w.mat <- matrix(0, nrow = n, ncol = m)
+
+    for(i in 1:m){
+
+      d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = eval[i])
+
+      bw.res.i <- RDHonest::NPROptBW.fit(d, M = C, kern = kern, opt.criterion = "OCI", alpha = 1 - level,
+                                         beta = 0.5, se.initial = se.initial)
+      bw.vec[i] <- bw.res.i$h[1]
+
+      w.res.i <- RDHonest::NPRreg.fit(d, bw.vec[i], kern = kern, se.method = se.method, J = J)
+      w.mat[, i] <- w.res.i$w
+    }
+
+    res <- w.mat
   }
-
-  res <- list(w.mat = w.mat, bw.vec = bw.vec)
 
   return(res)
 }
@@ -80,13 +95,11 @@ w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "tri", 
 
   if(TE == TRUE){
 
-    y.1 <- y[d == 1]
-    y.0 <- y[d == 0]
     x.1 <- x[d == 1]
     x.0 <- x[d == 0]
 
-    n.1 <- length(y.1)
-    n.0 <- length(y.0)
+    n.1 <- length(x.1)
+    n.0 <- length(x.0)
 
     w.mat.1 <- matrix(0, n.1, m)
     w.mat.0 <- matrix(0, n.0, m)

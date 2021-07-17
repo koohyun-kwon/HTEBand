@@ -132,7 +132,7 @@ test_that("Valid true and simulated quantile value", {
   eps.1.mat <- rnorm(n * M)
   eps.0.mat <- rnorm(M)
   y <- x + rnorm(n, 0, 1)
-  w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
+  w <- array(w_get_Hol(y, x, eval, 1, 0.95), dim = c(n, 1, n.T))
 
   res <- sup_quant_orc(eps.1.mat, eps.0.mat, w, array(0, dim = c(1, 1, n.T)),
                        omega, 0, T.grad.mat, level, M, useloop = TRUE)
@@ -152,7 +152,7 @@ test_that("Valid true and simulated quantile value", {
   #   eps.1.mat <- rnorm(n * M)
   #   eps.0.mat <- rnorm(M)
   #   y <- x + rnorm(n, 0, 1)
-  #   w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
+  #   w <- array(w_get_Hol(y, x, eval, 1, 0.95), dim = c(n, 1, n.T))
   #
   #   res <- sup_quant_orc(eps.1.mat, eps.0.mat, w, array(0, dim = c(1, 1, n.T)),
   #                        omega, 0, T.grad.mat, level, M, useloop = TRUE)
@@ -181,7 +181,7 @@ test_that("Valid true and simulated quantile value: heteroskedastic", {
   eps.1.mat <- rnorm(n * M)
   eps.0.mat <- rnorm(M)
   y <- x + rnorm(n, 0, omega)
-  w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
+  w <- array(w_get_Hol(y, x, eval, 1, 0.95), dim = c(n, 1, n.T))
 
   res <- sup_quant_orc(eps.1.mat, eps.0.mat, w, array(0, dim = c(1, 1, n.T)),
                        omega, 0, T.grad.mat, level, M, useloop = TRUE)
@@ -201,7 +201,7 @@ test_that("Valid true and simulated quantile value: heteroskedastic", {
   #   eps.1.mat <- rnorm(n * M)
   #   eps.0.mat <- rnorm(M)
   #   y <- x + rnorm(n, 0, 1)
-  #   w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
+  #   w <- array(w_get_Hol(y, x, eval, 1, 0.95), dim = c(n, 1, n.T))
   #
   #   res <- sup_quant_orc(eps.1.mat, eps.0.mat, w, array(0, dim = c(1, 1, n.T)),
   #                        omega, 0, T.grad.mat, level, M, useloop = TRUE)

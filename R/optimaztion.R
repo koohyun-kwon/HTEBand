@@ -125,7 +125,7 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
 
       w.res <-
         if(method == "reg.Hol"){
-          w_get_Hol(y, x, eval, C, level.int, kern.reg, se.initial, se.method, J)$w.mat
+          w_get_Hol(y, x, eval, C, level.int, kern.reg, se.initial, se.method, J)
         }else if(method == "reg.Lip"){
           w_get_Lip(y, x, eval, C, level.int, kern = kern.reg, deg = deg)
         }else if(method == "TE.Lip"){

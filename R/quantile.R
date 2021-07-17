@@ -230,7 +230,7 @@ stud_err_sim <- function(y.1, y.0, x.1, x.0, w.1, w.0, T.grad, deg, kern,
 #' y <- x + rnorm(n, 0, 1/4)
 #' n.T <- 10
 #' eval <- seq(from = -0.9, to = 0.9, length.out = n.T)
-#' w <- array(w_get_Hol(y, x, eval, 1, 0.95)$w.mat, dim = c(n, 1, n.T))
+#' w <- array(w_get_Hol(y, x, eval, 1, 0.95), dim = c(n, 1, n.T))
 #' sup_quant_sim(y, 0, x, 0, w, array(rep(0, n.T), dim = c(1, 1, n.T)),
 #' rep(1, n.T), 0.95, 1, "tri", 100)
 sup_quant_sim <- function(y.1, y.0, x.1, x.0, w.1.arr, w.0.arr, T.grad.mat, level,

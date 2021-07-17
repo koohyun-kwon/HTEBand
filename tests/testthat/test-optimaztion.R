@@ -33,7 +33,7 @@
 #   # eq <- function(c){
 #   #
 #   #   level.int <- stats::pnorm(2 * c)
-#   #   w.1 <- w_get_Hol(y, x, eval, C, level.int, kern.reg, se.initial, se.method, J)$w.mat
+#   #   w.1 <- w_get_Hol(y, x, eval, C, level.int, kern.reg, se.initial, se.method, J)
 #   #   w.1 <- array(w.1, dim = c(length(y), 1, n.T))
 #   #   w.0 <- array(0, dim = c(1, 1, n.T))
 #   #
