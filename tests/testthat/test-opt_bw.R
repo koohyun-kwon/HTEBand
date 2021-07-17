@@ -3,6 +3,12 @@ test_that("positive worst case bias", {
   expect_equal(bias_Lip(x, 0, 1, "tri", 0.1) > 0, TRUE)
 })
 
+test_that("positive worst case bias: Hölder", {
+  x <- seq(-1, 1, length.out = 100)
+  t <- 0
+  expect_equal(bias_Hol(x, t, 1, "tri", 0.1) > 0, TRUE)
+})
+
 
 test_that("positive variance", {
   n <- 250

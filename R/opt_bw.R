@@ -17,7 +17,8 @@ bias_Lip <- function(x, t, M, kern, h){
   }else if(h <= h.min){
 
     # As h approaches h.min from above, the bias approaches M * h.min
-    # This is in order to preserve the asymptotic bias representation that bias = h * C for some constant C > 0.
+    # This is in order to preserve the asymptotic bias representation that bias = h * C
+    # for some constant C > 0.
     res <- M * h
   }else{
 
@@ -31,33 +32,38 @@ bias_Lip <- function(x, t, M, kern, h){
 }
 
 
-#' Holder class worst-case bias
+#' Hölder class worst-case bias
 #'
-#' Calculates the worst-case supremum bias for regression function value estimator under Holder class.
+#' Calculates the worst-case supremum bias for regression function value estimator
+#' under Hölder class.
 #'
-#' @inheritParams K_fun
-#' @param M bound on the first derivative
+#' @inheritParams bias_Lip
+#' @param M bound on the second derivative
 #'
 #' @return a scalar worst-case bias value
 #' @export
 #'
-bias_Hol <- function(d, M, kern, h){
+bias_Hol <- function(x, t, M, kern, h){
 
-  d <- NPRPrelimVar.fit(d, se.initial = "EHW")
+  # Construct LPPData() object; we are taking y = x, which don't matter
+  d <- RDHonest::LPPData(as.data.frame(cbind(x, x)), point = t)
+  d <- RDHonest::NPRPrelimVar.fit(d, se.initial = "EHW") # Add conditional variance values
 
   if(kern == "tri"){
-    kern.rdh = "triangular"
+    kern.rdh = "triangular"  # Naming convention is different from mine
   }
 
   r1 <- RDHonest::NPRreg.fit(d, h, kern.rdh, order = 1, se.method = "supplied.var",
-                             TRUE, J = 3)
+                             TRUE, J = 3) # NPRreg.fit() accepts scalar h
 
-  w <- r1$w
+  w <- r1$w  # local linear weight values
   wt <- w[w != 0]
   xx <- d$X[w != 0]
   nobs <- length(wt)
 
   if (nobs == 0) bias <- sqrt(.Machine$double.xmax/10)
+  # nobs = 0 when h is very small;
+  # by taking very large bias, prevents very small h from being chosen during optimization
 
   w2p <- function(s) abs(sum((wt * (xx - s))[xx >= s]))
   w2m <- function(s) abs(sum((wt * (s - xx))[xx <= s]))
@@ -102,7 +108,8 @@ var_Lip <- function(y, x, t, kern, h, deg, sd.homo = TRUE){
   }else if(h <= h.min){
 
     # As h approaches h.min from above, the variance approaches sigma^2_{i(min)}
-    # This is in order to preserve the asymptotic bias representation that var = C_n / h for some constant C_n > 0.
+    # This is in order to preserve the asymptotic bias representation that
+    # var = C_n / h for some constant C_n > 0.
 
     min.ind <- which.min(abs(x - t))
     res <- h.min * sd.hat[min.ind]^2 / h
