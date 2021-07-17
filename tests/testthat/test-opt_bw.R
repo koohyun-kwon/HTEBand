@@ -33,6 +33,16 @@ test_that("positive variance", {
   # diff / 100
 })
 
+
+test_that("positive variance (Hölder)", {
+  n <- 250
+  x <- seq(-1, 1, length.out = n)
+  sd.true <- 1/2 + x^2
+  eps <- stats::rnorm(n, 0, sd.true)
+  y <- x + eps
+  expect_equal(unname(var_Hol(y, x, 0, "tri", 0.1)) > 0, TRUE)
+})
+
 test_that("valid optimal bandwidth", {
 
   n <- 250

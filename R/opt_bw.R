@@ -54,7 +54,7 @@ bias_Hol <- function(x, t, M, kern, h){
   }
 
   r1 <- RDHonest::NPRreg.fit(d, h, kern.rdh, order = 1, se.method = "supplied.var",
-                             TRUE, J = 3) # NPRreg.fit() accepts scalar h
+                             TRUE) # NPRreg.fit() accepts scalar h
 
   w <- r1$w  # local linear weight values
   wt <- w[w != 0]
@@ -124,7 +124,36 @@ var_Lip <- function(y, x, t, kern, h, deg, sd.homo = TRUE){
   return(res)
 }
 
-#' Lipschitz class variance using residuals
+
+#' Hölder class variance
+#'
+#' Calculates the variance for regression function value estimator under Hölder class
+#'
+#' @inheritParams K_fun
+#' @inheritParams eps_hat
+#'
+#' @return a scalar variance value
+#' @export
+var_Hol <- function(y, x, t, kern, h){
+
+  if(kern == "tri"){
+    kern.rdh = "triangular"  # Naming convention is different from mine
+  }
+
+  # Construct LPPData() object;
+  d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = t)
+  d <- RDHonest::NPRPrelimVar.fit(d, se.initial = "EHW") # Add conditional variance values
+
+  r1 <- RDHonest::NPRreg.fit(d, h, kern.rdh, order = 1, se.method = "supplied.var",
+                             TRUE) # NPRreg.fit() accepts scalar h
+
+  return(r1$se["supplied.var"]^2)
+}
+
+
+
+
+#' Lipschitz class variance using residuals (obsolete now)
 #'
 #' Calculates the variance for regression function value estimator under Lipschitz class using residuals
 #'

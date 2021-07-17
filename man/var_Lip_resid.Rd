@@ -2,7 +2,7 @@
 % Please edit documentation in R/opt_bw.R
 \name{var_Lip_resid}
 \alias{var_Lip_resid}
-\title{Lipschitz class variance using residuals}
+\title{Lipschitz class variance using residuals (obsolete now)}
 \usage{
 var_Lip_resid(x, t, kern, h, resid)
 }
