@@ -14,7 +14,6 @@ ci_reg_Lip(
   d = NULL,
   kern = "tri",
   bw.eq = TRUE,
-  deg = 0,
   se.method = "resid",
   cv = NULL
 )
@@ -39,8 +38,6 @@ relevant only when \code{TE = TRUE}.}
 
 \item{bw.eq}{if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
 relevant only when \code{TE = TRUE}.}
-
-\item{deg}{degree of local polynomial regression to be used}
 
 \item{se.method}{methods for estimating standard error of estimate; currently,
 only "resid" is supported.}

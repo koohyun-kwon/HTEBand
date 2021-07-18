@@ -13,8 +13,7 @@ w_get_Lip(
   TE = FALSE,
   d = NULL,
   kern = "tri",
-  bw.eq = TRUE,
-  deg = 0
+  bw.eq = TRUE
 )
 }
 \arguments{
@@ -37,8 +36,6 @@ relevant only when \code{TE = TRUE}.}
 
 \item{bw.eq}{if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
 relevant only when \code{TE = TRUE}.}
-
-\item{deg}{degree of local polynomial regression to be used}
 }
 \value{
 a matrix of weights with each column corresponding to weights for each evaluation points,

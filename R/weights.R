@@ -56,7 +56,7 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
 
     for(i in 1:m){
 
-      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg, p = 2)$h.opt
+      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, p = 2)$h.opt
       d.1 <- RDHonest::LPPData(as.data.frame(cbind(y.1, x.1)), point = eval[i])
       d.0 <- RDHonest::LPPData(as.data.frame(cbind(y.0, x.0)), point = eval[i])
 
@@ -107,8 +107,7 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
 #' y <- x + rnorm(500, 0, 1/4)
 #' eval <- seq(from = -0.9, to = 0.9, length.out = 5)
 #' w_get_Lip(y, x, eval, 1, 0.95)
-w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "tri", bw.eq = TRUE,
-                      deg = 0){
+w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "tri", bw.eq = TRUE){
 
   m <- length(eval)
 
@@ -125,7 +124,7 @@ w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "tri", 
 
     for(i in 1:m){
 
-      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg)$h.opt
+      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq)$h.opt
       w.mat.1[, i] <- K_fun(x.1, eval[i], h.opt[1], kern) / sum(K_fun(x.1, eval[i], h.opt[1], kern))
       w.mat.0[, i] <- K_fun(x.0, eval[i], h.opt[2], kern) / sum(K_fun(x.0, eval[i], h.opt[2], kern))
     }
@@ -139,7 +138,7 @@ w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "tri", 
 
     for(i in 1:m){
 
-      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq, deg)$h.opt
+      h.opt <- bw_Lip(y, x, eval[i], TE, d, C, kern, 1 - level, bw.eq)$h.opt
       w.mat[, i] <- K_fun(x, eval[i], h.opt, kern) / sum(K_fun(x, eval[i], h.opt, kern))
     }
 

@@ -4,7 +4,7 @@
 \alias{var_Lip}
 \title{Lipschitz class variance}
 \usage{
-var_Lip(y, x, t, kern, h, deg, sd.homo = TRUE)
+var_Lip(y, x, t, kern, h, deg = NULL, sd.homo = TRUE)
 }
 \arguments{
 \item{y}{vector of dependent variables}

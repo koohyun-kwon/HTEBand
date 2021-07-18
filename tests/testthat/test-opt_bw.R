@@ -104,9 +104,9 @@ test_that("valid optimal bandwidth(TE - Hölder)", {
   d <- rep(c(1, 0), each = n)
 
   res <- bw_Lip(y, x, 0, TE = TRUE, d = d, 1, "tri", 0.05, bw.eq = FALSE,
-                1, p = 2)
+                p = 2)
   res.eq <- bw_Lip(y, x, 0, TE = TRUE, d = d, 1, "tri", 0.05, bw.eq = TRUE,
-                   1, p = 2)
+                   p = 2)
   res
   res.eq
 

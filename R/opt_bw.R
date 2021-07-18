@@ -87,7 +87,7 @@ bias_Hol <- function(x, t, M, kern, h){
 #'
 #' @return a scalar variance value
 #' @export
-var_Lip <- function(y, x, t, kern, h, deg, sd.homo = TRUE){
+var_Lip <- function(y, x, t, kern, h, deg = NULL, sd.homo = TRUE){
 
   h.min <- min(abs(x - t))
 
@@ -208,8 +208,7 @@ var_Lip_resid <- function(x, t, kern, h, resid){
 #' \code{h.opt}.}
 #' }
 #' @export
-bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
-                   deg, p = 1){
+bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE, p = 1){
 
   if(TE == TRUE){
 
@@ -223,7 +222,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
         bias_Lip(x.1, t, M, kern, h.1) + bias_Lip(x.0, t, M, kern, h.0)
       }
       sd.fun <- function(h.1, h.0){
-        sqrt(var_Lip(y.1, x.1, t, kern, h.1, deg) + var_Lip(y.0, x.0, t, kern, h.0, deg))
+        sqrt(var_Lip(y.1, x.1, t, kern, h.1) + var_Lip(y.0, x.0, t, kern, h.0))
       }
     }else if(p == 2){
       b.fun <- function(h.1, h.0){
@@ -274,7 +273,7 @@ bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE,
       bias_Lip(x, t, M, kern, h)
     }
     sd.fun <- function(h){
-      sqrt(var_Lip(y, x, t, kern, h, deg))
+      sqrt(var_Lip(y, x, t, kern, h))
     }
 
     obj.1 <- function(h){

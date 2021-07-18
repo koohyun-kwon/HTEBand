@@ -4,7 +4,7 @@
 \alias{bw_Lip}
 \title{Optimal bandwidths under Lipschitz class}
 \usage{
-bw_Lip(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE, deg, p = 1)
+bw_Lip(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE, p = 1)
 }
 \arguments{
 \item{y}{vector of dependent variables}
@@ -26,8 +26,6 @@ relevant only when \code{TE = TRUE}.}
 
 \item{bw.eq}{if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
 relevant only when \code{TE = TRUE}.}
-
-\item{deg}{degree of local polynomial regression to be used}
 
 \item{p}{Hölder exponent, either \code{p = 1} or \code{p = 2}. Default is \code{p = 1}.}
 }

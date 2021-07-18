@@ -77,13 +77,13 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                    cv = ci.cv)
       }else if(method == "reg.Lip"){
         ci_reg_Lip(y, x, eval[t], C, ci.level, kern = kern.reg,
-                   deg = deg, se.method = se.method, cv = ci.cv)
+                   se.method = se.method, cv = ci.cv)
       }else if(method == "TE.Lip"){
         ci_reg_Lip(y, x, eval[t], C, ci.level, TE = TRUE, d = d, kern = kern.reg,
-                   bw.eq = FALSE, deg = deg, se.method = se.method, cv = ci.cv)
+                   bw.eq = FALSE, se.method = se.method, cv = ci.cv)
       }else if(method == "TE.Lip.eqbw"){
         ci_reg_Lip(y, x, eval[t], C, ci.level, TE = TRUE, d = d, kern = kern.reg,
-                   bw.eq = TRUE, deg = deg, se.method = se.method, cv = ci.cv)
+                   bw.eq = TRUE, se.method = se.method, cv = ci.cv)
       }
   }
 

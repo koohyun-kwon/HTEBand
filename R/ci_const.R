@@ -65,9 +65,9 @@ ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = 
 #' y <- x + rnorm(500, 0, 1/4)
 #' ci_reg_Lip(y, x, 1/2, 1, 0.99)
 ci_reg_Lip <- function(y, x, point, C, level, TE = FALSE, d = NULL, kern = "tri",
-                       bw.eq = TRUE, deg = 0, se.method = "resid", cv = NULL){
+                       bw.eq = TRUE, se.method = "resid", cv = NULL){
 
-  opt.res <- bw_Lip(y, x, point, TE, d, C, kern, 1 - level, bw.eq, deg)
+  opt.res <- bw_Lip(y, x, point, TE, d, C, kern, 1 - level, bw.eq)
   h.opt <- opt.res$h.opt
 
   if(TE == TRUE){
