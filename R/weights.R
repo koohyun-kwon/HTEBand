@@ -31,8 +31,8 @@
 #' y <- x + rnorm(500, 0, 1/4)
 #' eval <- seq(from = -0.9, to = 0.9, length.out = 5)
 #' w_get_Hol(y, x, eval, 1, 0.95)
-w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "EHW", se.method = "nn", J = 3,
-                      TE = FALSE, d = NULL, bw.eq = TRUE){
+w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "EHW",
+                      se.method = "nn", J = 3, TE = FALSE, d = NULL, bw.eq = TRUE){
 
   m <- length(eval)
 

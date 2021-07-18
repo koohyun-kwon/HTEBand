@@ -36,6 +36,9 @@ Possible choices are
 \item{"TE.Lip"}{CATE under Lipschitz space}
 \item{"TE.Lip.eqbw"}{CATE under Lipschitz space using the same bandwidths for the treatment
 and the control groups}
+\item{"TE.Lip"}{CATE under Hölder space}
+\item{"TE.Lip.eqbw"}{CATE under Hölder space using the same bandwidths for the treatment
+and the control groups}
 }}
 
 \item{C.vec}{smoothness parameter for the function space; possibly a vector.}

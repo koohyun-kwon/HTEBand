@@ -10,6 +10,9 @@
 #' \item{"TE.Lip"}{CATE under Lipschitz space}
 #' \item{"TE.Lip.eqbw"}{CATE under Lipschitz space using the same bandwidths for the treatment
 #' and the control groups}
+#' \item{"TE.Lip"}{CATE under Hölder space}
+#' \item{"TE.Lip.eqbw"}{CATE under Hölder space using the same bandwidths for the treatment
+#' and the control groups}
 #' }
 #' @param C.vec smoothness parameter for the function space; possibly a vector.
 #' @param y dependent variable; possibly a matrix with \code{nrow(y)} equals the number of observations.
@@ -83,7 +86,7 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
 
 
   # Part 1: Setting initial variables
-  if(method == "reg.Hol"){
+  if(method %in% c("reg.Hol", "TE.Hol", "TE.Hol.eqbw")){
 
     kern.reg <- "triangular"
     se.initial <- "EHW"
@@ -121,7 +124,8 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
 
     level.int <- stats::pnorm(2 * c)
 
-    if(method %in% c("reg.Hol", "reg.Lip", "TE.Lip", "TE.Lip.eqbw")){
+    if(method %in% c("reg.Hol", "reg.Lip", "TE.Lip", "TE.Lip.eqbw",
+                     "TE.Hol", "TE.Hol.eqbw")){
 
       w.res <-
         if(method == "reg.Hol"){
@@ -134,6 +138,12 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
         }else if(method == "TE.Lip.eqbw"){
           w_get_Lip(y, x, eval, C, level.int, TE = TRUE, d = d, kern = kern.reg,
                     bw.eq = TRUE)
+        }else if(method == "TE.Hol"){
+          w_get_Hol(y, x, eval, C, level, kern.reg, se.initial,
+                    se.method, J, TE = TRUE, d = d, bw.eq = FALSE)
+        }else if(method == "TE.Hol.eqbw"){
+          w_get_Hol(y, x, eval, C, level, kern.reg, se.initial,
+                    se.method, J, TE = TRUE, d = d, bw.eq = TRUE)
         }
 
       w.1 <-
