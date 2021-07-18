@@ -208,7 +208,7 @@ var_Lip_resid <- function(x, t, kern, h, resid){
 #' \code{h.opt}.}
 #' }
 #' @export
-bw_Lip <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE, p = 1){
+bw_opt <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE, p = 1){
 
   if(TE == TRUE){
 

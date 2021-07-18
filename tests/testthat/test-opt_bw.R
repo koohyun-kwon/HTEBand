@@ -51,7 +51,7 @@ test_that("valid optimal bandwidth", {
   eps <- stats::rnorm(n, 0, sd.true)
   y <- x + eps
 
-  res <- bw_Lip(y, x, 0, TE = FALSE, d = NULL, 1, "tri", 0.05, bw.eq = TRUE,
+  res <- bw_opt(y, x, 0, TE = FALSE, d = NULL, 1, "tri", 0.05, bw.eq = TRUE,
                 1)
 
   res
@@ -74,9 +74,9 @@ test_that("valid optimal bandwidth(TE)", {
   x <- c(x.1, x.0)
   d <- rep(c(1, 0), each = n)
 
-  res <- bw_Lip(y, x, 0, TE = TRUE, d = d, 1, "tri", 0.05, bw.eq = FALSE,
+  res <- bw_opt(y, x, 0, TE = TRUE, d = d, 1, "tri", 0.05, bw.eq = FALSE,
                 1)
-  res.eq <- bw_Lip(y, x, 0, TE = TRUE, d = d, 1, "tri", 0.05, bw.eq = TRUE,
+  res.eq <- bw_opt(y, x, 0, TE = TRUE, d = d, 1, "tri", 0.05, bw.eq = TRUE,
                    1)
   # res.orc <- bw_Lip_supp(c(sd.true, sd.true/2), x, 0, TE = TRUE, d = d, 1, "tri", 0.05, bw.eq = TRUE)
 
@@ -103,9 +103,9 @@ test_that("valid optimal bandwidth(TE - Hölder)", {
   x <- c(x.1, x.0)
   d <- rep(c(1, 0), each = n)
 
-  res <- bw_Lip(y, x, 0, TE = TRUE, d = d, 1, "tri", 0.05, bw.eq = FALSE,
+  res <- bw_opt(y, x, 0, TE = TRUE, d = d, 1, "tri", 0.05, bw.eq = FALSE,
                 p = 2)
-  res.eq <- bw_Lip(y, x, 0, TE = TRUE, d = d, 1, "tri", 0.05, bw.eq = TRUE,
+  res.eq <- bw_opt(y, x, 0, TE = TRUE, d = d, 1, "tri", 0.05, bw.eq = TRUE,
                    p = 2)
   res
   res.eq

@@ -51,7 +51,7 @@ ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = 
 #' it can be used to deal with both regression function value itself and
 #' difference between regression function values of treatment and control groups.
 #'
-#' @inheritParams bw_Lip
+#' @inheritParams bw_opt
 #' @inheritParams ci_reg_Hol
 #' @param se.method methods for estimating standard error of estimate; currently,
 #' only "resid" is supported.
@@ -67,7 +67,7 @@ ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = 
 ci_reg_Lip <- function(y, x, point, C, level, TE = FALSE, d = NULL, kern = "tri",
                        bw.eq = TRUE, se.method = "resid", cv = NULL){
 
-  opt.res <- bw_Lip(y, x, point, TE, d, C, kern, 1 - level, bw.eq)
+  opt.res <- bw_opt(y, x, point, TE, d, C, kern, 1 - level, bw.eq)
   h.opt <- opt.res$h.opt
 
   if(TE == TRUE){
