@@ -14,7 +14,10 @@ ci_reg_Hol(
   se.initial = "EHW",
   se.method = "nn",
   J = 3,
-  cv = NULL
+  cv = NULL,
+  TE = FALSE,
+  d = NULL,
+  bw.eq = TRUE
 )
 }
 \arguments{
@@ -41,6 +44,14 @@ See \code{\link[RDHonest]{NPRreg.fit}} in \code{RDHonest} package for a list of 
 
 \item{cv}{supplied value of critical value to be used in constructing confidence interval;
 default is \code{cv = NULL}.}
+
+\item{TE}{logical specifying whether there are treatment and control groups.}
+
+\item{d}{a vector of indicator variables specifying treatment and control group status;
+relevant only when \code{TE = TRUE}.}
+
+\item{bw.eq}{if \code{TRUE}, the same bandwidths are used for estimators for treatment and control groups;
+relevant only when \code{TE = TRUE}.}
 }
 \value{
 a vector of lower and upper ends of the confidence interval  and a pair of bandwidths used for
