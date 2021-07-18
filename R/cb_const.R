@@ -24,7 +24,7 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
   cb.grid <- matrix(NA, nrow = n.T, ncol = 4)
   n <- length(x)
 
-  if(method == "reg.Hol"){
+  if(method %in% c("reg.Hol", "TE.Hol", "TE.Hol.eqbw")){
 
     kern.reg <- "triangular"
     se.initial <- "EHW"
@@ -83,6 +83,12 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                    bw.eq = FALSE, se.method = se.method, cv = ci.cv)
       }else if(method == "TE.Lip.eqbw"){
         ci_reg_Lip(y, x, eval[t], C, ci.level, TE = TRUE, d = d, kern = kern.reg,
+                   bw.eq = TRUE, se.method = se.method, cv = ci.cv)
+      }else if(method == "TE.Hol"){
+        ci_reg_Hol(y, x, eval[t], C, ci.level, TE = TRUE, d = d, kern = kern.reg,
+                   bw.eq = FALSE, se.method = se.method, cv = ci.cv)
+      }else if(method == "TE.Hol.eqbw"){
+        ci_reg_Hol(y, x, eval[t], C, ci.level, TE = TRUE, d = d, kern = kern.reg,
                    bw.eq = TRUE, se.method = se.method, cv = ci.cv)
       }
   }
