@@ -10,7 +10,7 @@ CATEBand(
   d,
   C,
   level,
-  fclass = "L",
+  fclass = c("L", "H"),
   h.eq = FALSE,
   n.eval = min(sum(d == 1), sum(d == 0))/5,
   eval = NULL,
@@ -37,7 +37,8 @@ CATEBand(
 
 \item{level}{coverage probability.}
 
-\item{fclass}{function class specification; currently only \code{"L"} for the Lipschitz class is supported.}
+\item{fclass}{function class specification, \code{"L"} for the Lipschitz class, and
+\code{"H"} for the Hölder class.}
 
 \item{h.eq}{logical indicating whether the same bandwidths are used for the treated and the control groups;
 the default is \code{h.eq = FALSE}.}
@@ -96,4 +97,5 @@ x <- rep(seq(-1, 1, length.out = 500), each = 2)
 d <- rep(c(0, 1), 500)
 y <- d * x^2 + (1 - d) * x + rnorm(500, 0, 1/4)
 CATEBand(y, x, d, 2, 0.95, n.eval = 25, h.eq = TRUE, c.method = "supp")
+CATEBand(y, x, d, 2, 0.95, fclass = "H", n.eval = 25, h.eq = TRUE, c.method = "supp")
 }

@@ -37,6 +37,7 @@
 #' x <- seq(-1, 1, length.out = 500)
 #' y <- x^2 + rnorm(500, 0, 1/4)
 #' NpregBand(y, x, 2, 0.95, "L", n.eval = 25, c.method = "supp")
+#' NpregBand(y, x, 2, 0.95, "H", n.eval = 25, c.method = "supp")
 NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) / 5, eval = NULL, q.int = 0.025,
                       n.sim = 10^3, kern = "tri", deg = 1, var.reg = "npr", seed = NULL,
                       root.robust = FALSE, ng = 10, x.out = NULL, c.method = "root"){
@@ -76,7 +77,6 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #'
 #' @inheritParams NpregBand
 #' @param d vector of treatment indicators.
-#' @param fclass function class specification; currently only \code{"L"} for the Lipschitz class is supported.
 #' @param h.eq logical indicating whether the same bandwidths are used for the treated and the control groups;
 #' the default is \code{h.eq = FALSE}.
 #' @param n.eval number of grid points to use when constructing confidence band; default is
@@ -92,15 +92,25 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #' d <- rep(c(0, 1), 500)
 #' y <- d * x^2 + (1 - d) * x + rnorm(500, 0, 1/4)
 #' CATEBand(y, x, d, 2, 0.95, n.eval = 25, h.eq = TRUE, c.method = "supp")
-CATEBand <- function(y, x, d, C, level, fclass = "L", h.eq = FALSE, n.eval = min(sum(d == 1), sum(d == 0)) / 5,
+#' CATEBand(y, x, d, 2, 0.95, fclass = "H", n.eval = 25, h.eq = TRUE, c.method = "supp")
+CATEBand <- function(y, x, d, C, level, fclass = c("L", "H"), h.eq = FALSE, n.eval = min(sum(d == 1), sum(d == 0)) / 5,
                      eval = NULL, q.int = 0.025, n.sim = 10^3, kern = "tri", deg = 1, var.reg = "npr", seed = NULL,
                      root.robust = FALSE, ng = 10, x.out = NULL, c.method = "root"){
 
+  fclass <- match.arg(fclass)
   method <-
     if(h.eq == TRUE){
-      "TE.Lip.eqbw"
+      if(fclass == "L"){
+        "TE.Lip.eqbw"
+      }else if(fclass == "H"){
+        "TE.Hol.eqbw"
+      }
     }else{
-      "TE.Lip"
+      if(fclass == "L"){
+        "TE.Lip"
+      }else if(fclass == "H"){
+        "TE.Hol"
+      }
     }
 
   if(is.null(eval)){
