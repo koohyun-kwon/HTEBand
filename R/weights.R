@@ -60,8 +60,14 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
       d.1 <- RDHonest::LPPData(as.data.frame(cbind(y.1, x.1)), point = eval[i])
       d.0 <- RDHonest::LPPData(as.data.frame(cbind(y.0, x.0)), point = eval[i])
 
-      w.mat.1[, i] <- RDHonest::NPRreg.fit(d.1, h.opt[1], kern = kern.rdh, se.method = se.method, J = J)$w
-      w.mat.0[, i] <- RDHonest::NPRreg.fit(d.0, h.opt[2], kern = kern.rdh, se.method = se.method, J = J)$w
+      # variance doesn't matter for weights
+      d.1$sigma2 <- rep(1, length(d.1$X))
+      d.0$sigma2 <- rep(1, length(d.0$X))
+
+      w.mat.1[, i] <- RDHonest::NPRreg.fit(d.1, h.opt[1], kern = kern.rdh,
+                                           se.method = "supplied.var")$w
+      w.mat.0[, i] <- RDHonest::NPRreg.fit(d.0, h.opt[2], kern = kern.rdh,
+                                           se.method = "supplied.var")$w
     }
 
     res <- list(w.mat.1 = w.mat.1, w.mat.0 = w.mat.0)
@@ -75,10 +81,13 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
 
       d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = eval[i])
 
-      bw.res.i <- RDHonest::NPROptBW.fit(d, M = C, kern = kern, opt.criterion = "OCI", alpha = 1 - level,
-                                         beta = 0.5, se.initial = se.initial)
 
-      w.res.i <- RDHonest::NPRreg.fit(d, bw.res.i$h[1], kern = kern, se.method = se.method, J = J)
+      bw.res.i <- RDHonest::NPROptBW.fit(d, M = C, kern = kern, opt.criterion = "OCI",
+                                         alpha = 1 - level,
+                                         beta = 0.5, se.initial = se.initial)
+      d$sigma2 <- rep(1, length(d$X)) # variance doesn't matter for weights
+      w.res.i <- RDHonest::NPRreg.fit(d, bw.res.i$h[1], kern = kern,
+                                      se.method = "supplied.var")
       w.mat[, i] <- w.res.i$w
     }
 
