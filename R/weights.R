@@ -64,10 +64,12 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
       d.1$sigma2 <- rep(1, length(d.1$X))
       d.0$sigma2 <- rep(1, length(d.0$X))
 
-      w.mat.1[, i] <- RDHonest::NPRreg.fit(d.1, h.opt[1], kern = kern.rdh,
-                                           se.method = "supplied.var")$w
-      w.mat.0[, i] <- RDHonest::NPRreg.fit(d.0, h.opt[2], kern = kern.rdh,
-                                           se.method = "supplied.var")$w
+      # w.mat.1[, i] <- RDHonest::NPRreg.fit(d.1, h.opt[1], kern = kern.rdh,
+      #                                     se.method = "supplied.var")$w
+      w.mat.1[, i] <- lp_w(kern = kern.rdh, order = 1, h = h.opt[1], x = d.1$X)
+      # w.mat.0[, i] <- RDHonest::NPRreg.fit(d.0, h.opt[2], kern = kern.rdh,
+      #                                      se.method = "supplied.var")$w
+      w.mat.0[, i] <- lp_w(kern = kern.rdh, order = 1, h = h.opt[2], x = d.0$X)
     }
 
     res <- list(w.mat.1 = w.mat.1, w.mat.0 = w.mat.0)
@@ -86,9 +88,10 @@ w_get_Hol <- function(y, x, eval, C, level, kern = "triangular", se.initial = "E
                                          alpha = 1 - level,
                                          beta = 0.5, se.initial = se.initial)
       d$sigma2 <- rep(1, length(d$X)) # variance doesn't matter for weights
-      w.res.i <- RDHonest::NPRreg.fit(d, bw.res.i$h[1], kern = kern,
-                                      se.method = "supplied.var")
-      w.mat[, i] <- w.res.i$w
+      # w.res.i <- RDHonest::NPRreg.fit(d, bw.res.i$h[1], kern = kern,
+      #                                se.method = "supplied.var")
+      w.res.i <- lp_w(kern = kern, order = 1, h = bw.res.i$h[1], x = d$X)
+      w.mat[, i] <- w.res.i
     }
 
     res <- w.mat

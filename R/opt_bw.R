@@ -54,10 +54,11 @@ bias_Hol <- function(x, t, M, kern, h){
     kern.rdh = "triangular"  # Naming convention is different from mine
   }
 
-  r1 <- RDHonest::NPRreg.fit(d, h, kern.rdh, order = 1, se.method = "supplied.var",
-                             TRUE) # NPRreg.fit() accepts scalar h
+  # r1 <- RDHonest::NPRreg.fit(d, h, kern.rdh, order = 1, se.method = "supplied.var",
+  #                            TRUE) # NPRreg.fit() accepts scalar h
 
-  w <- r1$w  # local linear weight values
+  # w <- r1$w  # local linear weight values
+  w <- lp_w(kern = kern.rdh, order = 1, h = h, x = d$X)
   wt <- w[w != 0]
   xx <- d$X[w != 0]
   nobs <- length(wt)
