@@ -48,3 +48,16 @@ test_that("valid weights: Lipschitz", {
   expect_equal(as.numeric(res.eq$w.mat.0 >= 0), rep(1, n * m))
 
 })
+
+test_that("Same weights", {
+
+  x <- seq(-1, 1, length.out = 500)
+  d <- RDHonest::LPPData(as.data.frame(cbind(x, x)), point = 0.1)
+  d$sigma2 <- rep(1, length(d$X))
+
+  w1 <- lp_w("triangular", 1, 1, d$X)
+  w2 <- RDHonest::NPRreg.fit(d, 1, "triangular", order = 1, se.method = "supplied.var",
+                              TRUE)$w
+
+  expect_equal(all(w1 == w2), TRUE)
+})

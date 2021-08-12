@@ -156,3 +156,25 @@ w_get_Lip <- function(y, x, eval, C, level, TE = FALSE, d = NULL, kern = "tri", 
 
   return(res)
 }
+
+#' Local polynomial regression weigths
+#'
+#' @param kern name of the kernel (as used in \code{RDHonest} package).
+#' @param order order of the polynomial regression
+#' @param h bandwidth
+#' @param x vector of regressors
+#'
+#' @return vector of local polynomial regression weights
+#' @export
+#'
+#' @examples lp_w("triangular", 1, 1, seq(-1, 1, length.out = 500))
+lp_w <- function(kern, order, h, x){
+
+  K <- RDHonest::EqKern(kern, boundary = FALSE, order = 0)
+  weights = rep(1L, length(x))
+  R <- outer(x, 0:order, "^")
+  W <- K(x/h) * weights
+  Gamma <- crossprod(R, W * R)
+  res <- (W * R %*% solve(Gamma))[, 1]
+  return(res)
+}
