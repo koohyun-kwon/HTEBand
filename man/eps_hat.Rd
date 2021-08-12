@@ -4,7 +4,7 @@
 \alias{eps_hat}
 \title{Residual calculation}
 \usage{
-eps_hat(y, x, deg, kern = "epa", var.reg = "npr")
+eps_hat(y, x, deg, kern = "epa", var.reg = "npr", n.max = 500)
 }
 \arguments{
 \item{y}{vector of dependent variables}
@@ -20,6 +20,12 @@ supports \code{"tri"}, \code{"epa"},
 \item{var.reg}{nonparametric regression method used to calculate residuals;
 either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
 (standing for \code{locpol} package). Default is \code{var.reg = "npr"}.}
+
+\item{n.max}{maximum number of observations allowed where the regression function estimator
+is evaluated when \code{var.reg = "npr"}.
+If \code{length(x) > n.max}, the regression function estimator
+is evaluated over a grid of the length \code{n.max}, and the regression function estimate over
+\code{x} is obtained by linear interpolation. The default is \code{n.max = 500}.}
 }
 \value{
 vector of residuals with the same length as \code{y}

@@ -16,6 +16,11 @@
 #' @param var.reg nonparametric regression method used to calculate residuals;
 #' either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
 #' (standing for \code{locpol} package). Default is \code{var.reg = "npr"}.
+#' @param n.max maximum number of observations allowed where the regression function estimator
+#' is evaluated when \code{var.reg = "npr"}.
+#' If \code{length(x) > n.max}, the regression function estimator
+#' is evaluated over a grid of the length \code{n.max}, and the regression function estimate over
+#' \code{x} is obtained by linear interpolation. The default is \code{n.max = 500}.
 #'
 #' @return vector of residuals with the same length as \code{y}
 #' @export
@@ -25,12 +30,20 @@
 #' y <- x^2 + stats::rnorm(500, 0, 0.1)
 #' eps_hat(y, x, 1)
 #' eps_hat(y, x, 1, var.reg = "locpol")
-eps_hat <- function(y, x, deg, kern = "epa", var.reg = "npr"){
+eps_hat <- function(y, x, deg, kern = "epa", var.reg = "npr", n.max = 500){
 
   if(var.reg == "npr"){
-    lp.res <- nprobust::lprobust(y, x, x, p = deg, kernel = kern)
-    yhat.lp <- lp.res$Estimate[, "tau.us"]
+    if(length(x) > n.max){
+      x.eval <- seq(from = min(x), to = max(x), length.out = n.max)
+      lp.res <- nprobust::lprobust(y, x, x.eval, p = deg, kernel = kern, vce = "hc0")
+      yhat.grid <- lp.res$Estimate[, "tau.us"]
+      yhat.lp <- stats::approx(x.eval, yhat.grid, x)$y
+    }else{
+      lp.res <- nprobust::lprobust(y, x, x, p = deg, kernel = kern)
+      yhat.lp <- lp.res$Estimate[, "tau.us"]
+    }
     eps.hat <- y - yhat.lp
+
   }else if(var.reg == "locpol"){
 
     if(kern == "tri"){

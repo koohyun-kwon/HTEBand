@@ -23,3 +23,13 @@ test_that("residual calculation works - TE", {
 
 })
 
+
+test_that("residual calculation works - large n", {
+
+  n <- 20000
+  x <- seq(from = -1, to = 1, length.out = n)
+  y <- x^2 + stats::rnorm(n, 0, 0.5)
+  system.time({
+    expect_equal(sum(resid_calc(y, x, deg = 1)$resid.1^2 > 0), n)
+  })
+})
