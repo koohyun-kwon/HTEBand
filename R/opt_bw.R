@@ -47,7 +47,8 @@ bias_Hol <- function(x, t, M, kern, h){
 
   # Construct LPPData() object; we are taking y = x, which don't matter
   d <- RDHonest::LPPData(as.data.frame(cbind(x, x)), point = t)
-  d <- RDHonest::NPRPrelimVar.fit(d, se.initial = "EHW") # Add conditional variance values
+  # d <- RDHonest::NPRPrelimVar.fit(d, se.initial = "EHW") # Add conditional variance values
+  d$sigma2 <- rep(1, length(d$X))
 
   if(kern == "tri"){
     kern.rdh = "triangular"  # Naming convention is different from mine
