@@ -72,10 +72,10 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
   }
 
 
-  cat("CB construction...", "\n")
-  for(t in 1:n.T){
-  cat(t, "/", n.T, "\n")
 
+  cat("CB construction...")
+  for(t in 1:n.T){
+    cat(t, "/", "n.T", "\n")
 
     cb.grid[t, ] <-
       if(method == "reg.Hol"){
