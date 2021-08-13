@@ -26,6 +26,8 @@
 ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = "EHW",
                        se.method = "nn", J = 3, cv = NULL, TE = FALSE, d = NULL, bw.eq = TRUE){
 
+  if(length(y) > 5000) se.method <- "EHW"
+
   if(TE){
 
     try(if(is.null(d)) stop("Supply treatment indicator in d"))
