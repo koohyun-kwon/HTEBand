@@ -40,9 +40,11 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     p <- 1
   }
 
+  cat("Residual calculation...")
   resid.res <- resid_calc(y, x, d, deg, kern, var.reg)
   resid.1 <- resid.res$resid.1
   resid.0 <- resid.res$resid.0
+  cat(" Done", "\n")
 
   if(c.method == "root"){
     c.supp = NULL
