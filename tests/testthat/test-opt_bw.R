@@ -115,3 +115,22 @@ test_that("valid optimal bandwidth(TE - Hölder)", {
   expect_equal(unname(res.eq$h.opt) > 0, rep(TRUE, 2))
   expect_equal(unname(res.eq$hl.opt) > 0, TRUE)
 })
+
+test_that("Check same variance estimator", {
+
+  x <- seq(-1, 1, length.out = 500)
+  y <- x^2 + rnorm(500, 0, 1/2)
+  d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = 0)
+  d <- RDHonest::NPRPrelimVar.fit(d, se.initial = "EHW") # Add conditional variance values
+
+  kern.rdh = "triangular"
+  h = 1
+
+  w <- lp_w(kern.rdh, order = 1, h, d$X)
+  res1 <- sum(w^2 * d$sigma2)
+
+  r1 <- RDHonest::NPRreg.fit(d, h, kern.rdh, order = 1, se.method = "supplied.var",
+                             TRUE) # NPRreg.fit() accepts scalar h
+  res2 <- r1$se["supplied.var"]^2
+  expect_equal(unname(res1) - unname(res2) < 10^(-10), TRUE)
+})

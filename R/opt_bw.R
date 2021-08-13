@@ -146,10 +146,15 @@ var_Hol <- function(y, x, t, kern, h){
   d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point = t)
   d <- RDHonest::NPRPrelimVar.fit(d, se.initial = "EHW") # Add conditional variance values
 
-  r1 <- RDHonest::NPRreg.fit(d, h, kern.rdh, order = 1, se.method = "supplied.var",
-                             TRUE) # NPRreg.fit() accepts scalar h
+  w <- lp_w(kern.rdh, order = 1, h, d$X)
+  res <- sum(w^2 * d$sigma2)
 
-  return(r1$se["supplied.var"]^2)
+  return(res)
+
+  # r1 <- RDHonest::NPRreg.fit(d, h, kern.rdh, order = 1, se.method = "supplied.var",
+  #                           TRUE) # NPRreg.fit() accepts scalar h
+
+  # return(r1$se["supplied.var"]^2)
 }
 
 
