@@ -71,15 +71,11 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     opt.grid <- opt.res$opt.grid
   }
 
-<<<<<<< HEAD
+
   cat("CB construction...", "\n")
   for(t in 1:n.T){
   cat(t, "/", n.T, "\n")
-=======
-  cat("CB construction...")
-  for(t in 1:n.T){
-  cat(t, "/", "n.T", "\n")
->>>>>>> ba2b071aaefd0d474809ae23439174e301db00ff
+
 
     cb.grid[t, ] <-
       if(method == "reg.Hol"){
@@ -102,11 +98,8 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                    bw.eq = TRUE, se.method = se.method, cv = ci.cv)
       }
   }
-<<<<<<< HEAD
   cat("Done", "\n")
-=======
-  cat("Done")
->>>>>>> ba2b071aaefd0d474809ae23439174e301db00ff
+
 
   if(is.null(x.out)){
     cb.data <- data.frame(eval = eval, cb.lower = cb.grid[, 1], cb.upper = cb.grid[, 2],
