@@ -20,8 +20,8 @@ test_that("valid confidence interval - Lipschitz regression", {
   res
   res.eq
 
-  expect_equal(!is.na(res), rep(TRUE, 6))
-  expect_equal(!is.na(res.eq), rep(TRUE, 6))
+  expect_equal(!is.na(res), rep(TRUE, 7))
+  expect_equal(!is.na(res.eq), rep(TRUE, 7))
 })
 
 

@@ -138,6 +138,7 @@ ci_reg_Lip <- function(y, x, point, C, level, TE = FALSE, d = NULL, kern = "tri"
     if(is.null(cv)){  ### ?????????
       ci.lower <- est - opt.res$hl.opt
       ci.upper <- est + opt.res$hl.opt
+      cv <- opt.res$cv
     }else{
       ci.lower <- est - opt.res$b.opt - cv * opt.res$sd.opt
       ci.upper <- est + opt.res$b.opt + cv * opt.res$sd.opt

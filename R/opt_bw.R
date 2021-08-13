@@ -299,7 +299,8 @@ bw_opt <- function(y, x, t, TE = FALSE, d = NULL, M, kern, alpha, bw.eq = TRUE, 
     sd.opt <- sd.fun(h.opt)
   }
 
-  res <- list(h.opt = h.opt, hl.opt = hl.opt, b.opt = b.opt, sd.opt = sd.opt)
+  res <- list(h.opt = h.opt, hl.opt = hl.opt, b.opt = b.opt, sd.opt = sd.opt,
+              cv = stats::qnorm(1 - alpha) / 2)
   return(res)
 }
 
