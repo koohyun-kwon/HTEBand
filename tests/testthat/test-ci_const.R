@@ -20,8 +20,8 @@ test_that("valid confidence interval - Lipschitz regression", {
   res
   res.eq
 
-  expect_equal(!is.na(res), rep(TRUE, 4))
-  expect_equal(!is.na(res.eq), rep(TRUE, 4))
+  expect_equal(!is.na(res), rep(TRUE, 6))
+  expect_equal(!is.na(res.eq), rep(TRUE, 6))
 })
 
 
@@ -42,5 +42,5 @@ test_that("valid confidence interval - Hölder regression", {
                        bw.eq = TRUE)
   res.eq
 
-  expect_equal(!is.na(res.eq), rep(TRUE, 4))
+  expect_equal(!is.na(res.eq), rep(TRUE, 7))
 })

@@ -47,7 +47,7 @@ test_that("valid confidence band (Lipschitz)", {
   system.time({
     opt.res <- cb_const("reg.Lip", 1, y, x, NULL, eval, T.grad.mat, level,
                         1, "tri", M, seed = NULL, useloop = TRUE,
-                        root.robust = FALSE)
+                        root.robust = FALSE, c.method = "supp")
   })
 
   expect_equal(is.na(opt.res[, 2]), rep(FALSE, n.T))
@@ -90,7 +90,7 @@ test_that("valid confidence band (Lipschitz-TE)", {
   system.time({
     opt.res <- cb_const("TE.Lip.eqbw", 2, y, x, d, eval, T.grad.mat, level,
                         1, "tri", M, seed = NULL, useloop = TRUE,
-                        root.robust = FALSE)
+                        root.robust = FALSE, c.method = "supp")
   })
 
   expect_equal(is.na(opt.res[, 2]), rep(FALSE, n.T))

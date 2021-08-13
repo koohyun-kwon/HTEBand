@@ -68,7 +68,7 @@ ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = 
     ci.lower <- est - hl
     ci.upper <- est + hl
 
-    return(c(ci.lower, ci.upper, h.opt))
+    return(c(ci.lower, ci.upper, h.opt, maxbias, sd, c))
   }else{
 
     d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), point)
@@ -88,7 +88,7 @@ ci_reg_Hol <- function(y, x, point, C, level, kern = "triangular", se.initial = 
     ci.lower <- ci.res$estimate - hl
     ci.upper <- ci.res$estimate + hl
 
-    return(c(ci.lower, ci.upper, ci.res$hp, ci.res$hp))
+    return(c(ci.lower, ci.upper, ci.res$hp, ci.res$hp, maxbias, sd, c))
   }
 }
 
@@ -135,7 +135,7 @@ ci_reg_Lip <- function(y, x, point, C, level, TE = FALSE, d = NULL, kern = "tri"
 
   if(se.method == "resid"){
 
-    if(is.null(cv)){
+    if(is.null(cv)){  ### ?????????
       ci.lower <- est - opt.res$hl.opt
       ci.upper <- est + opt.res$hl.opt
     }else{
@@ -144,5 +144,5 @@ ci_reg_Lip <- function(y, x, point, C, level, TE = FALSE, d = NULL, kern = "tri"
     }
   }
 
-  return(c(ci.lower, ci.upper, h.opt))
+  return(c(ci.lower, ci.upper, h.opt, opt.res$b.opt, opt.res$sd.opt, cv))
 }

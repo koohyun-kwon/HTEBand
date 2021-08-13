@@ -21,7 +21,7 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                      c.method = "root"){
 
   n.T <- length(eval)
-  cb.grid <- matrix(NA, nrow = n.T, ncol = 4)
+  cb.grid <- matrix(NA, nrow = n.T, ncol = 7)
   n <- length(x)
 
   if(method %in% c("reg.Hol", "TE.Hol", "TE.Hol.eqbw")){
@@ -73,10 +73,10 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     opt.grid <- opt.res$opt.grid
   }
 
-
-
   cat("CB construction...", "\n")
+
   for(t in 1:n.T){
+
     cat(t, "/", n.T, "\n")
 
     cb.grid[t, ] <-
