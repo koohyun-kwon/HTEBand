@@ -105,7 +105,8 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
 
   if(is.null(x.out)){
     cb.data <- data.frame(eval = eval, cb.lower = cb.grid[, 1], cb.upper = cb.grid[, 2],
-                          h.t = cb.grid[, 3], h.c = cb.grid[, 4])
+                          h.t = cb.grid[, 3], h.c = cb.grid[, 4],
+                          max.bias = cb.grid[, 5], sd = cb.grid[, 6], cv = cb.grid[, 7])
   }else{
     cb.l <- stats::approx(eval, cb.grid[, 1], x.out)$y
     cb.u <- stats::approx(eval, cb.grid[, 2], x.out)$y
