@@ -50,10 +50,12 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     c.supp = opt_cn(n, p)
   }
 
+  cat("Optimal bandwidth calculation...")
   opt.res <- opt_w(method, C.vec, y, x, d, eval, T.grad.mat, level,
                    deg, kern, M, seed, useloop,
                    root.robust, ng, resid.1, resid.0, c.method = c.method,
                    c.supp = c.supp)
+  cat(" Done", "\n")
 
   c.opt <- opt.res$c.root
   ci.level <- stats::pnorm(2 * c.opt)
@@ -69,7 +71,9 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     opt.grid <- opt.res$opt.grid
   }
 
+  cat("CB construction...", "\n")
   for(t in 1:n.T){
+  cat(t, "/", n.T, "\n")
 
     cb.grid[t, ] <-
       if(method == "reg.Hol"){
@@ -92,6 +96,7 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                    bw.eq = TRUE, se.method = se.method, cv = ci.cv)
       }
   }
+  cat("Done", "\n")
 
   if(is.null(x.out)){
     cb.data <- data.frame(eval = eval, cb.lower = cb.grid[, 1], cb.upper = cb.grid[, 2],
