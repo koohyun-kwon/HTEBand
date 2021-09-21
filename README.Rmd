@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of HTEBand is to construct uniform confidence bands for various types of heterogenous treatment effect parameters. 
+The goal of HTEBand is to construct uniform confidence bands for various types of heterogeneous treatment effect parameters. 
 
 ## Installation
 
