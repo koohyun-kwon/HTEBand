@@ -390,3 +390,38 @@ bw_Lip_supp <- function(c.sd, x, t, TE = FALSE, d = NULL, M, kern, c, bw.eq = TR
   res <- list(h.opt = h.opt, hl.opt = hl.opt)
   return(res)
 }
+
+#' Optimal bandwidth calculation for regression function estimation under Hölder class
+#'
+#' @param y a vector of dependent variable
+#' @param x a vector of regressor
+#' @param eval a vector of evaluation points
+#' @param C bound on the second derivative
+#' @param kern kernel function
+#' @param se.initial initial variance estimation method
+#'
+#' @return a vector of optimal bandwidths
+#' @export
+#'
+#' @examples x <- stats::runif(500, min = -1, max = 1)
+#' y <- x + rnorm(500, 0, 1/4)
+#' eval <- seq(-1, 1, length.out = 10)
+#' bw_Hol_reg(y, x, eval, 1)
+bw_Hol_reg <- function(y, x, eval, C, kern = "triangular", se.initial = "EHW"){
+
+  h.res <- numeric(length(eval))
+  n <- length(x)
+  c.supp = opt_cn(n, 2)
+  ci.level <- stats::pnorm(2 * c.supp)
+
+  for(i in 1:length(eval)){
+
+    d <- RDHonest::LPPData(as.data.frame(cbind(y, x)), eval[i])
+    ci.res <- RDHonest::NPRHonest.fit(d = d, M = C, kern = kern, opt.criterion = "OCI",
+                                      alpha = 1 - ci.level, beta = 0.5, se.method = "EHW",
+                                      se.initial = se.initial)
+    h.res[i] <- ci.res$hp
+  }
+
+  return(h.res)
+}
