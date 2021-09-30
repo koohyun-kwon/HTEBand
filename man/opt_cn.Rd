@@ -4,12 +4,14 @@
 \alias{opt_cn}
 \title{Optimal value of \eqn{c_n}}
 \usage{
-opt_cn(n, p)
+opt_cn(n, p, level = NULL)
 }
 \arguments{
 \item{n}{sample size}
 
 \item{p}{Holder space exponent, either 1 or 2.}
+
+\item{level}{significance level; used for better quantile approximation.}
 }
 \value{
 the value of the optimal \eqn{c_n}.
@@ -19,4 +21,5 @@ Optimal value of \eqn{c_n}
 }
 \examples{
 opt_cn(500, 2)
+opt_cn(500, 2, 0.95)
 }

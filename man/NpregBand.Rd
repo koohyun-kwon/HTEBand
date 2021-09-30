@@ -89,5 +89,5 @@ is recommended.
 x <- seq(-1, 1, length.out = 500)
 y <- x^2 + rnorm(500, 0, 1/4)
 NpregBand(y, x, 2, 0.95, "L", n.eval = 25, c.method = "supp")
-NpregBand(y, x, 2, 0.95, "H", n.eval = 25, c.method = "supp")
+NpregBand(y, x, 2, 0.95, "H", n.eval = 25, c.method = "supp2")
 }

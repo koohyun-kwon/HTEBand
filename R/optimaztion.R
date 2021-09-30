@@ -187,7 +187,7 @@ opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
     root.res <- stats::uniroot(eq.val, interval = c(c.min, c.max), extendInt = "upX", tol = 1e-3)
     c.root <- root.res$root
 
-  }else if(c.method == "supp"){
+  }else if(c.method %in% c("supp", "supp2")){
 
     try(if(is.null(c.supp)) stop("Supply value of c.supp"))
     c.root <- c.supp

@@ -135,13 +135,19 @@ K_fun <- function(x, t, h, kern = c("tri")){
 #'
 #' @param n sample size
 #' @param p Holder space exponent, either 1 or 2.
+#' @param level significance level; used for better quantile approximation.
 #'
 #' @return the value of the optimal \eqn{c_n}.
 #' @export
 #'
 #' @examples opt_cn(500, 2)
-opt_cn <- function(n, p){
+#' opt_cn(500, 2, 0.95)
+opt_cn <- function(n, p, level = NULL){
 
   res <- sqrt(2 * log(n) / (2 * p + 1))
+  if(!is.null(level)){
+    alpha <- 1 - level
+    res <- res + (evd::qgumbel(level) + evd::qgumbel(1 - alpha / 2)) / (2 * res)
+  }
   return(res)
 }

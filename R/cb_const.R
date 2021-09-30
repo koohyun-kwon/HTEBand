@@ -50,6 +50,8 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
     c.supp = NULL
   }else if(c.method == "supp"){
     c.supp = opt_cn(n, p)
+  }else if(c.method == "supp2"){
+    c.supp = opt_cn(n, p, level)
   }
 
   cat("Optimal bandwidth calculation...")
@@ -64,7 +66,7 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
 
   if(c.method == "root"){
     ci.cv = NULL
-  }else if(c.method == "supp"){
+  }else if(c.method == "supp" | c.method == "supp2"){
     ci.cv <- opt.res$q.sim
   }
 
