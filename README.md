@@ -48,8 +48,7 @@ library(tidyverse)
 #> x dplyr::lag()    masks stats::lag()
 x <- seq(-1, 1, length.out = 500)
 y <- x^2 + rnorm(500, 0, 1/4)
-cb.res <- NpregBand(y, x, 2, 0.95, "L", n.eval = 25, c.method = "supp",
-                    print.t = FALSE)
+cb.res <- NpregBand(y, x, 2, 0.95, "L", n.eval = 25, print.t = FALSE)
 #> Residual calculation... Done 
 #> Optimal bandwidth calculation... Done 
 #> CB construction... 
