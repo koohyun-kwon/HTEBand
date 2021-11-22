@@ -6,8 +6,9 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of HTEBand is to construct uniform confidence bands for various
-types of heterogeneous treatment effect parameters.
+The goal of HTEBand is to construct uniform confidence bands for
+conditional expectation functions and conditional average treatment
+effect functions.
 
 ## Installation
 
@@ -19,9 +20,20 @@ install.packages("remotes") # if not installed
 remotes::install_github("koohyun-kwon/HTEBand")
 ```
 
+## Instruction
+
+For a conditional expectation function, use `NpregBand` command. For a
+conditional average treatment effect function, use `CATEBand` command.
+See help page of each function for details:
+
+``` r
+?HTEBand::NpregBand
+?HTEBand::CATEBand
+```
+
 ## Example
 
-Nonparametric regression via `NpregBand()`:
+Nonparametric regression via `NpregBand`:
 
 ``` r
 library(HTEBand)
