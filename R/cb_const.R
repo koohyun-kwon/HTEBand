@@ -8,6 +8,8 @@
 #'
 #' @inheritParams opt_w
 #' @param x.out the grid of points the confidence band is evaluated; see details.
+#' @param print.t if \code{TRUE}, print the progress of confidence band construction
+#' with the number of loop.
 #'
 #' @return a data frame containing index set, corresponding confidence band values, and
 #' bandwidths used for the treatment and the control groups (for models without treatment and control groups,
@@ -18,7 +20,7 @@
 cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                      deg, kern, M, var.reg = "npr", seed = NULL, useloop = TRUE,
                      root.robust = FALSE, ng = 10, x.out = NULL,
-                     c.method = "root"){
+                     c.method = "root", print.t = TRUE){
 
   n.T <- length(eval)
   cb.grid <- matrix(NA, nrow = n.T, ncol = 7)
@@ -79,7 +81,8 @@ cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
 
   for(t in 1:n.T){
 
-    cat(t, "/", n.T, "\n")
+    if(print.t) cat(t, "/", n.T, "\n")
+
 
     cb.grid[t, ] <-
       if(method == "reg.Hol"){

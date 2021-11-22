@@ -23,7 +23,8 @@ CATEBand(
   root.robust = FALSE,
   ng = 10,
   x.out = NULL,
-  c.method = "root"
+  c.method = "root",
+  print.t = TRUE
 )
 }
 \arguments{
@@ -78,6 +79,9 @@ if \code{root.robust = TRUE}; default is \code{ng = 10}.}
 
 \item{c.method}{method to calculate the optimal value of \eqn{c_n}, an element
 in \code{c("root", "supp")}; default is \code{c.method = "root"}.}
+
+\item{print.t}{if \code{TRUE}, print the progress of confidence band construction
+with the number of loop.}
 }
 \value{
 a data frame containing index set and corresponding confidence band values,
