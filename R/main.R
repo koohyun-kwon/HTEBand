@@ -3,9 +3,6 @@
 #' Constructs a minimax optimal honest confidence band for nonparametric regression function values
 #' under a specified function class.
 #'
-#' Currently, our method is guaranteed to work well for interior points. So setting \code{q.int > 0}
-#' is recommended.
-#'
 #' @param y vector of dependent variables.
 #' @param x vector of regressors.
 #' @param C bound on the first or the second derivative, depending on \code{fclass}.
@@ -17,9 +14,11 @@
 #' @param eval grid points to use when constructing confidence band; if it is not specified,
 #' \code{eval} is automatically determined by \code{n.eval} and \code{q.int}.
 #' @param q.int parameter determining the distance from the boundary of the support of \code{x}.
-#' Confidence band is formed for points between the \code{q.int} quantile and the \code{1 - q.int} quantile
+#' Confidence band is formed for points between
+#' the \code{q.int} quantile and the \code{1 - q.int} quantile
 #' of \code{x}. \code{q.int} should be between 0 and 0.5. The default is \code{q.int = 0.025}.
-#' Only relevant when \code{eval} is not specified.
+#' Setting \code{q.int > 0} is recommended, and it is only relevant
+#' when \code{eval} is not specified.
 #' @param n.sim number of bootstrap samples to use when calculating quantiles of suprema of empirical processes;
 #' the default is \code{n.sim = 10^3}
 #' @param kern type of kernel used in estimation; currently, only the triangle kernel (\code{kern = "tri"})
@@ -40,8 +39,8 @@
 #' @examples
 #' x <- seq(-1, 1, length.out = 500)
 #' y <- x^2 + rnorm(500, 0, 1/4)
-#' NpregBand(y, x, 2, 0.95, "L", n.eval = 25, c.method = "supp")
-#' NpregBand(y, x, 2, 0.95, "H", n.eval = 25, c.method = "supp2")
+#' NpregBand(y, x, 2, 0.95, "L", n.eval = 25)
+#' NpregBand(y, x, 2, 0.95, "H", n.eval = 25)
 NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) / 5, eval = NULL, q.int = 0.025,
                       n.sim = 10^3, kern = "tri", deg = 1, var.reg = "npr", seed = NULL,
                       root.robust = FALSE, ng = 10, x.out = NULL, c.method = "supp2",
@@ -77,9 +76,6 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #' Constructs a minimax optimal honest confidence band for conditional average treatment effects
 #' with respect to a regressor under a specified function class.
 #'
-#' Currently, our method is guaranteed to work well for interior points. So setting \code{q.int > 0}
-#' is recommended.
-#'
 #' @inheritParams NpregBand
 #' @param d vector of treatment indicators.
 #' @param h.eq logical indicating whether the same bandwidths are used for the treated and the control groups;
@@ -97,8 +93,8 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #' x <- rep(seq(-1, 1, length.out = 500), each = 2)
 #' d <- rep(c(0, 1), 500)
 #' y <- d * x^2 + (1 - d) * x + rnorm(500, 0, 1/4)
-#' CATEBand(y, x, d, 2, 0.95, n.eval = 25, c.method = "supp")
-#' CATEBand(y, x, d, 2, 0.95, fclass = "H", n.eval = 25, c.method = "supp2")
+#' CATEBand(y, x, d, 2, 0.95, n.eval = 25)
+#' CATEBand(y, x, d, 2, 0.95, fclass = "H", n.eval = 25)
 CATEBand <- function(y, x, d, C, level, fclass = c("L", "H"), h.eq = TRUE, n.eval = min(sum(d == 1), sum(d == 0)) / 5,
                      eval = NULL, q.int = 0.025, n.sim = 10^3, kern = "tri", deg = 1, var.reg = "npr", seed = NULL,
                      root.robust = FALSE, ng = 10, x.out = NULL, c.method = "supp2",
