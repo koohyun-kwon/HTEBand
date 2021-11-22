@@ -92,9 +92,8 @@ options are obsolete.}
 with the number of loop.}
 }
 \value{
-a data frame containing index set and corresponding confidence band values,
-or if \code{root.robust = TRUE}, a list containing the data frame as well as
-\code{increasing} and \code{opt.grid}; see \code{\link{opt_w}}.
+\code{data.frame} object containing index set and corresponding
+confidence band values.
 }
 \description{
 Constructs a minimax optimal honest confidence band for conditional average treatment effects

@@ -31,9 +31,8 @@
 #' using linear interpolation. Default value is \code{NULL}.
 #' @inheritParams cb_const
 #'
-#' @return  a data frame containing index set and corresponding confidence band values,
-#' or if \code{root.robust = TRUE}, a list containing the data frame as well as
-#' \code{increasing} and \code{opt.grid}; see \code{\link{opt_w}}.
+#' @return \code{data.frame} object containing index set and corresponding
+#' confidence band values.
 #' @export
 #'
 #' @examples
@@ -84,9 +83,8 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #' @param n.eval number of grid points to use when constructing confidence band; default is
 #' \code{min(sum(d == 1), sum(d == 0)) / 5}.
 #'
-#' @return a data frame containing index set and corresponding confidence band values,
-#' or if \code{root.robust = TRUE}, a list containing the data frame as well as
-#' \code{increasing} and \code{opt.grid}; see \code{\link{opt_w}}.
+#' @return \code{data.frame} object containing index set and corresponding
+#' confidence band values.
 #' @export
 #'
 #' @examples
