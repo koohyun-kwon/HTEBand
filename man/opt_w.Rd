@@ -23,7 +23,7 @@ opt_w(
   resid.1 = NULL,
   resid.0 = NULL,
   var.reg = "npr",
-  c.method = "root",
+  c.method = "supp2",
   c.supp = NULL
 )
 }
@@ -69,10 +69,11 @@ supports \code{"tri"}, \code{"epa"},
 currently only \code{useloop = TRUE} is implemented.}
 
 \item{root.robust}{if \code{TRUE}, the fuction conducts diagnostic test whether optimizaiton worked well;
-default is \code{root.robust = FALSE}.}
+default is \code{root.robust = FALSE}. Currently, this feature is obsolete.}
 
 \item{ng}{the number of grids of quantile values over which the diagnostic test would be peformed
-if \code{root.robust = TRUE}; default is \code{ng = 10}.}
+if \code{root.robust = TRUE}; default is \code{ng = 10}. Currently,
+this feature is obsolete.}
 
 \item{resid.1}{residuals corresponding to the treated observations; it can be a vector
 or a matrix if \code{ncol(y) > 1}. For treatment effect models, its \eqn{i}th component
@@ -89,8 +90,9 @@ corresponds to the \eqn{i}th component of \code{y[d == 0, ]}. It can be specifie
 either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
 (standing for \code{locpol} package). Default is \code{var.reg = "npr"}.}
 
-\item{c.method}{method to calculate the optimal value of \eqn{c_n}, an element
-in \code{c("root", "supp")}; default is \code{c.method = "root"}.}
+\item{c.method}{method to calculate the optimal value of \eqn{c_n}. Currently,
+using the default value \code{c.method = "supp2"} is recommended and other
+options are obsolete.}
 
 \item{c.supp}{value of \eqn{c_n} to be used when \code{c.method = "supp"};
 default is \code{c.supp = NULL}.}

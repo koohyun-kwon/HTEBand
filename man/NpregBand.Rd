@@ -21,7 +21,7 @@ NpregBand(
   root.robust = FALSE,
   ng = 10,
   x.out = NULL,
-  c.method = "root",
+  c.method = "supp2",
   print.t = TRUE
 )
 }
@@ -45,7 +45,8 @@ NpregBand(
 
 \item{q.int}{parameter determining the distance from the boundary of the support of \code{x}.
 Confidence band is formed for points between the \code{q.int} quantile and the \code{1 - q.int} quantile
-of \code{x}. \code{q.int} should be between 0 and 0.5. The default is \code{q.int = 0.025}.}
+of \code{x}. \code{q.int} should be between 0 and 0.5. The default is \code{q.int = 0.025}.
+Only relevant when \code{eval} is not specified.}
 
 \item{n.sim}{number of bootstrap samples to use when calculating quantiles of suprema of empirical processes;
 the default is \code{n.sim = 10^3}}
@@ -63,15 +64,19 @@ either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
 \item{seed}{seed number for bootstrap random sample generation. The default is \code{seed = NULL}.}
 
 \item{root.robust}{if \code{TRUE}, the fuction conducts diagnostic test whether optimizaiton worked well;
-default is \code{root.robust = FALSE}.}
+default is \code{root.robust = FALSE}. Currently, this feature is obsolete.}
 
 \item{ng}{the number of grids of quantile values over which the diagnostic test would be peformed
-if \code{root.robust = TRUE}; default is \code{ng = 10}.}
+if \code{root.robust = TRUE}; default is \code{ng = 10}. Currently,
+this feature is obsolete.}
 
-\item{x.out}{the grid of points the confidence band is evaluated; see details.}
+\item{x.out}{the grid of points the confidence band is evaluated;
+If \code{x.out} is not \code{NULL}, confidence band is calculated over \code{x.out}
+using linear interpolation. Default value is \code{NULL}.}
 
-\item{c.method}{method to calculate the optimal value of \eqn{c_n}, an element
-in \code{c("root", "supp")}; default is \code{c.method = "root"}.}
+\item{c.method}{method to calculate the optimal value of \eqn{c_n}. Currently,
+using the default value \code{c.method = "supp2"} is recommended and other
+options are obsolete.}
 
 \item{print.t}{if \code{TRUE}, print the progress of confidence band construction
 with the number of loop.}

@@ -22,7 +22,7 @@ cb_const(
   root.robust = FALSE,
   ng = 10,
   x.out = NULL,
-  c.method = "root",
+  c.method = "supp2",
   print.t = TRUE
 )
 }
@@ -72,15 +72,17 @@ either \code{"npr"} (standing for \code{nprobust} package) or \code{"locpol"}
 currently only \code{useloop = TRUE} is implemented.}
 
 \item{root.robust}{if \code{TRUE}, the fuction conducts diagnostic test whether optimizaiton worked well;
-default is \code{root.robust = FALSE}.}
+default is \code{root.robust = FALSE}. Currently, this feature is obsolete.}
 
 \item{ng}{the number of grids of quantile values over which the diagnostic test would be peformed
-if \code{root.robust = TRUE}; default is \code{ng = 10}.}
+if \code{root.robust = TRUE}; default is \code{ng = 10}. Currently,
+this feature is obsolete.}
 
 \item{x.out}{the grid of points the confidence band is evaluated; see details.}
 
-\item{c.method}{method to calculate the optimal value of \eqn{c_n}, an element
-in \code{c("root", "supp")}; default is \code{c.method = "root"}.}
+\item{c.method}{method to calculate the optimal value of \eqn{c_n}. Currently,
+using the default value \code{c.method = "supp2"} is recommended and other
+options are obsolete.}
 
 \item{print.t}{if \code{TRUE}, print the progress of confidence band construction
 with the number of loop.}

@@ -20,9 +20,10 @@
 #' @param d a vector of treatment indicator; it can be arbitrarily specified when not used.
 #' @param eval a vector of indices
 #' @param root.robust if \code{TRUE}, the fuction conducts diagnostic test whether optimizaiton worked well;
-#' default is \code{root.robust = FALSE}.
+#' default is \code{root.robust = FALSE}. Currently, this feature is obsolete.
 #' @param ng the number of grids of quantile values over which the diagnostic test would be peformed
-#' if \code{root.robust = TRUE}; default is \code{ng = 10}.
+#' if \code{root.robust = TRUE}; default is \code{ng = 10}. Currently,
+#' this feature is obsolete.
 #' @param resid.1 residuals corresponding to the treated observations; it can be a vector
 #' or a matrix if \code{ncol(y) > 1}. For treatment effect models, its \eqn{i}th component
 #' corresponds to the \eqn{i}th component of \code{y[d == 1, ]}. If there are no
@@ -32,8 +33,9 @@
 #' or a matrix if \code{ncol(y) > 1}. Its \eqn{i}th component
 #' corresponds to the \eqn{i}th component of \code{y[d == 0, ]}. It can be specified to be
 #' \code{NULL}.
-#' @param c.method method to calculate the optimal value of \eqn{c_n}, an element
-#' in \code{c("root", "supp")}; default is \code{c.method = "root"}.
+#' @param c.method method to calculate the optimal value of \eqn{c_n}. Currently,
+#' using the default value \code{c.method = "supp2"} is recommended and other
+#' options are obsolete.
 #' @param c.supp value of \eqn{c_n} to be used when \code{c.method = "supp"};
 #' default is \code{c.supp = NULL}.
 #' @inheritParams sup_quant_sim
@@ -55,7 +57,7 @@
 opt_w <- function(method, C.vec, y, x, d = NULL, eval, T.grad.mat, level,
                   deg, kern, M, seed = NULL, useloop = TRUE,
                   root.robust = FALSE, ng = 10, resid.1 = NULL, resid.0 = NULL,
-                  var.reg = "npr", c.method = "root", c.supp = NULL){
+                  var.reg = "npr", c.method = "supp2", c.supp = NULL){
 
   n.T <- length(eval)
   T.grad.mat <- v_to_m(T.grad.mat)

@@ -20,7 +20,7 @@
 cb_const <- function(method, C.vec, y, x, d, eval, T.grad.mat, level,
                      deg, kern, M, var.reg = "npr", seed = NULL, useloop = TRUE,
                      root.robust = FALSE, ng = 10, x.out = NULL,
-                     c.method = "root", print.t = TRUE){
+                     c.method = "supp2", print.t = TRUE){
 
   n.T <- length(eval)
   cb.grid <- matrix(NA, nrow = n.T, ncol = 7)

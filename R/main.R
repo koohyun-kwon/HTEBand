@@ -19,6 +19,7 @@
 #' @param q.int parameter determining the distance from the boundary of the support of \code{x}.
 #' Confidence band is formed for points between the \code{q.int} quantile and the \code{1 - q.int} quantile
 #' of \code{x}. \code{q.int} should be between 0 and 0.5. The default is \code{q.int = 0.025}.
+#' Only relevant when \code{eval} is not specified.
 #' @param n.sim number of bootstrap samples to use when calculating quantiles of suprema of empirical processes;
 #' the default is \code{n.sim = 10^3}
 #' @param kern type of kernel used in estimation; currently, only the triangle kernel (\code{kern = "tri"})
@@ -26,6 +27,9 @@
 #' @param deg degree of local polynomial estimator used in the first-stage variance estimation;
 #' the default is \code{deg = 1}.
 #' @param seed seed number for bootstrap random sample generation. The default is \code{seed = NULL}.
+#' @param x.out the grid of points the confidence band is evaluated;
+#' If \code{x.out} is not \code{NULL}, confidence band is calculated over \code{x.out}
+#' using linear interpolation. Default value is \code{NULL}.
 #' @inheritParams cb_const
 #'
 #' @return  a data frame containing index set and corresponding confidence band values,
@@ -40,7 +44,7 @@
 #' NpregBand(y, x, 2, 0.95, "H", n.eval = 25, c.method = "supp2")
 NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) / 5, eval = NULL, q.int = 0.025,
                       n.sim = 10^3, kern = "tri", deg = 1, var.reg = "npr", seed = NULL,
-                      root.robust = FALSE, ng = 10, x.out = NULL, c.method = "root",
+                      root.robust = FALSE, ng = 10, x.out = NULL, c.method = "supp2",
                       print.t = TRUE){
 
   fclass <- match.arg(fclass)
@@ -97,7 +101,7 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #' CATEBand(y, x, d, 2, 0.95, fclass = "H", n.eval = 25, c.method = "supp2")
 CATEBand <- function(y, x, d, C, level, fclass = c("L", "H"), h.eq = TRUE, n.eval = min(sum(d == 1), sum(d == 0)) / 5,
                      eval = NULL, q.int = 0.025, n.sim = 10^3, kern = "tri", deg = 1, var.reg = "npr", seed = NULL,
-                     root.robust = FALSE, ng = 10, x.out = NULL, c.method = "root",
+                     root.robust = FALSE, ng = 10, x.out = NULL, c.method = "supp2",
                      print.t = TRUE){
 
   fclass <- match.arg(fclass)
