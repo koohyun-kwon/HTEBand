@@ -79,7 +79,8 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #' @inheritParams NpregBand
 #' @param d vector of treatment indicators.
 #' @param h.eq logical indicating whether the same bandwidths are used for the treated and the control groups;
-#' the default is \code{h.eq = FALSE}.
+#' the default is \code{h.eq = TRUE}. For now, only \code{h.eq = TRUE} is supported when
+#' \code{fclass = "H"}.
 #' @param n.eval number of grid points to use when constructing confidence band; default is
 #' \code{min(sum(d == 1), sum(d == 0)) / 5}.
 #'
@@ -92,14 +93,18 @@ NpregBand <- function(y, x, C, level, fclass = c("L", "H"), n.eval = length(x) /
 #' x <- rep(seq(-1, 1, length.out = 500), each = 2)
 #' d <- rep(c(0, 1), 500)
 #' y <- d * x^2 + (1 - d) * x + rnorm(500, 0, 1/4)
-#' CATEBand(y, x, d, 2, 0.95, n.eval = 25, h.eq = TRUE, c.method = "supp")
-#' CATEBand(y, x, d, 2, 0.95, fclass = "H", n.eval = 25, h.eq = TRUE, c.method = "supp2")
-CATEBand <- function(y, x, d, C, level, fclass = c("L", "H"), h.eq = FALSE, n.eval = min(sum(d == 1), sum(d == 0)) / 5,
+#' CATEBand(y, x, d, 2, 0.95, n.eval = 25, c.method = "supp")
+#' CATEBand(y, x, d, 2, 0.95, fclass = "H", n.eval = 25, c.method = "supp2")
+CATEBand <- function(y, x, d, C, level, fclass = c("L", "H"), h.eq = TRUE, n.eval = min(sum(d == 1), sum(d == 0)) / 5,
                      eval = NULL, q.int = 0.025, n.sim = 10^3, kern = "tri", deg = 1, var.reg = "npr", seed = NULL,
                      root.robust = FALSE, ng = 10, x.out = NULL, c.method = "root",
                      print.t = TRUE){
 
   fclass <- match.arg(fclass)
+
+  try(if(fclass == "H" & h.eq == FALSE) stop(
+    "For now, only h.eq = TRUE is supported for Holder class"))
+
   method <-
     if(h.eq == TRUE){
       if(fclass == "L"){
